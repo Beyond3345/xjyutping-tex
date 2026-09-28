@@ -1,7 +1,10 @@
-% Visual layout check: run  tests/render.sh tests/layout-check.tex  and look at the PNG.
+% Visual layout check: run  tests/render.sh tests/layout-check.tex [xelatex|lualatex]
+% and look at the PNG.
 \documentclass{article}
 \usepackage[paperwidth=13cm,paperheight=8cm,margin=6mm]{geometry}
-\usepackage{xeCJK}
+% xeCJK under XeLaTeX, ctex (which loads LuaTeX-ja) under LuaLaTeX
+\usepackage{iftex}
+\ifXeTeX\usepackage{xeCJK}\else\usepackage[fontset=none]{ctex}\fi
 \setCJKmainfont{Songti TC}
 \usepackage{xcolor}
 \usepackage{xjyutping}

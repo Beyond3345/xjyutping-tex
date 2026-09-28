@@ -13,12 +13,24 @@
 \ProvidesExplPackage{xjyutping}{2026-09-28}{1.1.0}
   {Add Jyutping to traditional Chinese characters}
 
-\msg_new:nnn { xjyutping } { xetex-only }
-  { The~xjyutping~package~needs~XeLaTeX~(it~works~through~xeCJK). }
+\msg_new:nnn { xjyutping } { engine }
+  {
+    The~xjyutping~package~needs~XeLaTeX~(with~xeCJK)~or~LuaLaTeX~
+    (with~LuaTeX-ja).
+  }
 \msg_new:nnn { xjyutping } { count-mismatch }
   { `#1'~has~#2~character(s)~but~`#3'~has~#4~syllable(s). }
-\sys_if_engine_xetex:F { \msg_critical:nn { xjyutping } { xetex-only } }
-\@ifpackageloaded { xeCJK } { } { \RequirePackage { xeCJK } }
+% Under XeLaTeX xeCJK passes every Chinese character to a hook that builds
+% its cell.  Under LuaLaTeX the cells are built by xjyutping.lua after
+% LuaTeX-ja has laid out the characters.
+\bool_lazy_or:nnF { \sys_if_engine_xetex_p: } { \sys_if_engine_luatex_p: }
+  { \msg_critical:nn { xjyutping } { engine } }
+\sys_if_engine_xetex:TF
+  { \@ifpackageloaded { xeCJK } { } { \RequirePackage { xeCJK } } }
+  {
+    \@ifpackageloaded { luatexja } { } { \RequirePackage { luatexja } }
+    \lua_now:n { xjyutping = require ( 'xjyutping' ) }
+  }
 
 % ---------------------------------------------------------------------------
 % Options
@@ -128,11 +140,16 @@
 % Typesetting one character.  xeCJK passes every ideograph to \CJKsymbol,
 % which a scope replaces.
 % ---------------------------------------------------------------------------
+% Inside the rubies and other internal boxes, Chinese characters are not
+% annotated.
+\sys_if_engine_xetex:TF
+  { \cs_new_protected:Npn \__xjyutping_cjk_inactive: { \makexeCJKinactive } }
+  { \cs_new_protected:Npn \__xjyutping_cjk_inactive: { \xjyutping@lua@off } }
 % The Jyutping font is cached together with its NFSS state, so that a font
 % command in `format' still works at the Jyutping size.
 \cs_new_protected:Npn \__xjyutping_select_font:
   {
-    \makexeCJKinactive
+    \__xjyutping_cjk_inactive:
     \tl_set:Ne \l__xjyutping_key_tl
       { xjp@font@ \l__xjyutping_ratio_tl / \f@size / \tl_to_str:N \l__xjyutping_font_tl }
     \cs_if_exist_use:cF { \l__xjyutping_key_tl }
@@ -141,7 +158,7 @@
           { \l__xjyutping_ratio_tl \tex_dimexpr:D \f@size pt \scan_stop: }
           { \f@baselineskip }
         \normalfont
-        \cs_set_eq:NN \xeCJK@family \use_none:n % no CJK font for Jyutping
+        \cs_set_eq:NN \xeCJK@family \use_none:n % xeCJK: no CJK font for Jyutping
         \l__xjyutping_font_tl
         \selectfont
         \cs_gset_nopar:cpe { \l__xjyutping_key_tl }
@@ -189,11 +206,17 @@
           * \int_eval:n { #1 - 1 } / 4
       }
   }
-% A stroke from pitch #1 to pitch #2, 0.4em long after a 0.07em gap
-% (pdf:content wraps it in q ... Q, with the origin at the current point).
+% PDF drawing code with the origin at the current point.  xdvipdfmx's
+% pdf:content adds q ... Q itself; LuaTeX's literal needs them.
+\bool_lazy_and:nnTF { \sys_if_engine_luatex_p: } { \sys_if_output_pdf_p: }
+  {
+    \cs_new_protected:Npn \__xjyutping_literal:n #1
+      { \tex_pdfextension:D literal { q ~ #1 ~ Q } }
+  }
+  { \cs_new_protected:Npn \__xjyutping_literal:n #1 { \tex_special:D { pdf:content ~ #1 } } }
+% A stroke from pitch #1 to pitch #2, 0.4em long after a 0.07em gap.
 \cs_new:Npn \__xjyutping_stroke:nn #1#2
   {
-    pdf:content ~
     \__xjyutping_bp:n { \l__xjyutping_stroke_dim } ~ w ~ 1 ~ J ~
     \__xjyutping_bp:n
       { 0.07 \l__xjyutping_em_dim + 0.5 \l__xjyutping_stroke_dim } ~
@@ -246,7 +269,7 @@
                   \exp_not:N \tex_vrule:D
                     height ~ \dim_use:N \l__xjyutping_top_dim ~
                     depth ~ \c_zero_dim ~ width ~ \c_zero_dim
-                  \exp_not:N \tex_special:D { \__xjyutping_contour:n {##1} }
+                  \exp_not:N \__xjyutping_literal:n { \__xjyutping_contour:n {##1} }
                   \exp_not:N \tex_hss:D
                 }
               \exp_not:N \box_move_up:nn
@@ -597,7 +620,7 @@
   }
 % xeCJK allows a line break before —— and ……; if the line breaks there,
 % the padding stays at the end of the line, otherwise the kerns cancel.
-\cs_new_eq:NN \__xjyutping_allow_break: \xeCJK_allow_break:
+\sys_if_engine_xetex:T { \cs_new_eq:NN \__xjyutping_allow_break: \xeCJK_allow_break: }
 \cs_new_protected:Npn \__xjyutping_long_break:
   {
     \cs_set_protected:Npe \xeCJK_allow_break:
@@ -652,6 +675,7 @@
       {
         \mode_leave_vertical: % paragraph-start code runs before the mark is set
         \tl_gset:Nn \g__xjyutping_mark_tl {#1}
+        \__xjyutping_mark_next:
       }
   }
 \cs_new_protected:Npn \__xjyutping_combo:nn #1#2
@@ -685,40 +709,145 @@
     \__xjyutping_cell:nVV {#1} \l__xjyutping_reading_tl \l__xjyutping_type_tl
   }
 
-\cs_new_protected:Npn \__xjyutping_enable:
+% LuaLaTeX.  A mark is followed by its character: the ruby is built here,
+% placed in an overlay box of the character's width, and handed to
+% xjyutping.lua together with the pad and the stretch of hsep; the
+% character is then typeset with an attribute that tells xjyutping.lua to
+% build its cell.  (A character that comes without a mark gets its cell
+% from \xjyutping@lua@nocontext, which xjyutping.lua runs.)
+\box_new:N \l__xjyutping_overlay_box
+\cs_new_protected:Npn \__xjyutping_lua_build:nnnN #1#2#3#4
   {
-    \bool_if:NF \l__xjyutping_enable_bool
+    \hbox_set:Nn \l__xjyutping_char_box { \__xjyutping_cjk_inactive: #1 }
+    \__xjyutping_ruby:nn {#2} {#3}
+    \__xjyutping_hsep:
+    \dim_set:Nn \l__xjyutping_cell_dim
       {
-        \cs_set_eq:NN \__xjyutping_save_CJKsymbol:n \CJKsymbol
-        \cs_set_eq:NN \CJKsymbol \__xjyutping_CJKsymbol:n
-        \cs_set_eq:NN \__xjyutping_save_CJKglue: \CJKglue
-        \cs_set_eq:NN \CJKglue \__xjyutping_CJKglue:
-        \cs_set_eq:NN \__xjyutping_save_CJKecglue: \CJKecglue
-        \cs_set_eq:NN \CJKecglue \__xjyutping_CJKecglue:
-        \cs_set_eq:NN \__xjyutping_save_boundary:w \xeCJK_CJK_and_Boundary:w
-        \cs_set_eq:NN \xeCJK_CJK_and_Boundary:w \__xjyutping_boundary:w
-        \cs_set_eq:NN \__xjyutping_save_fullright:N \xeCJK_CJK_and_FullRight:N
-        \cs_set_eq:NN \xeCJK_CJK_and_FullRight:N \__xjyutping_fullright:N
-        \cs_set_eq:NN \__xjyutping_save_punct:n \CJKpunctsymbol
-        \cs_set_eq:NN \CJKpunctsymbol \__xjyutping_punct:n
-        \dim_gzero:N \g__xjyutping_pad_dim
-        \bool_gset_false:N \g__xjyutping_cell_bool
-        \tl_gclear:N \g__xjyutping_mark_tl
-        \bool_set_true:N \l__xjyutping_enable_bool
+        (
+          \dim_max:nn { \__xjyutping_uniform: }
+            {
+              \dim_max:nn { \box_wd:N \l__xjyutping_char_box }
+                { \box_wd:N \l__xjyutping_ruby_box }
+            }
+          + \l__xjyutping_hsep_skip - \box_wd:N \l__xjyutping_char_box
+        ) / 2
+      }
+    \hbox_set:Nn \l__xjyutping_overlay_box
+      {
+        \__xjyutping_cjk_inactive:
+        \hbox_overlap_right:n
+          {
+            \__xjyutping_clearance:
+            \box_move_up:nn { \__xjyutping_vsep: }
+              {
+                \hbox_to_wd:nn { \box_wd:N \l__xjyutping_char_box }
+                  { \tex_hss:D \box_use_drop:N \l__xjyutping_ruby_box \tex_hss:D }
+              }
+          }
+      }
+    \use:e
+      {
+        \exp_not:N #4
+        \int_eval:n { \l__xjyutping_overlay_box } ~
+        \int_eval:n { \l__xjyutping_cell_dim } ~
+        \int_eval:n { \tex_gluestretch:D \l__xjyutping_hsep_skip } ~
       }
   }
-\cs_new_protected:Npn \__xjyutping_disable:
+\cs_generate_variant:Nn \__xjyutping_lua_build:nnnN { nVV }
+\cs_new_protected:Npn \__xjyutping_lua_mark:N #1
   {
-    \bool_if:NT \l__xjyutping_enable_bool
+    \bool_lazy_or:nnTF { \token_if_letter_p:N #1 } { \token_if_other_p:N #1 }
       {
-        \cs_set_eq:NN \CJKsymbol \__xjyutping_save_CJKsymbol:n
-        \cs_set_eq:NN \CJKglue \__xjyutping_save_CJKglue:
-        \cs_set_eq:NN \CJKecglue \__xjyutping_save_CJKecglue:
-        \cs_set_eq:NN \xeCJK_CJK_and_Boundary:w \__xjyutping_save_boundary:w
-        \cs_set_eq:NN \xeCJK_CJK_and_FullRight:N \__xjyutping_save_fullright:N
-        \cs_set_eq:NN \CJKpunctsymbol \__xjyutping_save_punct:n
-        \bool_set_false:N \l__xjyutping_enable_bool
+        \tl_set:Ne \l__xjyutping_type_tl
+          { \exp_args:NV \tl_head:n \g__xjyutping_mark_tl }
+        \tl_set:Ne \l__xjyutping_reading_tl
+          { \exp_args:NV \tl_tail:n \g__xjyutping_mark_tl }
+        \tl_gclear:N \g__xjyutping_mark_tl
+        \group_begin:
+          \__xjyutping_lua_build:nVVN {#1}
+            \l__xjyutping_reading_tl \l__xjyutping_type_tl \xjyutping@lua@store
+          #1
+        \group_end:
       }
+      { \tl_gclear:N \g__xjyutping_mark_tl #1 }
+  }
+\cs_new_protected:cpn { xjyutping@lua@nocontext } #1#2
+  {
+    \group_begin:
+      \fontsize {#2} { \f@baselineskip } \selectfont
+      \__xjyutping_lookup:nn {#1} { }
+      \bool_if:NT \l__xjyutping_debug_bool
+        {
+          \iow_log:e
+            { xjyutping>~ [no~context]~ #1 \l__xjyutping_reading_tl : \l__xjyutping_type_tl }
+        }
+      \tl_if_empty:NF \l__xjyutping_reading_tl
+        {
+          \__xjyutping_lua_build:nVVN {#1}
+            \l__xjyutping_reading_tl \l__xjyutping_type_tl \xjyutping@lua@storeonly
+        }
+    \group_end:
+  }
+
+\sys_if_engine_xetex:TF
+  {
+    \cs_new_protected:Npn \__xjyutping_enable:
+      {
+        \bool_if:NF \l__xjyutping_enable_bool
+          {
+            \cs_set_eq:NN \__xjyutping_save_CJKsymbol:n \CJKsymbol
+            \cs_set_eq:NN \CJKsymbol \__xjyutping_CJKsymbol:n
+            \cs_set_eq:NN \__xjyutping_save_CJKglue: \CJKglue
+            \cs_set_eq:NN \CJKglue \__xjyutping_CJKglue:
+            \cs_set_eq:NN \__xjyutping_save_CJKecglue: \CJKecglue
+            \cs_set_eq:NN \CJKecglue \__xjyutping_CJKecglue:
+            \cs_set_eq:NN \__xjyutping_save_boundary:w \xeCJK_CJK_and_Boundary:w
+            \cs_set_eq:NN \xeCJK_CJK_and_Boundary:w \__xjyutping_boundary:w
+            \cs_set_eq:NN \__xjyutping_save_fullright:N \xeCJK_CJK_and_FullRight:N
+            \cs_set_eq:NN \xeCJK_CJK_and_FullRight:N \__xjyutping_fullright:N
+            \cs_set_eq:NN \__xjyutping_save_punct:n \CJKpunctsymbol
+            \cs_set_eq:NN \CJKpunctsymbol \__xjyutping_punct:n
+            \dim_gzero:N \g__xjyutping_pad_dim
+            \bool_gset_false:N \g__xjyutping_cell_bool
+            \tl_gclear:N \g__xjyutping_mark_tl
+            \bool_set_true:N \l__xjyutping_enable_bool
+          }
+      }
+    \cs_new_protected:Npn \__xjyutping_disable:
+      {
+        \bool_if:NT \l__xjyutping_enable_bool
+          {
+            \cs_set_eq:NN \CJKsymbol \__xjyutping_save_CJKsymbol:n
+            \cs_set_eq:NN \CJKglue \__xjyutping_save_CJKglue:
+            \cs_set_eq:NN \CJKecglue \__xjyutping_save_CJKecglue:
+            \cs_set_eq:NN \xeCJK_CJK_and_Boundary:w \__xjyutping_save_boundary:w
+            \cs_set_eq:NN \xeCJK_CJK_and_FullRight:N \__xjyutping_save_fullright:N
+            \cs_set_eq:NN \CJKpunctsymbol \__xjyutping_save_punct:n
+            \bool_set_false:N \l__xjyutping_enable_bool
+          }
+      }
+    \cs_new_eq:NN \__xjyutping_mark_next: \prg_do_nothing:
+  }
+  {
+    \cs_new_protected:Npn \__xjyutping_enable:
+      {
+        \bool_if:NF \l__xjyutping_enable_bool
+          {
+            \tl_gclear:N \g__xjyutping_mark_tl
+            \bool_set_true:N \l__xjyutping_enable_bool
+            \xjyutping@lua@on
+          }
+      }
+    \cs_new_protected:Npn \__xjyutping_disable:
+      {
+        \bool_if:NT \l__xjyutping_enable_bool
+          {
+            \bool_set_false:N \l__xjyutping_enable_bool
+            \xjyutping@lua@off
+          }
+      }
+    \cs_new_protected:Npn \__xjyutping_mark_next:
+      { \peek_N_type:TF { \__xjyutping_lua_mark:N } { \tl_gclear:N \g__xjyutping_mark_tl } }
   }
 \bool_new:N \l__xjyutping_plain_bool
 \NewDocumentCommand \enablejyutping { }
@@ -1152,6 +1281,24 @@
           }
       }
   }
+% Is character code #1 in punctuation class #2 (FullLeft: opening marks,
+% FullRight: closing marks, full stops ...)?  Under XeLaTeX xeCJK's classes
+% decide; under LuaLaTeX xjyutping.lua has the same lists.
+\sys_if_engine_xetex:TF
+  {
+    \prg_new_conditional:Npnn \__xjyutping_if_class:nn #1#2 { p }
+      {
+        \int_compare:nNnTF { \tex_XeTeXcharclass:D #1 } = { \xeCJK_class_num:n {#2} }
+          { \prg_return_true: } { \prg_return_false: }
+      }
+  }
+  {
+    \prg_new_conditional:Npnn \__xjyutping_if_class:nn #1#2 { p }
+      {
+        \str_if_eq:eeTF { \lua_now:e { xjyutping.class ( \int_eval:n {#1} ) } } {#2}
+          { \prg_return_true: } { \prg_return_false: }
+      }
+  }
 % Pass 1 notes a character that is followed by nothing visible and then by
 % punctuation that should hug it; pass 2 puts \__xjyutping_nopad: after it.
 \cs_new_protected:Npn \__xjyutping_plain:n #1
@@ -1161,10 +1308,7 @@
         { \int_compare_p:nNn \l__xjyutping_pass_int = 1 }
         { \int_compare_p:nNn \l__xjyutping_lasthan_int > \c_zero_int }
         { \l__xjyutping_gap_bool }
-        {
-          \int_compare_p:nNn { \tex_XeTeXcharclass:D #1 }
-            = { \xeCJK_class_num:n { FullRight } }
-        }
+        { \__xjyutping_if_class_p:nn {#1} { FullRight } }
       }
       {
         \exp_args:NnV \str_if_in:nnF { 」』）】》〉〕］｝”’〗〙〟｠ } \l__xjyutping_tok_tl
@@ -1183,14 +1327,8 @@
       { \l__xjyutping_space_bool }
       {
         \bool_lazy_or_p:nn
-          {
-            \int_compare_p:nNn { \tex_XeTeXcharclass:D #1 }
-              = { \xeCJK_class_num:n { FullRight } }
-          }
-          {
-            \int_compare_p:nNn { \tex_XeTeXcharclass:D #1 }
-              = { \xeCJK_class_num:n { FullLeft } }
-          }
+          { \__xjyutping_if_class_p:nn {#1} { FullRight } }
+          { \__xjyutping_if_class_p:nn {#1} { FullLeft } }
       }
       { \bool_set_false:N \l__xjyutping_space_bool }
   }
@@ -1871,7 +2009,7 @@
 % at the end of each paragraph.
 \AddToHook { selectfont }
   {
-    \bool_if:NT \l__xjyutping_enable_bool
+    \bool_lazy_and:nnT { \sys_if_engine_xetex_p: } { \l__xjyutping_enable_bool }
       {
         \cs_if_eq:NNF \CJKglue \__xjyutping_CJKglue:
           {

@@ -1,7 +1,10 @@
-% Visual check of the fancy tones: run  tests/render.sh tests/fancy-check.tex
+% Visual check of the fancy tones: run
+%   tests/render.sh tests/fancy-check.tex [xelatex|lualatex]
 \documentclass{article}
 \usepackage[paperwidth=14cm,paperheight=19cm,margin=6mm]{geometry}
-\usepackage{xeCJK}
+% xeCJK under XeLaTeX, ctex (which loads LuaTeX-ja) under LuaLaTeX
+\usepackage{iftex}
+\ifXeTeX\usepackage{xeCJK}\else\usepackage[fontset=none]{ctex}\fi
 \setCJKmainfont{Songti TC}
 \setsansfont{Helvetica}
 \usepackage{xcolor}
