@@ -1,0 +1,22 @@
+% Regression check for xjyutping: run tests/run-tests.sh
+\documentclass{article}
+\usepackage{xeCJK}
+\setCJKmainfont{Songti TC}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[debug]{xjyutping}
+\begin{document}
+\begin{jyutpingscope}
+我哋去銀行，行路返屋企。校長喺學校長大。
+
+因為佢喺裡面講嘅説話。
+
+銀\textbf{行}同校{\color{red}長}。佢去銀\footnote{註腳}行。
+
+你呢？呢張床好平。今晚會落雨。
+
+\section{銀行同行路}\label{sec:a}見\ref{sec:a}同\nameref{sec:a}。
+
+\xjyutping{家行}{gaa1 hang4}聽日嚟。佢重未嚟。\setjyutping{重}{zung6}佢重未嚟。
+\end{jyutpingscope}
+\end{document}

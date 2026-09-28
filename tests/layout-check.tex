@@ -1,0 +1,17 @@
+% Visual layout check: run  tests/render.sh tests/layout-check.tex  and look at the PNG.
+\documentclass{article}
+\usepackage[paperwidth=13cm,paperheight=8cm,margin=6mm]{geometry}
+\usepackage{xeCJK}
+\setCJKmainfont{Songti TC}
+\usepackage{xcolor}
+\usepackage{xjyutping}
+\begin{document}
+\begin{jyutpingscope}
+去\textbf{銀行}，去\emph{銀行}。去{{銀行}}：{行}行\xjyutping{長}{coeng4}大。校{\bfseries 長}ABC。
+
+（{\color{red}行}）「\xjyutping{好}{hou3}」銀行
+，銀行
+。\fbox{行}路\colorbox{yellow}{行}路。
+\end{jyutpingscope}
+\xjyutping{我}{ngo5}\xjyutping{哋}{dei6}\xjyutping{食}{sik6}\xjyutping{飯}{faan6}\xjyutping{我}{ngo5}\xjyutping{哋}{dei6}\xjyutping{食}{sik6}\xjyutping{飯}{faan6}\xjyutping{我}{ngo5}\xjyutping{哋}{dei6}\xjyutping{食}{sik6}\xjyutping{飯}{faan6}\xjyutping{我}{ngo5}\xjyutping{哋}{dei6}\xjyutping{食}{sik6}\xjyutping{飯}{faan6}\xjyutping{我}{ngo5}\xjyutping{哋}{dei6}。
+\end{document}

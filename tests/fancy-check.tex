@@ -1,0 +1,28 @@
+% Visual check of the fancy tones: run  tests/render.sh tests/fancy-check.tex
+\documentclass{article}
+\usepackage[paperwidth=14cm,paperheight=19cm,margin=6mm]{geometry}
+\usepackage{xeCJK}
+\setCJKmainfont{Songti TC}
+\setsansfont{Helvetica}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[fancy,multiple=\color{red}]{xjyutping}
+\begin{document}
+\tableofcontents
+\section{詩史試時市事}
+\begin{jyutpingscope}
+詩史試時市事。我哋去銀行，行路返屋企。校長喺學校長大。\xjyutping{家行}{gaa1 hang4}聽日嚟，\xjyutping{唔}{m}知。
+
+{\small 細字：詩史試時市事。}{\Large 大字：詩史試。}
+\end{jyutpingscope}
+\begin{jyutpingscope}[font=\sffamily, format=\itshape\color{blue}, width=natural]
+詩史試時市事。我哋去銀行，行路返屋企。
+\end{jyutpingscope}
+\begin{jyutpingscope}[ratio=0.6, vsep=1.3em, width=2.2em]
+詩史試時市事。我哋去銀行。
+\end{jyutpingscope}
+正文中嘅\xjyutping*{詩史試時市事}，同埋再嚟一行正文，睇下會唔會撞到上面嗰行字。正文中嘅\xjyutping*{銀行行路}再寫多啲字填滿呢一行。
+\begin{jyutpingscope}[fancy=false]
+詩史試時市事。
+\end{jyutpingscope}
+\end{document}

@@ -1,0 +1,335 @@
+% Manual for xjyutping.  Compile with: xelatex xjyutping-doc.tex (twice)
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{xeCJK}
+\setCJKmainfont{Songti TC}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{fancyvrb}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xjyutping}
+
+\setlength\emergencystretch{3em}
+\newcommand\pkg[1]{\textsf{#1}}
+\newcommand\cs[1]{\texttt{\textbackslash#1}}
+\newcommand\meta[1]{\ensuremath{\langle}\textit{#1}\ensuremath{\rangle}}
+\newcommand\marg[1]{\texttt{\{}\meta{#1}\texttt{\}}}
+\newcommand\oarg[1]{\texttt{[}\meta{#1}\texttt{]}}
+% A code sample followed by its output.
+\newenvironment{example}
+  {\par\smallskip\VerbatimEnvironment\begin{Verbatim}[frame=single,fontsize=\small]}
+  {\end{Verbatim}\par\noindent\ignorespacesafterend}
+
+\title{\pkg{xjyutping}: Jyutping above traditional Chinese characters}
+\author{Version 1.1.0}
+\date{28 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+\pkg{xjyutping} typesets Jyutping (粵拼), the Linguistic Society of Hong Kong
+romanisation of Cantonese, above Chinese characters. Readings are chosen from
+the surrounding words, so 行 is \emph{hong4} in 銀行 and \emph{haang4} in 行路.
+Every character sits in a cell of the same width, wide enough for its
+Jyutping, so the text stays evenly spaced and no Jyutping touches its
+neighbours or the line above. The package works with Xe\LaTeX{} and
+\pkg{xeCJK}, and with the \pkg{ctex} classes.
+\end{abstract}
+
+\section{Getting started}
+
+\begin{example}
+\documentclass{article}
+\usepackage{xeCJK}
+\setCJKmainfont{Songti TC}
+\usepackage{xjyutping}
+\begin{document}
+\begin{jyutpingscope}
+我哋去銀行，行路返屋企。校長喺學校長大。
+\end{jyutpingscope}
+\end{document}
+\end{example}
+
+\begin{jyutpingscope}
+我哋去銀行，行路返屋企。校長喺學校長大。
+\end{jyutpingscope}
+
+\noindent
+If \pkg{xeCJK} is not loaded yet, \pkg{xjyutping} loads it. Any traditional
+Chinese font will do; the Jyutping uses the document's main Latin font unless
+you choose another.
+
+\section{Commands}
+
+\subsection{Annotating text}
+
+\begin{description}
+\item[\cs{begin}\{jyutpingscope\}\oarg{options} \dots\ \cs{end}\{jyutpingscope\}]
+  annotates every Chinese character in the block. The block ends the
+  paragraph, and its line spacing is raised where needed so that the Jyutping
+  of one line never comes close to the line above.
+\item[\cs{xjyutping*}\oarg{options}\marg{text}] does the same for a piece of
+  running text inside an ordinary paragraph.
+\end{description}
+
+\begin{example}
+香港人講\xjyutping*{廣東話}，寫\xjyutping*{繁體字}。
+\end{example}
+香港人講\xjyutping*{廣東話}，寫\xjyutping*{繁體字}。
+
+\subsection{Choosing a reading yourself}
+
+Cantonese pronunciation shifts with meaning and with colloquial tone change,
+and no word list is perfect. There are three ways to say what you want.
+
+\begin{description}
+\item[\cs{xjyutping}\oarg{options}\marg{characters}\marg{readings}] gives the
+  characters an explicit reading, here and nowhere else. It works inside a
+  scope and on its own, and it also marks a word boundary.
+\item[\cs{setjyutping}\marg{character}\marg{reading}] changes the reading a
+  character gets when it is not part of a known word.
+\item[\cs{setjyutping}\marg{word}\marg{readings}] adds a word, or overrides
+  the reading of a known one. Words always win over single-character
+  defaults.
+\end{description}
+
+\noindent
+Readings are Jyutping syllables separated by spaces, one per character.
+\cs{setjyutping} is global and takes effect from where it appears, so it can
+go in the preamble or in the middle of a scope.
+
+\noindent
+In the next example 重話 means `also said' (\emph{zung6}, not the default
+\emph{cung5} `heavy'), and 家行 is a name read \emph{gaa1 hang4}:
+
+\begin{example}
+\setjyutping{重話}{zung6 waa6}
+\begin{jyutpingscope}
+佢重話\xjyutping{家行}{gaa1 hang4}聽日嚟。
+\end{jyutpingscope}
+\end{example}
+\setjyutping{重話}{zung6 waa6}
+\begin{jyutpingscope}
+佢重話\xjyutping{家行}{gaa1 hang4}聽日嚟。
+\end{jyutpingscope}
+
+\subsection{Formatting inside words}
+
+Braces and formatting commands do not split a word, so a character can be
+highlighted without losing its reading in context:
+
+\begin{example}
+\begin{jyutpingscope}
+佢喺銀\textbf{行}返工，係校\textcolor{red}{長}嘅朋友。
+\end{jyutpingscope}
+\end{example}
+\begin{jyutpingscope}
+佢喺銀\textbf{行}返工，係校\textcolor{red}{長}嘅朋友。
+\end{jyutpingscope}
+
+\subsection{Switching off}
+
+\cs{disablejyutping} stops annotation until \cs{enablejyutping} or the end of
+the current group or environment. Use it for passages that should stay plain
+inside a scope.
+
+\section{How readings are chosen}
+
+\begin{enumerate}
+\item The text is split into runs of Chinese characters. Punctuation, Latin
+  text and most commands end a run. Spaces and line breaks between two
+  characters do not, and neither do braces or formatting commands
+  (\cs{textbf}, \cs{emph}, \cs{color}, \cs{textcolor}, size commands
+  \dots). The text of a \cs{footnote} is a run of its own, and the text
+  around the footnote mark carries on.
+\item Each run is divided into words from a list of about 100\,000 Cantonese
+  words: the division with the fewest words wins, then the one with the fewest
+  single characters, and on a tie the longer final word.
+\item A word takes its reading from the list. Your \cs{setjyutping} words are
+  checked first.
+\item A character that is not part of a word takes your \cs{setjyutping}
+  reading if you gave one, otherwise its default reading. A few characters
+  read differently at the end of a run: 呢 is \emph{ni1} in 呢張床 but the
+  particle \emph{ne1} in 你呢？
+\item \cs{xjyutping}\marg{characters}\marg{readings} always wins, and ends
+  the run.
+\end{enumerate}
+
+\noindent
+Traditional characters have several accepted shapes (為 and 爲, 裡 and 裏, 說
+and 説, 衛 and 衞, 線 and 綫, 溫 and 温 \dots). For word lookup they are folded
+together, so a word is found whichever shape you type.
+
+\subsection{Proofreading}
+
+About four thousand characters have more than one common reading. When such a
+character is not settled by a word or by you, its reading is only a guess.
+The \texttt{multiple} option formats those guesses, and the \texttt{debug}
+option writes every run to the log with the alternatives:
+
+\begin{example}
+\xjyutpingsetup{multiple=\color{red}, debug}
+\begin{jyutpingscope}
+佢重未嚟。
+\end{jyutpingscope}
+\end{example}
+\begin{jyutpingscope}[multiple=\color{red}]
+佢重未嚟。
+\end{jyutpingscope}
+
+\noindent
+The log then contains a line such as
+\begin{Verbatim}[fontsize=\small]
+xjyutping> 佢keoi5:s |重cung5:m(zung6 cung4) |未mei6:s |嚟lai4:m(lei4) |
+\end{Verbatim}
+Each character is followed by its reading and a type: \texttt{w} from the word
+list, \texttt{u} set by you, \texttt{m} a guessed polyphone (other readings in
+brackets), \texttt{s} a character with a single common reading. Here 重 means
+`still', so \verb|\setjyutping{重未}{zung6 mei6}| fixes it (and
+\verb|\setjyutping{重}{zung6}| would make \emph{zung6} the default for 重 on
+its own).
+
+\section{Options}
+
+Options can be given to \cs{usepackage}, to \cs{xjyutpingsetup}, or in the
+optional argument of \texttt{jyutpingscope} and \cs{xjyutping}.
+
+\medskip
+\noindent
+\begin{tabular}{@{}lll@{}}
+\toprule
+Key & Default & Meaning \\
+\midrule
+\texttt{ratio} & \texttt{0.45} & Jyutping size relative to the text \\
+\texttt{vsep} & \texttt{1.05em} & height of the Jyutping baseline above the character's \\
+\texttt{hsep} & \texttt{0.15em plus 0.4em} & space between cells: the least gap between two \\
+ & & Jyutping, plus stretch for justified lines \\
+\texttt{width} & \texttt{auto} & cell width: \texttt{auto}, \texttt{natural} or a length \\
+\texttt{font} & \cs{normalfont} & font of the Jyutping (font commands only) \\
+\texttt{format} & & extra formatting, e.g.\ \verb|\color{gray}| \\
+\texttt{multiple} & & formatting for guessed polyphones \\
+\texttt{fancy} & \texttt{false} & tones as pitch strokes (section~\ref{sec:fancy}) \\
+\texttt{debug} & \texttt{false} & log every run \\
+\bottomrule
+\end{tabular}
+
+\subsection{Cell width}
+
+With \texttt{width=auto} every character in a block gets the same cell,
+wide enough for the longest Jyutping in that block. With a length you get a
+fixed grid across the whole document; a Jyutping longer than the cell widens
+its own cell rather than overlap. \texttt{width=natural} makes each cell only
+as wide as its own character or Jyutping: tighter, but uneven.
+
+\begin{example}
+\xjyutping*[width=auto]{香港中文大學}
+\xjyutping*[width=natural]{香港中文大學}
+\xjyutping*[width=2em]{香港中文大學}
+\end{example}
+\begin{jyutpingscope}
+\xjyutping*[width=auto]{香港中文大學}\par
+\xjyutping*[width=natural]{香港中文大學}\par
+\xjyutping*[width=2em]{香港中文大學}
+\end{jyutpingscope}
+
+\subsection{Size and font}
+
+\begin{example}
+\xjyutping*[ratio=0.6, font=\sffamily, format=\color{gray}]{早晨，食咗飯未？}
+\end{example}
+\begin{jyutpingscope}
+\xjyutping*[ratio=0.6, font=\sffamily, format=\color{gray}]{早晨，食咗飯未？}
+\end{jyutpingscope}
+
+\section{Fancy tones}\label{sec:fancy}
+
+With the \texttt{fancy} option, \verb|\usepackage[fancy]{xjyutping}|, each
+tone number is shown the way Visual Jyutping shows it: a small stroke that
+traces the pitch of the tone, then a smaller tone number, raised for the two
+high tones and lowered for the others. The strokes follow Visual Jyutping's
+symbols: tone~1 high, tone~2 rising to high, tone~3 mid, tone~4 falling to
+low, tone~5 rising from low, tone~6 low.
+
+\begin{example}
+{\Large\xjyutping*[fancy]{詩史試時市事}}
+\begin{jyutpingscope}[fancy]
+我哋去銀行，行路返屋企。校長喺學校長大。
+\end{jyutpingscope}
+\end{example}
+\begin{jyutpingscope}[fancy]
+{\Large\xjyutping*{詩史試時市事}}\par
+我哋去銀行，行路返屋企。校長喺學校長大。
+\end{jyutpingscope}
+
+\medskip\noindent
+The strokes are drawn, not taken from a font, so they work with any
+\texttt{font} and take the colour of \texttt{format} and \texttt{multiple}.
+The spacing follows the new shape: cells are measured with the strokes and
+small numbers in place (so \texttt{width=auto} cells come out a little
+wider), line spacing makes room for the raised numbers, and if the lowered
+numbers reach further down than the letters in the chosen font, the Jyutping
+is lifted by the difference so that it keeps its distance from the
+character. Like every option, \texttt{fancy} can be switched on or off for
+one scope: \verb|\begin{jyutpingscope}[fancy=false]|. A syllable given
+without a tone number (\verb|\xjyutping{唔}{m}|) is printed as it is.
+
+\section{Limits}
+
+\begin{itemize}
+\item The body of \texttt{jyutpingscope} and the argument of \cs{xjyutping*}
+  are read in full before anything is typeset, like any argument, so
+  \cs{verb} and verbatim environments cannot go inside (put them outside the
+  scope), and in a \cs{url} or \cs{href} inside a scope a \verb|%| must be
+  written \verb|\%|.
+\item \cs{input}\marg{file} inside a scope reads the file as part of the
+  scope, with the same restrictions as the body; a file that uses
+  \cs{endinput}, \cs{verb}, verbatim environments, \cs{makeatletter} or
+  catcode changes is input normally instead. Such files, text that comes from
+  a macro, an \cs{include}d file or \cs{maketitle} are annotated character by
+  character, without word context; the debug log marks them
+  \texttt{[no context]}. Put \cs{xjyutping*} inside such a macro, or a scope
+  inside the included file.
+\item The arguments of \cs{label}, \cs{ref}, \cs{cite}, \cs{index},
+  \cs{url}, the first argument of \cs{href}, the optional argument of
+  \cs{hyperref}, \cs{hyperlink}, \cs{pdfbookmark}, \cs{includegraphics}, the \pkg{cleveref}
+  commands and environment names are passed through untouched.
+\item Give other commands their Chinese argument in braces
+  (\verb|\textbf{行}|, not \verb|\textbf 行|).
+\item Section titles, captions and footnotes inside a scope are annotated.
+  The table of contents is annotated only if \cs{tableofcontents} is itself
+  inside a scope (an explicit \cs{xjyutping} in a title is annotated there
+  too); running heads and PDF bookmarks are always plain.
+\item In \pkg{beamer} a \cs{frametitle} inside a scope stays plain (it is
+  typeset after the scope has ended): write
+  \verb|\frametitle{\xjyutping*{...}}|.
+\item The underline and emphasis-mark commands of \pkg{xeCJKfntef} do not keep
+  the cell spacing inside a scope; use \cs{underline} or \pkg{ulem}'s
+  \cs{uline} there.
+\item A scope can hold well over 100\,000 characters, but one paragraph is
+  limited to about 15\,000 by \TeX's memory (about 13\,000 with
+  \texttt{fancy}).
+\item A \cs{setjyutping} inside a scope is noticed while the text is read, so
+  one inside \cs{iffalse}\dots\cs{fi} or an unused macro definition still
+  applies to the text after it.
+\item Characters missing from the data are typeset in their cell without
+  Jyutping.
+\item Only Xe\LaTeX{} is supported.
+\end{itemize}
+
+\section{Data and licences}
+
+The readings come from the LSHK \emph{Cantonese Pronunciation List of
+Characters for Computers} (粵拼表) and from the \pkg{rime-cantonese}
+dictionaries, both under CC~BY~4.0; the variant-shape map comes from OpenCC
+(Apache-2.0). The \texttt{fancy} tone marks follow Visual Jyutping
+(MIT) by Vincent Tam. \texttt{tools/build-data.py}, at the root of the
+source repository, regenerates
+\texttt{xjyutping-chars.def} and \texttt{xjyutping-words.def} from these
+sources; its \texttt{CURATED\_DEFAULTS}, \texttt{CURATED\_FINALS},
+\texttt{CURATED\_VARIANTS} and \texttt{CURATED\_WORDS} tables hold the
+hand-checked corrections. The package code is under the \LaTeX{}
+Project Public License 1.3c.
+
+\end{document}
