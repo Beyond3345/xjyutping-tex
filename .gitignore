@@ -1,0 +1,15 @@
+# macOS and Python leftovers
+.DS_Store
+__pycache__/
+*.pyc
+# TeX build files (the manual PDF is kept)
+*.aux
+*.log
+*.out
+*.toc
+*.xdv
+*.synctex.gz
+# test outputs
+tests/*.pdf
+tests/*.png
+tests/*.readings

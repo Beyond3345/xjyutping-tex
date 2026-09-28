@@ -207,8 +207,9 @@
       }
   }
 % PDF drawing code with the origin at the current point.  xdvipdfmx's
-% pdf:content adds q ... Q itself; LuaTeX's literal needs them.
-\bool_lazy_and:nnTF { \sys_if_engine_luatex_p: } { \sys_if_output_pdf_p: }
+% pdf:content adds q ... Q itself; LuaTeX's literal needs them (LuaTeX-ja
+% makes PDF output only).
+\sys_if_engine_luatex:TF
   {
     \cs_new_protected:Npn \__xjyutping_literal:n #1
       { \tex_pdfextension:D literal { q ~ #1 ~ Q } }

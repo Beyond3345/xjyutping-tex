@@ -5,12 +5,21 @@
 
 Run it from anywhere; paths are resolved from this file.  The sources are
 third-party data kept outside the repository, by default in the directory
-that contains this repository (see tools/fetch-sources.sh):
+that contains this repository (tools/fetch-sources.sh fetches them):
 
   jyutping-table-master/list.tsv               LSHK Jyutping table, CC BY 4.0
   rime-cantonese/jyut6ping3.chars.dict.yaml    rime-cantonese, CC BY 4.0
   rime-cantonese/jyut6ping3.words.dict.yaml    rime-cantonese, CC BY 4.0
   opencc/HKVariants.txt, opencc/TWVariants.txt OpenCC, Apache-2.0
+  jyut-dict/src/dictionaries/cedict/data/
+      CC-CANTO.txt   CC-Canto (Pleco Inc.), CC BY-SA 3.0
+      READINGS.txt   Cantonese readings of CC-CEDICT words (Pleco), CC BY-SA 3.0
+  cantonese-books-data/<book>/*資料.json        粵音資料集叢 book data (jyut.net,
+                                               by 石見田), no licence stated
+
+rime-cantonese is authoritative.  CC-Canto and the CC-CEDICT readings only
+add words that are not in its list and that the list would read otherwise;
+the books only add characters that LSHK and rime lack (see BOOKS).
 
 Outputs:
   xjyutping-chars.def   (this repository) default reading of every
@@ -28,10 +37,12 @@ Outputs:
       words.tsv     word (and canonical-spelling alias), readings
 """
 import collections
+import json
 import math
 import pathlib
 import re
 import sys
+import unicodedata
 
 REPO = pathlib.Path(__file__).resolve().parent.parent     # xjyutping-tex
 ROOT = REPO.parent                                         # the sources
@@ -159,6 +170,104 @@ CURATED_WORDS = {
     '都會話': 'dou1 wui5 waa6', '生詞表': 'saang1 ci4 biu2',
 }
 
+# Words of CC-Canto and the CC-CEDICT Cantonese readings that are not added
+# (every added word was checked by hand).  Most give a character a reading
+# that Hong Kong usage and rime do not use (乙 jyut3, 這 ze5, 陷 haam6,
+# 寺 zi6, 購 gau3, 擾 jiu5, 噶 gaa1 ...), drop a colloquial changed tone
+# (慳錢 cin4, 練習簿 bou6, 黃大仙廟 miu6), read a Hong Kong name otherwise
+# (柯士甸 din6, 楊千嬅 waa4, 許冠傑 gun1) or are wrong (同學會 wui5,
+# 左行 haang1); others would take characters from their neighbours (方法|會
+# would become 方|法會, 中學|到 中|學到, 家長|會擔心 家長會|擔心).
+EXCLUDED_WORDS = set('''
+一年生 一打 一更 一毛錢 七姊妹 七姊妹星團 七姊妹道 三相 三相點
+上甘嶺 上甘嶺區 不勝其擾 不對勁 不擴散核武器條約 不暇 不蒸饅頭爭口氣
+丕績 丙烷 乙丑 乙二醇 乙亥 乙型 乙基 乙太 乙巳 乙方 乙未 乙炔
+乙烯 乙種 乙肝 乙部 乙酉 乙酰 乙醛 了當 二年生 亞喀巴 交易會
+人肉搜索 伊媚兒 併捲機 併系群 侵擾 保有 修會 修道張 偷雞不著蝕把米
+傣族 傳幫帶 優惠券 元江哈尼族彞族傣族自治縣 兄弟會 光孝寺 光明頂 全會
+八達嶺 公主道 公立醫院 兼並與收購 兼併 出勤率 划船 初生 利什曼病
+副將 加勁 努庫阿洛法 勇悍 勘測 勛績 北京烤鴨 區間 十六烷值 半生
+南普陀寺 博士買驢 卡洛馳 吃拿卡要 同和站 同學會 含蘊 吳興 周會 咄咄
+咄咄稱奇 和勝和 和達清夫 哄抬物價 哲蚌寺 唐招提寺 唐老鴨 商洛 商洛市
+商洽 單立文 噶倫 噶哈巫族 噶嗒 噶嘣 噶噶 噶布倫 噶拉 噶爾 噶爾縣
+噶瑪蘭 噶瑪蘭族 噶舉派 噶隆 噶霏 國會議員 國會議長 圓明園 坎塔布連
+坎塔布連山脈 坎塔布連海 坎大哈 坎大哈省 坎帕拉 坎特伯雷 坎特伯雷大主教
+坎貝爾 坎貝爾侏儒倉鼠 坦噶尼喀 坦噶尼喀湖 報告會 塌陷 塔公寺 塔爾寺
+塗乙 塗漿檯 塗鴨 多年生 夢到 大慈恩寺 大昭寺 大雅鄉 大麥町 太僕寺
+太空探索 奈洛比 女修道張 好奇會吃苦頭的 好心倒做了驢肝肺 好整以暇
+好玩兒 媽閣廟 嬌媚 孔乙己 孔雀女 孟連傣族拉祜族佤族自治縣 季會 學到
+學舌 宗喀巴 室町 家長會 密會 富蘊 富蘊縣 寬帶 寶達邨 對乙酰氨基酚
+小昭寺 小雅 少林寺 尤坎 尼雅 尼雅河 屈指可數 崇洋媚外 崗頂站
+嶺上開花 左行 巴伐洛堤 市議會 布坎南 布氏桿菌病 布洛陀 席不暇暖 帳簾
+干擾素 平頂山 平頂山市 幹將 幾遠 店錢 庫珀帶 廣雅 張惠妹 强制性
+彈盡糧絕 彩擴 待乙妥 德宏傣族景頗族自治州 快刀斷亂麻 情陷夜中環 惠遠寺
+慈善機構 慈照寺 慳錢 戎行 戒斷 戛然 戛然而止 手彈 折中 抹去 抹平
+捷安特 捷爾任斯克 捷爾梅茲 捷達航空貨運 掏錢 探測器 接待處 掩映 搔擾
+撟舌 撤併 擴大化 收購要約 敬上 敵將 數學符號 斯捷潘
+新平彞族傣族自治縣 新界地產和富大埔 新紀 新藝綜合體 斷路器 日喀則
+日喀則地區 日喀則市 日無暇晷 星光行 星架坡 春試 昨早
+景谷傣族彞族自治縣 智力測驗 書會 朗拿甸奴 木柵 木柵線 李斯特氏桿菌
+東區走廊 東協 板鴨 林和西站 柯士甸 柯士甸道 校友會 核不擴散 核擴散
+桿菌 梳刷 棉襖 楊千嬅 橄欖球 欲取姑予 欺哄 歐洲核研究組織 歪瓜劣棗
+氯乙烯 沉陷 沒溜兒 沖涼涼 法會 洛寧縣 洛川縣 洛扎縣 洛江區 洛浦縣
+洛溪站 洛隆縣 洛龍區 洪廟村 海幢寺 海底擴張 海底擴張說 淫猥 深不可測
+準噶爾 準將 溜之大吉 滇藏川 滬綜指 激忿 灌腸 炭疽桿菌 無暇 煎魚
+照會 熱水澡 燈會 爽捷 牙縫刷 狗玩兒的 猥褻 獷悍 玉皇頂 玩兒不轉
+玩兒命 玩兒壞 玩兒完 玩兒得轉 玩兒花招 玩失蹤 玩藝兒 甄綜 甲乙 甲亢
+甲狀腺功能亢進 申購 登位 百分 目及 直行 瞞哄 知會 知識論 秋試
+科舉考試 第二處 筆會 約分 紅寺堡 紅寺堡區 紅寺堡鎮 納什維爾 紛擾
+結核桿菌 練習簿 織田信長 繚繞 繞一圈 繞遠兒 纏擾 羊腸小道 老爺嶺
+耍錢 耿馬傣族佤族自治縣 聖路易斯 聚乙烯 聚氯乙烯 肉毒桿菌 能說會道
+臥位 自愧不如 自愧弗如 興都庫什 船到橋門自會直 苯乙烯 莫洛尼 莰烷
+菏蘭 華嚴經 萌渚嶺 萬難 葉蘊儀 蒙娜麗莎 蒙特卡洛法 蕉嶺 蕉嶺縣
+蕾哈娜 薩噶達娃節 薩斯喀徹溫 藍妹 蠡測 行衰運 袷襖 製表 複試 西門町
+西雙版納傣族自治州 覆蓋面 觥籌交錯 許冠傑 許冠英 調嘴學舌 諂媚 豬舍
+貝聿銘 買斷 賞錢 購物券 購物大廈 購物廣場 購物袋 購物車 購買者 贖錢
+赤坎區 超高速乙太網路 越演越烈 越陷越深 趙構 跨地區 跨學科 跨海大橋
+跨線橋 跨鶴揚州 跨鶴西遊 路易十四 路易威登 路易港 身陷 身陷囹圄
+軍團桿菌 軍帽 農會 返券黃牛 送客檯 送返 這刻 這是 這次 達嚕噶齊
+那打素醫院 酥酪 醃漬 量販店 金平苗族瑤族傣族自治縣 金平苗瑤傣自治縣
+金銀膶 閉塞眼睛捉麻雀 閑暇 關帝廟 關廟 防水表 阿喀琉斯 陜西 院試
+陷於癱瘓 階地 雙江拉祜族佤族布朗族傣族自治縣 電位 電玩 震中 霍亂桿菌
+靈谷寺 靈雀寺 青年會 非微擾 非誠勿擾 面試會 頤和園 頻帶 首重
+香港考試及評核局 馬噶爾尼 馬噶爾尼使團 馬戛爾尼 馬戛爾尼使團 馬拉喀什
+馬斯喀特 騎驢找驢 騷擾客蚤 騷驢 驍悍 驢友 驢年馬月 驢脣馬觜 驢駒子
+驢騾 高大上 高蹺 鬧哄哄 鬧著玩兒 魂牽夢繞 鮑威爾 鮑德里亞 鮑羅丁
+鱖魚 鵠立 黃大仙廟 黎曼面 點將 龍舌蘭酒
+'''.split())
+
+# Sentence-final particles: their tone follows the intonation, so a new word
+# may not change the default reading of one at its end (你好嗎 maa1).
+PARTICLES = '呀啊吖喇啦嘞囉咯喎㗎嘅咩嗎呢噃啫咋嘛喔哦吓啩'
+
+# The character dictionaries of cantonese-books-data used for characters that
+# LSHK and rime-cantonese lack, most authoritative first.  The last five
+# files are four pre-1940 books, used through the modern Jyutping their
+# digitiser derived (粵拼讀音).  Not used: the older books, which carry
+# reconstructed readings only (粵拼擬音), and 1962_廣州音字彙, withdrawn from
+# the collection as inaccurate.
+BOOKS = [
+    '2004_廣州話正音字典/B01_資料.json',
+    '1992_常用字廣州話讀音表/C01_資料.json',
+    '1992_香港中學生中文詞典/B01_資料.json',
+    '1988_廣州話標準音字彙/B01_資料.json',
+    '1974_1996_粵語同音字典/B01_資料.json',
+    '1941_粵音韻彙/B01_資料.json',
+    '1985_粵語查音識字字典/B01_資料.json',
+    '1971_同音字彙/B01_資料.json',
+    '1947_The_Students_Cantonese_English_Dictionary/B01_資料.json',
+    '1967_部身字典/B01_資料.json',
+    '1941_道字典/B01_資料.json',
+    '1939_道漢字音/C01_卷一_道漢字典_資料.json',
+    '1939_道漢字音/D01_卷二_粵語音典_資料.json',
+    '1931_民眾識字粵語拼音字彙/B01_資料.json',
+    '1916_廣話國語一貫未定稿/B01_資料.json',
+    '1914_分部分音廣話九聲字宗/B01_資料.json',
+]
+# Labels (讀音標記) of readings that never become the default: popular but
+# incorrect, old, archaic, original, wrong, rare, proper names only.
+NOT_DEFAULT = ('俗', '舊', '古', '本', '原', '誤', '罕', '專名')
+
 
 def is_han(c):
     o = ord(c)
@@ -225,6 +334,89 @@ def load_variants(freq):
     return canon
 
 
+def load_book(path):
+    """char -> [(reading, label)] of a cantonese-books-data file, in book
+    order; the label (讀音標記) is '' when there is none."""
+    def walk(x, out):
+        if isinstance(x, dict):
+            if isinstance(x.get('粵拼讀音'), str):
+                label = x.get('讀音標記', x.get('標記')) or ''
+                out.append((x['粵拼讀音'], ''.join(label)))     # a list of labels too
+            for v in x.values():
+                walk(v, out)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v, out)
+        return out
+    book = collections.defaultdict(list)
+    for entry in json.load(open(path, encoding='utf8')):
+        heads = entry.get('字頭')
+        for ch in [heads] if isinstance(heads, str) else heads or []:
+            if isinstance(ch, str) and len(ch) == 1:
+                book[ch] += [r for r in walk(entry, []) if r not in book[ch]]
+    return book
+
+
+def load_cedict(path):
+    """word -> readings of a CC-Canto style file (the Jyutping in braces
+    after the pinyin).  Of alternatives 'a / b' the first is taken; a changed
+    tone, marked cin4*2 or hang4*haang4, is read as the changed form."""
+    words = collections.defaultdict(list)
+    for line in open(path, encoding='utf8'):
+        m = re.match(r'(\S+) \S+ \[[^]]*\] \{([^}]*)\}', line)
+        if not m:
+            continue
+        syls = []
+        for s in m.group(2).split('/')[0].lower().split():
+            s, _, new = s.partition('*')
+            syls.append(s[:-1] + new if new.isdigit() else new or s)
+        if syls not in words[m.group(1)]:
+            words[m.group(1)].append(syls)
+    return words
+
+
+def with_aliases(words, canon):
+    """The word list plus aliases spelt with canonical characters, so 因為
+    finds rime's 因爲; also the number of aliases dropped as clashes."""
+    aliases, clashes = {}, 0
+    for w, syls in words.items():
+        cw = ''.join(canon.get(c, c) for c in w)
+        if cw == w or cw in words:
+            continue
+        if cw in aliases and aliases[cw] != syls:
+            clashes += 1
+            continue
+        aliases[cw] = syls
+    return {**words, **aliases}, len(aliases), clashes
+
+
+def reader(chars, canon, lex):
+    """The readings of a run of text with the word list lex, segmented as
+    xjyutping.sty and xjyutping-py do: the fewest words, then the fewest
+    single characters; on a tie the longer final word wins."""
+    longest = collections.defaultdict(int)
+    for w in lex:
+        longest[w[-1]] = max(longest[w[-1]], len(w))
+
+    def read(run):
+        cr = ''.join(canon.get(c, c) for c in run)
+        cost, back = [0] * (len(run) + 1), [1] * (len(run) + 1)
+        for i in range(1, len(run) + 1):
+            best = cost[i - 1] + 100001
+            for size in range(2, min(i, max(longest[run[i - 1]], longest[cr[i - 1]])) + 1):
+                if cost[i - size] + 100000 <= best and (run[i - size:i] in lex or
+                                                        cr[i - size:i] in lex):
+                    best, back[i] = cost[i - size] + 100000, size
+            cost[i] = best
+        out, j = [], len(run)
+        while j:
+            i = j - back[j]
+            out[:0] = (lex.get(run[i:j]) or lex[cr[i:j]]) if j - i > 1 else [chars[run[i]][0]]
+            j = i
+        return out
+    return read
+
+
 def pick_default(ch, rime, lshk):
     if ch in CURATED_DEFAULTS:
         return CURATED_DEFAULTS[ch]
@@ -259,6 +451,7 @@ def main():
     canon = load_variants(collections.Counter(c for w, _ in rows for c in w))
 
     chars = {}      # char -> (default, other readings, flag as polyphone?)
+    known = {}      # char -> every reading a source gives it
     for ch in sorted(set(lshk) | set(rime) | set(canon)):
         r = rime.get(ch) or rime.get(canon.get(ch, ''))
         l = lshk.get(ch) or lshk.get(canon.get(ch, ''), [])
@@ -278,6 +471,25 @@ def main():
         flag = any(weight[jp] >= 5 and not (changed(jp) and weight[jp] < weight.get(default, 100))
                    for jp in others)
         chars[ch] = (default, others, flag)
+        known[ch] = set(weight) | set(l)
+
+    # Characters LSHK and rime lack, from the first book that has them: its
+    # first reading not labelled as incorrect, old or rare.  Compatibility
+    # ideographs (the same characters as unified ones) are left out.
+    from_books = collections.Counter()
+    for name in BOOKS:
+        for ch, rs in sorted(load_book(ROOT / 'cantonese-books-data' / name).items()):
+            rs = [(jp, label) for jp, label in rs if SYL.match(jp)]
+            if (ch in chars or not rs or not is_han(ch)
+                    or unicodedata.normalize('NFC', ch) != ch):
+                continue
+            good = [jp for jp, label in rs if not any(x in label for x in NOT_DEFAULT)]
+            default = (good or [rs[0][0]])[0]
+            others = [jp for jp in dict.fromkeys(good) if jp != default]
+            chars[ch] = (default, others, bool(others))
+            known[ch] = {jp for jp, _ in rs}
+            from_books[name.split('/')[0]] += 1
+    chars = dict(sorted(chars.items()))
 
     # --- words -----------------------------------------------------------
     entries = collections.defaultdict(list)
@@ -299,23 +511,92 @@ def main():
     for w, jp in CURATED_WORDS.items():
         assert len(jp.split()) == len(w) and all(SYL.match(x) for x in jp.split()), w
         words[w] = jp.split()
-    # The adverb suffix 地 (慢慢地, 麻麻地) is often written 哋.
-    for w, syls in list(words.items()):
-        if w.endswith('地') and syls[-1] == 'dei2':
-            words.setdefault(w[:-1] + '哋', syls)
     dupes = sum(1 for rs in entries.values() if len(rs) > 1)
 
-    # Aliases spelt with canonical characters, so 因為 finds rime's 因爲.
-    aliases, clashes = {}, 0
-    for w, syls in words.items():
-        cw = ''.join(canon.get(c, c) for c in w)
-        if cw == w or cw in words:
+    def adverbs(ws):    # The adverb suffix 地 (慢慢地, 麻麻地) is often written 哋.
+        for w, syls in list(ws.items()):
+            if w.endswith('地') and syls[-1] == 'dei2':
+                words.setdefault(w[:-1] + '哋', syls)
+    adverbs(words)
+
+    # Words of CC-Canto and the CC-CEDICT Cantonese readings that the list
+    # (by raw or canonical spelling) does not have.  A reading is taken if
+    #  - each syllable is a reading LSHK, rime or the book gives its
+    #    character, or a changed tone of one (tone 1 or 2);
+    #  - it keeps a reading rime gives to every word and every pair of
+    #    characters of the list inside it (rime stays authoritative);
+    #  - it does not change the reading of a final particle (你好嗎 maa1);
+    #  - for two characters AB: no word of the list ends in A with another
+    #    reading, as a tie goes to the later word (屋企|住 -> 屋|企住).
+    # CC-Canto, the Cantonese dictionary, wins over the readings of Mandarin
+    # words; then the most usual syllables.
+    cedict = ROOT / 'jyut-dict/src/dictionaries/cedict/data'
+    sources = {'CC-Canto': load_cedict(cedict / 'CC-CANTO.txt'),
+               'CC-CEDICT readings': load_cedict(cedict / 'READINGS.txt')}
+    cw = lambda w: ''.join(canon.get(c, c) for c in w)
+    listed = {w: entries[w] if w in entries and w not in CURATED_WORDS else [s]
+              for w, s in words.items()}
+    listed = {**{cw(w): rs for w, rs in listed.items()}, **listed}
+    pairs = collections.defaultdict(set)    # two characters -> readings in the list
+    ends = collections.defaultdict(set)     # char -> readings ending a word of the list
+    for w, rs in listed.items():
+        for s in rs:
+            ends[w[-1]].add(s[-1])
+            for i in range(len(w) - 1):
+                pairs[w[i:i + 2]].add((s[i], s[i + 1]))
+
+    def problem(w, syls):
+        """Why the reading syls of the new word w is not taken, or None."""
+        if len(syls) != len(w) or not all(
+                SYL.match(s) and (s in known[c] or s[-1] in '12' and
+                                  any(k[:-1] == s[:-1] for k in known[c]))
+                for c, s in zip(w, syls)):
+            return 'unknown readings'
+        if not all(syls[i:j] in listed.get(w[i:j], listed.get(cw(w[i:j]), [syls[i:j]]))
+                   for i in range(len(w)) for j in range(i + 2, len(w) + 1)):
+            return 'a word inside read otherwise'
+        if not all(tuple(syls[i:i + 2]) in pairs.get(cw(w[i:i + 2]), {tuple(syls[i:i + 2])})
+                   for i in range(len(w) - 1)):
+            return 'two characters read otherwise'
+        if w[-1] in PARTICLES and syls[-1] != chars[w[-1]][0]:
+            return 'final particle'
+        if len(w) == 2 and ends[cw(w[0])] - {syls[0]}:
+            return 'first character ends a word read otherwise'
+        return None
+
+    rejected = collections.Counter()
+    new = {}        # word -> (reading, source)
+    for w in sorted(set().union(*sources.values())):
+        if len(w) < 2 or w in listed or cw(w) in listed:
             continue
-        if cw in aliases and aliases[cw] != syls:
-            clashes += 1
+        if w in EXCLUDED_WORDS:
+            rejected['excluded by hand'] += 1
             continue
-        aliases[cw] = syls
-    allwords = {**words, **aliases}
+        if not all(c in chars for c in w):
+            rejected['characters outside the table'] += 1
+            continue
+        why = {(name, tuple(s)): problem(w, s) for name, src in sources.items()
+               for s in src.get(w, [])}
+        ok = [(name, list(s)) for (name, s), p in why.items() if not p]
+        if not ok:
+            rejected[next(iter(why.values()))] += 1
+            continue
+        name = ok[0][0]
+        new[w] = (max((s for n, s in ok if n == name), key=lambda s: score(w, s)), name)
+
+    # Only the words that change a reading: shortest first (only shorter
+    # words can change how a word is read), add those that the list, with
+    # the shorter words added, reads otherwise.
+    added = {}
+    for size in sorted({len(w) for w in new}):
+        read = reader(chars, canon, with_aliases({**words, **added}, canon)[0])
+        added.update({w: s for w, (s, _) in new.items() if len(w) == size and read(w) != s})
+    rejected['read so already'] = len(new) - len(added)
+    words.update(added)
+    adverbs(added)
+    from_cedict = collections.Counter(new[w][1] for w in added)
+
+    allwords, n_aliases, clashes = with_aliases(words, canon)
 
     longest = collections.defaultdict(int)  # final char -> longest word
     for w in allwords:
@@ -326,10 +607,11 @@ def main():
         '%% Generated by tools/build-data.py -- do not edit.',
         '%% Sources: LSHK Jyutping table (CC BY 4.0),',
         '%%          rime-cantonese jyut6ping3 dictionaries (CC BY 4.0),',
-        '%%          OpenCC HK/TW variant tables (Apache-2.0).',
+        '%%          OpenCC HK/TW variant tables (Apache-2.0),',
     ]
     with open(REPO / 'xjyutping-chars.def', 'w', encoding='utf8') as f:
-        f.write('\n'.join(header) + '\n')
+        f.write('\n'.join(header) + '\n%%          cantonese-books-data readings of '
+                'characters (no licence stated).\n')
         f.write('\\ProvidesFile{xjyutping-chars.def}[%s xjyutping character data]\n' % VERSION)
         for ch, (default, others, flag) in chars.items():
             if flag:        # polyphone: default, then the other readings
@@ -342,7 +624,8 @@ def main():
         for ch, jp in CURATED_FINALS.items():
             f.write('\\xjp@F %s%s;\n' % (ch, jp))
     with open(REPO / 'xjyutping-words.def', 'w', encoding='utf8') as f:
-        f.write('\n'.join(header) + '\n')
+        f.write('\n'.join(header) + '\n%%          CC-Canto and CC-CEDICT Cantonese readings '
+                '(CC BY-SA 3.0).\n')
         f.write('\\ProvidesFile{xjyutping-words.def}[%s xjyutping word data]\n' % VERSION)
         for w in sorted(allwords):
             f.write('\\xjp@W %s=%s;\n' % (w, ' '.join(allwords[w])))
@@ -368,7 +651,13 @@ def main():
     print('chars %d (polyphonic %d), variants %d, words %d (+%d aliases, '
           '%d alias clashes, %d words with several readings)' % (
               len(chars), sum(f for _, _, f in chars.values()), len(canon),
-              len(words), len(aliases), clashes, dupes), file=sys.stderr)
+              len(words), n_aliases, clashes, dupes), file=sys.stderr)
+    print('chars added from cantonese-books-data: %d (%s)' % (
+        sum(from_books.values()), ', '.join('%s %d' % kv for kv in from_books.items())),
+        file=sys.stderr)
+    print('words added from jyut-dict: %d (%s); not added: %s' % (
+        len(added), ', '.join('%s %d' % kv for kv in sorted(from_cedict.items())),
+        ', '.join('%d %s' % (n, why) for why, n in rejected.most_common())), file=sys.stderr)
 
 
 if __name__ == '__main__':

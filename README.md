@@ -6,13 +6,15 @@ Version 1.1.0 (2026-09-28). Versions follow
 
 A LaTeX package that puts Jyutping (粵拼) above traditional Chinese
 characters, choosing each reading from the words around it. It is modelled on
-`xpinyin` and works with XeLaTeX and `xeCJK` (including the `ctex` classes).
-A Python version with the same readings is in [`../xjyutping-py`](../xjyutping-py).
+`xpinyin` and works with XeLaTeX (through `xeCJK`) and LuaLaTeX (through
+LuaTeX-ja), including the `ctex` package and classes under either engine.
+A Python version with the same readings is
+[xjyutping-py](https://github.com/Beyond3345/xjyutping-py).
 
 ```latex
 \documentclass{article}
-\usepackage{xeCJK}
-\setCJKmainfont{Songti TC}      % any traditional Chinese font
+\usepackage[fontset=none]{ctex}  % compile with xelatex or lualatex
+\setCJKmainfont{Songti TC}       % any traditional Chinese font
 \usepackage{xjyutping}
 \begin{document}
 \begin{jyutpingscope}
@@ -23,6 +25,10 @@ A Python version with the same readings is in [`../xjyutping-py`](../xjyutping-p
 
 行 comes out as *hong4* in 銀行 and *haang4* in 行路; 長 as *zoeng2* in 校長
 and 長大.
+
+Instead of `ctex` you can load `xeCJK` (XeLaTeX, `\setCJKmainfont`) or
+`luatexja-fontspec` (LuaLaTeX, `\setmainjfont`); if none of them is loaded,
+`xjyutping` loads `xeCJK` or LuaTeX-ja itself.
 
 ## Commands
 
@@ -101,6 +107,26 @@ keep plain Jyutping with tone numbers.
 Variant shapes are folded together for word lookup, so 為/爲, 裡/裏, 説/說,
 衞/衛, 綫/線, 恒/恆 and the like all find the same words.
 
+## XeLaTeX and LuaLaTeX
+
+The readings, the options and the layout are the same under both engines;
+only the machinery differs. Under XeLaTeX, `xeCJK` hands each Chinese
+character to a hook in which the package builds the character's cell. Under
+LuaLaTeX the rubies are built as the text is read, and a Lua function (in
+`xjyutping.lua`, which must be installed next to `xjyutping.sty`) puts each
+cell together after LuaTeX-ja has laid out the line. So under LuaLaTeX:
+
+* LuaTeX-ja's rules for punctuation widths and line breaks apply (for
+  example, a line never breaks just before —— or ……);
+* a paragraph can be as long as you like (a 40 000-character paragraph
+  compiles; XeLaTeX stops at about 15 000);
+* compiling takes about 1.6 times as long as with XeLaTeX;
+* text that comes from a macro is annotated when its paragraph is finished,
+  with the options in force at that point (its size is taken from the
+  character itself).
+
+pdfLaTeX is not supported.
+
 ## Things to know
 
 * The environment body and the argument of `\xjyutping*` are read in full
@@ -126,13 +152,13 @@ Variant shapes are folded together for word lookup, so 為/爲, 裡/裏, 説/說
   running heads and PDF bookmarks are always plain.
 * In beamer, a `\frametitle` inside a scope is typeset after the scope has
   ended and stays plain: write `\frametitle{\xjyutping*{…}}`.
-* The underline and emphasis-mark commands of `xeCJKfntef` (`\CJKunderline`,
-  `\CJKunderdot` …) do not keep the cell spacing inside a scope; use
-  `\underline` or `ulem`'s `\uline` there.
-* One scope can hold well over 100 000 characters, but a single paragraph is
-  limited to about 15 000 by TeX's memory (each annotated character is a
-  small box), about 13 000 with `fancy`; a brace group spanning many
-  paragraphs is read in one piece.
+* The underline and emphasis-mark commands of `xeCJKfntef` (XeLaTeX only:
+  `\CJKunderline`, `\CJKunderdot` …) do not keep the cell spacing inside a
+  scope; use `\underline` or `ulem`'s `\uline` there.
+* One scope can hold well over 100 000 characters. Under XeLaTeX a single
+  paragraph is limited to about 15 000 by TeX's memory (each annotated
+  character is a small box), about 13 000 with `fancy`; LuaLaTeX has no such
+  limit. A brace group spanning many paragraphs is read in one piece.
 * Characters not in the data are typeset in their cell without Jyutping.
 
 ## Data
@@ -159,22 +185,24 @@ rewrites the data of both the LaTeX and the Python package).
 
 ## Installing
 
-Keep `xjyutping.sty`, `xjyutping-chars.def` and `xjyutping-words.def`
-together, either next to your document or in your personal tree:
+Keep `xjyutping.sty`, `xjyutping.lua` (needed by LuaLaTeX),
+`xjyutping-chars.def` and `xjyutping-words.def` together, either next to your
+document or in your personal tree:
 
 ```bash
-mkdir -p ~/Library/texmf/tex/latex/xjyutping && cp xjyutping.sty xjyutping-*.def ~/Library/texmf/tex/latex/xjyutping/
+mkdir -p ~/Library/texmf/tex/latex/xjyutping && cp xjyutping.sty xjyutping.lua xjyutping-*.def ~/Library/texmf/tex/latex/xjyutping/
 ```
 
 The manual is `xjyutping-doc.pdf` (source `xjyutping-doc.tex`).
 
 ## Testing
 
-`tests/run-tests.sh` compiles `tests/regression.tex` with and without
-`fancy` and compares the debug log with `tests/regression.expected`.
-`tests/render.sh tests/layout-check.tex` and
-`tests/render.sh tests/fancy-check.tex` render the pages to PNG for a visual
-check of the spacing and the tone marks.
+`tests/run-tests.sh` compiles `tests/regression.tex` with XeLaTeX and with
+LuaLaTeX, each with and without `fancy`, and compares every debug log with
+`tests/regression.expected`. `tests/render.sh tests/layout-check.tex
+[xelatex|lualatex]` and `tests/render.sh tests/fancy-check.tex
+[xelatex|lualatex]` render the pages to PNG for a visual check of the spacing
+and the tone marks.
 
 ## Licence
 

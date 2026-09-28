@@ -34,15 +34,16 @@ romanisation of Cantonese, above Chinese characters. Readings are chosen from
 the surrounding words, so 行 is \emph{hong4} in 銀行 and \emph{haang4} in 行路.
 Every character sits in a cell of the same width, wide enough for its
 Jyutping, so the text stays evenly spaced and no Jyutping touches its
-neighbours or the line above. The package works with Xe\LaTeX{} and
-\pkg{xeCJK}, and with the \pkg{ctex} classes.
+neighbours or the line above. The package works with Xe\LaTeX{} (through
+\pkg{xeCJK}) and with Lua\LaTeX{} (through \pkg{LuaTeX-ja}), and with the
+\pkg{ctex} package and classes under either engine.
 \end{abstract}
 
 \section{Getting started}
 
 \begin{example}
 \documentclass{article}
-\usepackage{xeCJK}
+\usepackage[fontset=none]{ctex}    % for xelatex or lualatex
 \setCJKmainfont{Songti TC}
 \usepackage{xjyutping}
 \begin{document}
@@ -57,9 +58,12 @@ neighbours or the line above. The package works with Xe\LaTeX{} and
 \end{jyutpingscope}
 
 \noindent
-If \pkg{xeCJK} is not loaded yet, \pkg{xjyutping} loads it. Any traditional
-Chinese font will do; the Jyutping uses the document's main Latin font unless
-you choose another.
+Compile with \texttt{xelatex} or \texttt{lualatex}. \pkg{ctex} sets up Chinese
+typesetting for either engine; you can instead load \pkg{xeCJK} under
+Xe\LaTeX{} or \pkg{luatexja-fontspec} (with \cs{setmainjfont}) under
+Lua\LaTeX{}, and if none of them is loaded, \pkg{xjyutping} loads \pkg{xeCJK}
+or \pkg{LuaTeX-ja} itself. Any traditional Chinese font will do; the Jyutping
+uses the document's main Latin font unless you choose another.
 
 \section{Commands}
 
@@ -275,6 +279,27 @@ character. Like every option, \texttt{fancy} can be switched on or off for
 one scope: \verb|\begin{jyutpingscope}[fancy=false]|. A syllable given
 without a tone number (\verb|\xjyutping{唔}{m}|) is printed as it is.
 
+\section{Xe\LaTeX{} and Lua\LaTeX{}}\label{sec:engines}
+
+The readings, the options and the layout are the same under both engines; only
+the machinery differs. Under Xe\LaTeX{}, \pkg{xeCJK} hands each Chinese
+character to a hook in which \pkg{xjyutping} builds the character's cell.
+Under Lua\LaTeX{} the rubies are built as the text is read, and a Lua function
+(in \texttt{xjyutping.lua}, which must be installed next to
+\texttt{xjyutping.sty}) puts each cell together after \pkg{LuaTeX-ja} has laid
+out the line. So under Lua\LaTeX{}:
+
+\begin{itemize}
+\item \pkg{LuaTeX-ja}'s own rules for punctuation widths and line breaks
+  apply; for example, a line never breaks just before —— or …….
+\item A paragraph can be as long as you like (a paragraph of 40\,000
+  characters compiles).
+\item Compiling takes about 1.6 times as long as with Xe\LaTeX{}.
+\item Text that comes from a macro is annotated when its paragraph is
+  finished, with the options in force at that point; its size is taken from
+  the character itself.
+\end{itemize}
+
 \section{Limits}
 
 \begin{itemize}
@@ -304,18 +329,18 @@ without a tone number (\verb|\xjyutping{唔}{m}|) is printed as it is.
 \item In \pkg{beamer} a \cs{frametitle} inside a scope stays plain (it is
   typeset after the scope has ended): write
   \verb|\frametitle{\xjyutping*{...}}|.
-\item The underline and emphasis-mark commands of \pkg{xeCJKfntef} do not keep
-  the cell spacing inside a scope; use \cs{underline} or \pkg{ulem}'s
-  \cs{uline} there.
-\item A scope can hold well over 100\,000 characters, but one paragraph is
-  limited to about 15\,000 by \TeX's memory (about 13\,000 with
-  \texttt{fancy}).
+\item The underline and emphasis-mark commands of \pkg{xeCJKfntef}
+  (Xe\LaTeX{} only) do not keep the cell spacing inside a scope; use
+  \cs{underline} or \pkg{ulem}'s \cs{uline} there.
+\item A scope can hold well over 100\,000 characters. Under Xe\LaTeX{} one
+  paragraph is limited to about 15\,000 by \TeX's memory (about 13\,000 with
+  \texttt{fancy}); Lua\LaTeX{} has no such limit.
 \item A \cs{setjyutping} inside a scope is noticed while the text is read, so
   one inside \cs{iffalse}\dots\cs{fi} or an unused macro definition still
   applies to the text after it.
 \item Characters missing from the data are typeset in their cell without
   Jyutping.
-\item Only Xe\LaTeX{} is supported.
+\item Xe\LaTeX{} and Lua\LaTeX{} are supported; pdf\LaTeX{} is not.
 \end{itemize}
 
 \section{Data and licences}
