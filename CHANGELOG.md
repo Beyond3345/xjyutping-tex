@@ -31,6 +31,45 @@ written for the next maintainer, human or agent.
 There are no unreleased changes yet. Add new entries here under
 `### Added`, `### Changed`, `### Fixed` and so on.
 
+## [1.4.0] - 2026-09-29
+
+### Added
+
+- ToJyutping (version 3.2.0, by CanCLID, BSD-2-Clause) is now a source of the
+  data. Where rime-cantonese gives a word several readings, the package now
+  takes the one that ToJyutping chooses, since its choices follow Hong Kong
+  usage, such as 公園 *gung1 jyun2*, 郵局 *jau4 guk2* and 請假 *ceng2 gaa3*.
+  This changes 463 words, while 494 words of ToJyutping that rime lacks are
+  added under the same checks as the words of CC-Canto (Part II, Section 9).
+- `tools/fetch-sources.sh` also fetches ToJyutping, and `LICENSE` reproduces
+  its BSD notice.
+- The words 呢就, 呢都 and 呢又 are read with the particle *ne1*, since 呢
+  before these adverbs is never the demonstrative.
+- The README and the manual report the accuracy measured against the Hong
+  Kong Cantonese Corpus (HKCanCor).
+
+### Changed
+
+- Four particles have new defaults. 囖 *lo1*, 嚹 *laa3* and 㗎 *gaa3* are the
+  readings that the LSHK table lists first, while 嘞 *laak3* is the reading
+  that speakers use.
+- The `.def` files carry `v1.4.0`.
+
+### Fixed
+
+- 揾 was read *wan3*, while Hong Kong writing uses it for 搵 (look for,
+  *wan2*). It now reads *wan2*.
+- 都會 ("metropolis", *dou1 wui6*) captured the modal 會 in sentences such as
+  我哋都會去, which is now read *dou1 wui5*, while 大都會, 國際大都會 and
+  都會大學 keep *wui6*. The rime entries 間中都會 and 係人都會 are corrected in
+  the same way.
+- 係呢 was read *hai5 ne1* (a rime entry), which also gave 但係呢 the reading
+  *hai5*. It is now *hai6 ne1*.
+
+Overall, the share of the characters of HKCanCor that the package reads
+correctly rises from 92.1% to 94.1%, and on the half of the corpus that was
+kept out of the tuning from 92.0% to 94.0%.
+
 ## [1.3.0] - 2026-09-29
 
 ### Added
@@ -288,7 +327,9 @@ The following invariants must be kept.
 2. Fix readings in the data rather than in the code. Edit only the tables at
    the top of `tools/build-data.py`, then run it to rewrite the data of both
    packages. Of the sources, rime-cantonese is authoritative, and the others
-   only add what rime lacks. A candidate entry should first be tested with
+   only add what rime lacks. The one exception is ToJyutping, which may choose
+   a different one of the readings that rime gives a word (Section 9). A
+   candidate entry should first be tested with
    `\setjyutping` in a few contexts, since the longer-final-word tie-break
    means that a new word can capture its neighbours (Section 5.2).
 3. Both engines must produce the same readings and nearly the same layout.
@@ -327,8 +368,8 @@ tests/render.sh tests/fancy-check.tex lualatex
 ```
 
 For the open issues, Section 4 gives the state at 1.0.0 and says which of
-them 1.1.0 resolved, while Section 7.7 gives the state after 1.2.0 and
-Section 8.5 what 1.3.0 adds.
+them 1.1.0 resolved, while Section 7.7 gives the state after 1.2.0, Section
+8.5 what 1.3.0 adds and Section 9.7 what 1.4.0 leaves.
 
 The review artefacts cited below (the repro `.tex` files and the review
 JSON) lived in the session's temporary directory and are not part of the
@@ -2297,3 +2338,186 @@ the second stanza of its `linebreak` scope now sits one line lower.
    There is no key to change it, and a `stanzaskip` key would be the place
    for one.
 3. `align` has no effect in `\xjyutping*`, which is running text.
+
+## 9. Version 1.4.0: learning from ToJyutping (2026-09-29)
+
+### 9.1 The request
+
+After finding ToJyutping, a converter from Cantonese text to Jyutping by
+CanCLID (the workgroup behind rime-cantonese), we compared the two projects
+for the size of their dictionaries and for their accuracy. Since the
+comparison showed a few clear faults in our data and several readings in
+which ToJyutping follows Hong Kong usage more closely, the request was then
+to fix these faults, to learn from ToJyutping and to add to the dictionary
+where needed.
+
+### 9.2 How the accuracy was measured
+
+The measurement is mainly divided into two parts, a corpus of conversation
+with readings given by hand and a sample of written Cantonese judged by us.
+
+The Hong Kong Cantonese Corpus (HKCanCor) is a corpus of conversation
+recorded in the 1990s, compiled by Kang Kwong Luke and distributed with
+PyCantonese (CC BY 4.0). We took its 58 files from
+`jacksonllee/pycantonese` (commit `3d729c01`, folder
+`src/pycantonese/data/hkcancor`), where every word of an utterance carries
+its part of speech and its Jyutping. The test then works as follows,
+
+1. Join the words of each utterance into running text
+2. Convert the whole utterance with each tool, so that both see the context
+3. Score every Chinese character whose word has one syllable per character
+   (161 045 characters)
+4. Score the sentence-final particles, interjections and onomatopoeia (parts
+   of speech `y`, `e` and `o`, 21 067 characters) separately from the rest
+
+Since the choices in Section 9.4 were guided by the errors on this corpus,
+the files were split in two to keep the result honest. The even-numbered
+files (the tuning half) guided every choice, while the odd-numbered files
+(the held-out half) were only used for the final score.
+
+For written Cantonese we took ten articles of the Cantonese Wikipedia (香港,
+粵語, 茶餐廳, 香港鐵路, 香港天文台, 颱風, 維多利亞港, 點心, 李小龍 and 廣州),
+with 34 949 Chinese characters. The two tools disagreed on 549 of them, and
+we judged a random sample of 160 of these by the reading that an educated
+Hong Kong speaker would use when reading the sentence aloud, counting both
+readings as right where both are common.
+
+The scripts of this measurement lived in the scratch folder of the session
+and are not part of the repository, while the steps above are enough to
+rebuild them.
+
+### 9.3 What the comparison showed
+
+Looking at the size of the two dictionaries, the character tables are
+nearly the same, while the word lists differ in kind,
+
+| | ToJyutping 3.2.0 | xjyutping 1.3.0 |
+| --- | --- | --- |
+| Characters | 30 206 | 30 089 |
+| Characters with more than one reading listed | 9 706 | 6 142 |
+| Words | 18 056 (about 13 300 in traditional script) | 103 712 |
+| Words read otherwise than their characters' defaults | 17 457 | 21 040 |
+
+Specifically, ToJyutping keeps almost only the words that it needs as
+exceptions, and it converts by taking the longest word from the left, while
+xjyutping keeps a full word list for its segmentation.
+
+On HKCanCor before this version, ToJyutping read 92.78% of the characters
+correctly and xjyutping 92.09%. However, the result was split by the kind of
+word. On the content words, xjyutping was ahead (96.73% against 96.15%),
+while on the particles and interjections ToJyutping was far ahead (70.42%
+against 61.26%). On the Wikipedia sample, xjyutping was right in 69 cases and
+ToJyutping in 52, both were acceptable in 38 and neither in 1.
+
+The errors of xjyutping came from a few causes, such as,
+
+- 揾, which rime reads *wan3* while Hong Kong writing uses it for 搵 (*wan2*),
+  with 162 errors,
+- 都會 (*dou1 wui6*, "metropolis") capturing the modal 會 (*wui5*) in 都會去,
+  with 78 errors on HKCanCor and 19 of the 549 Wikipedia disagreements,
+- 係呢, which rime reads *hai5 ne1*, so that 但係呢 lost to the tie-break of
+  Section 2.5, with 82 errors,
+- particles whose default differs from what the LSHK table lists first, such
+  as 囖 (*lo4* against *lo1*), and
+- colloquial changed tones that ToJyutping gets right, such as 公園 *jyun2*,
+  澳門 *mun2*, 英文 *man2* and 價錢 *cin4*.
+
+The errors of ToJyutping, on the other hand, came mostly from its longest
+match (高鐵線路 took 鐵線 *sin2*, 香港地名 took 香港地 *dei2*) and from
+literary defaults (為 *wai6* as a copula, 量 *loeng4*, 處 *cyu5*).
+
+### 9.4 Changes
+
+First, we fixed the faults in `tools/build-data.py`,
+
+- `CURATED_DEFAULTS` gives 揾 *wan2* (OpenCC already folds it into 搵 for word
+  lookup),
+- `CURATED_WORDS` reads 都會 *dou1 wui5* and corrects 間中都會 and 係人都會,
+  while 大都會, 國際大都會 and 都會大學 keep *wui6* and 國際都會 and 都會區 are
+  added as guards,
+- `CURATED_WORDS` reads 係呢 *hai6 ne1* and
+- `CURATED_WORDS` adds 呢就, 呢都 and 呢又 with *ne1*. On the tuning half, 呢
+  was read *ni1* in about 510 places where speakers used the particle, and 就
+  followed it in 101 of these.
+
+Then we set the defaults of four particles. 囖 *lo1*, 嚹 *laa3* and 㗎 *gaa3*
+are the readings the LSHK table lists first and ToJyutping uses, while 嘞
+*laak3* is a reading of both LSHK and rime that the speakers of HKCanCor use
+in all 206 cases. We did not follow HKCanCor where its spelling belongs to
+the 1990s rather than to the language (喇 for *laa1*, 喀 for *haak6*, 哩 for
+the demonstrative *ni1*), nor for 嘩 (*waa3*), since neither LSHK nor rime
+lists that reading.
+
+Lastly, we added ToJyutping as a source. `load_tojyutping` reads its trie
+through its own module and keeps the words in traditional script, taken as
+the words whose every character occurs in rime's word list, since the trie
+also holds simplified forms. We then tried seven rules for using its words,
+
+| Rule | Tuning half: all | Content | Particles | Wikipedia sample: right / wrong |
+| --- | --- | --- | --- | --- |
+| Before this version | 92.15% | 96.77% | 60.85% | 107 / 53 |
+| Fixes and particle defaults only | 93.98% | 97.00% | 73.51% | 116 / 44 |
+| + ToJyutping's choice among rime's readings | 94.17% | 97.22% | 73.52% | 124 / 36 |
+| + its words that rime lacks only | 93.99% | 97.02% | 73.51% | 116 / 44 |
+| + both (chosen) | 94.18% | 97.23% | 73.52% | 124 / 36 |
+| + both, with ToJyutping before CC-Canto | 94.18% | 97.23% | 73.52% | 123 / 37 |
+| + also its tone-only differences | 94.18% | 97.23% | 73.52% | 125 / 35 |
+| + all its readings | 94.17% | 97.23% | 73.43% | 125 / 35 |
+
+We chose the rule in which ToJyutping chooses among the readings that rime
+itself gives a word (463 words) and adds its words that rime lacks (494
+words, under the checks of Section 7.4). While taking its tone-only
+differences as well gains one case on the Wikipedia sample, it also brings
+about 30 doubtful readings out of 106, such as 大使館 *si5*, 表面 *biu1* and
+了如指掌 *liu4*, and with this rule rime stays authoritative.
+
+### 9.5 Results
+
+With the new data, the scores are,
+
+| | Tuning half | Held-out half | Whole corpus | Wikipedia sample: right / wrong |
+| --- | --- | --- | --- | --- |
+| xjyutping 1.3.0 | 92.15% | 92.04% | 92.09% | 107 / 53 |
+| xjyutping 1.4.0 | 94.18% | 93.98% | 94.08% | 124 / 36 |
+| ToJyutping 3.2.0 | 92.96% | 92.60% | 92.78% | 90 / 70 |
+
+On the whole corpus, the content words rise from 96.73% to 97.17% and the
+particles and interjections from 61.26% to 73.57%, against 96.15% and 70.42%
+for ToJyutping. Since the held-out half gains nearly as much as the tuning
+half (1.94 points against 2.03), the changes do not seem to be tuned to the
+corpus.
+
+On the Wikipedia text, 168 characters change. Most of them are clear
+improvements, such as 英文 *man2*, 都會 as "also will", 公園, 澳門, 價錢, 魷魚,
+新娘, 芫茜 and 左右 ("about", *zo2 jau2*). A few are choices between a
+standard and a popular reading, such as 廣泛 *faan6*, 走廊 *long2* and 聽眾
+*ting3*. Looking at HKCanCor, the speakers use these popular readings too
+(走廊 *long2* twice, 聽眾 *ting3* in all 4 cases, 中文 *man2* in 14 of 17 and
+英文 *man2* in 40 of 44), so our own verdicts on the Wikipedia sample, which
+favoured the standard readings, if anything understate the gain.
+
+### 9.6 Tests
+
+- `tests/run-tests.sh` gives `readings ok` for all four jobs, with no change
+  to `tests/regression.expected`.
+- We regenerated xjyutping-py's `tests/parity_expected.txt` with both engines,
+  which agree. Two readings changed, 價錢 *cin4* and 便宜 *pin4 ji2*.
+- xjyutping-py has a new test, `test_tojyutping_readings`, for 揾, 都會, 呢就,
+  the particles and the words that ToJyutping decides.
+- A build from sources fetched afresh by `tools/fetch-sources.sh` gives data
+  files byte-identical to the committed ones.
+
+### 9.7 Open issues after 1.4.0
+
+1. 出面 is now read *ceot1 min2* ("to come forward"), also where it means
+   "outside" (*ceot1 min6*). HKCanCor has one case of each, and only context
+   could decide between them.
+2. The tone of a sentence-final particle follows the intonation, so its
+   default remains a guess (呀 is *aa3* while questions use *aa4*).
+3. The interjection 嘩 is read *waa1*, while speakers say *waa3*, which
+   neither LSHK nor rime lists.
+4. A few simplified-script words of ToJyutping pass the filter because their
+   characters also occur in traditional script (几只牌). They are harmless in
+   traditional text.
+5. The tie-break of Section 2.5 remains (Section 4, item 15), and 係呢 was one
+   case of it.

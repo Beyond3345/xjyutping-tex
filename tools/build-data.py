@@ -16,10 +16,13 @@ that contains this repository (tools/fetch-sources.sh fetches them):
       READINGS.txt   Cantonese readings of CC-CEDICT words (Pleco), CC BY-SA 3.0
   cantonese-books-data/<book>/*資料.json        粵音資料集叢 book data (jyut.net,
                                                by 石見田), no licence stated
+  ToJyutping-main/src/ToJyutping/trie.txt      ToJyutping (CanCLID), BSD-2-Clause
 
-rime-cantonese is authoritative.  CC-Canto and the CC-CEDICT readings only
-add words that are not in its list and that the list would read otherwise;
-the books only add characters that LSHK and rime lack (see BOOKS).
+rime-cantonese is authoritative.  CC-Canto, the CC-CEDICT readings and
+ToJyutping only add words that are not in its list and that the list would
+read otherwise; ToJyutping also chooses between the readings rime itself gives
+a word (see load_tojyutping).  The books only add characters that LSHK and
+rime lack (see BOOKS).
 
 Outputs:
   xjyutping-chars.def   (this repository) default reading of every
@@ -48,7 +51,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent     # xjyutping-tex
 ROOT = REPO.parent                                         # the sources
 PY_DATA = ROOT / 'xjyutping-py' / 'src' / 'xjyutping' / 'data'
 SYL = re.compile(r'^[a-z]+[1-6]$')
-VERSION = '2026/09/29 v1.3.0'
+VERSION = '2026/09/29 v1.4.0'
 
 # Standalone default readings.  The first block settles characters that
 # rime-cantonese leaves undecided (every reading has the same weight); the
@@ -80,6 +83,11 @@ CURATED_DEFAULTS = {
     '划': 'waa4',   # 划算, 划船 (劃 carries waak6)
     '幢': 'zong6',  # classifier; LSHK has no dung6
     '呢': 'ni1',    # demonstrative 呢張床; see CURATED_FINALS
+    # 1.4.0, after ToJyutping and the Hong Kong Cantonese Corpus: the
+    # particles 囖, 嚹 and 㗎 as LSHK lists them first, 嘞 as laak3, and 揾,
+    # which Hong Kong writing uses for 搵 (look for; OpenCC already folds it
+    # into 搵 for word lookup)
+    '囖': 'lo1', '嚹': 'laa3', '㗎': 'gaa3', '嘞': 'laak3', '揾': 'wan2',
 }
 
 # A different reading when the character ends a run of Chinese characters
@@ -171,6 +179,14 @@ CURATED_WORDS = {
     # 1.2.0: rime reads 合 gap3 here (its own 化合 is faa3 hap6), and 會否
     # wui2 (the modal is wui5); CC-Canto and the CC-CEDICT readings agree
     '化合物': 'faa3 hap6 mat6', '會否': 'wui5 fau2',
+    # 1.4.0: 都會 is far more often 都 + the modal 會 (wui5) than 'metropolis'
+    # (大都會, 國際大都會 and 都會大學 keep wui6; rime also gives wui6 to
+    # 間中都會 and 係人都會), and rime reads 係呢 hai5.  The particle 呢 before
+    # 就, 都 and 又 (佢呢就 ...) is never the demonstrative.
+    '都會': 'dou1 wui5', '間中都會': 'gaan3 zung1 dou1 wui5',
+    '係人都會': 'hai6 jan4 dou1 wui5', '國際都會': 'gwok3 zai3 dou1 wui6',
+    '都會區': 'dou1 wui6 keoi1', '係呢': 'hai6 ne1',
+    '呢就': 'ne1 zau6', '呢都': 'ne1 dou1', '呢又': 'ne1 jau6',
 }
 
 # Words of CC-Canto and the CC-CEDICT Cantonese readings that are not added
@@ -378,6 +394,25 @@ def load_cedict(path):
     return words
 
 
+def load_tojyutping(freq):
+    """word -> [readings] of ToJyutping's trie: its words of two or more
+    characters, in traditional script only (every character occurs in rime's
+    word list, which is traditional; the trie also holds simplified forms)."""
+    sys.dont_write_bytecode = True
+    sys.path.insert(0, str(ROOT / 'ToJyutping-main' / 'src'))
+    from ToJyutping import Trie
+    out = {}
+
+    def walk(node, key):
+        if node.v and len(key) > 1 and all(freq[c] for c in key):
+            out[key] = [[str(s.jyutping) for s in node.v[0]]]
+        for c, child in node.items():
+            walk(child, key + c)
+    sys.setrecursionlimit(max(10000, sys.getrecursionlimit()))
+    walk(Trie.root, '')
+    return out
+
+
 def with_aliases(words, canon):
     """The word list plus aliases spelt with canonical characters, so 因為
     finds rime's 因爲; also the number of aliases dropped as clashes."""
@@ -451,7 +486,8 @@ def main():
     rime = load_rime_chars()
     rows = [(r[0], r[1].split()) for r in
             rime_rows(ROOT / 'rime-cantonese/jyut6ping3.words.dict.yaml')]
-    canon = load_variants(collections.Counter(c for w, _ in rows for c in w))
+    freq = collections.Counter(c for w, _ in rows for c in w)
+    canon = load_variants(freq)
 
     chars = {}      # char -> (default, other readings, flag as polyphone?)
     known = {}      # char -> every reading a source gives it
@@ -511,6 +547,17 @@ def main():
         return sum(math.log(usage[c][s] + 1) for c, s in zip(word, syls))
 
     words = {w: max(rs, key=lambda s: score(w, s)) for w, rs in entries.items()}
+
+    # Where rime gives a word several readings, ToJyutping's choice wins: it
+    # follows Hong Kong usage (公園 gung1 jyun2, 郵局 jau4 guk2, 請假 ceng2).
+    # Tested on the Hong Kong Cantonese Corpus (see CHANGELOG.md, Part II,
+    # Section 9), taking its other readings too gained nothing.
+    tojyutping = load_tojyutping(freq)
+    overridden = 0
+    for w, (syls,) in tojyutping.items():
+        if w in words and w not in CURATED_WORDS and syls != words[w] and syls in entries[w]:
+            words[w] = syls
+            overridden += 1
     for w, jp in CURATED_WORDS.items():
         assert len(jp.split()) == len(w) and all(SYL.match(x) for x in jp.split()), w
         words[w] = jp.split()
@@ -522,8 +569,9 @@ def main():
                 words.setdefault(w[:-1] + '哋', syls)
     adverbs(words)
 
-    # Words of CC-Canto and the CC-CEDICT Cantonese readings that the list
-    # (by raw or canonical spelling) does not have.  A reading is taken if
+    # Words of CC-Canto, the CC-CEDICT Cantonese readings and ToJyutping that
+    # the list (by raw or canonical spelling) does not have.  A reading is
+    # taken if
     #  - each syllable is a reading LSHK, rime or the book gives its
     #    character, or a changed tone of one (tone 1 or 2);
     #  - it keeps a reading rime gives to every word and every pair of
@@ -532,10 +580,11 @@ def main():
     #  - for two characters AB: no word of the list ends in A with another
     #    reading, as a tie goes to the later word (屋企|住 -> 屋|企住).
     # CC-Canto, the Cantonese dictionary, wins over the readings of Mandarin
-    # words; then the most usual syllables.
+    # words and ToJyutping comes last; then the most usual syllables.
     cedict = ROOT / 'jyut-dict/src/dictionaries/cedict/data'
     sources = {'CC-Canto': load_cedict(cedict / 'CC-CANTO.txt'),
                'CC-CEDICT readings': load_cedict(cedict / 'READINGS.txt')}
+    sources['ToJyutping'] = tojyutping
     cw = lambda w: ''.join(canon.get(c, c) for c in w)
     listed = {w: entries[w] if w in entries and w not in CURATED_WORDS else [s]
               for w, s in words.items()}
@@ -613,6 +662,7 @@ def main():
         '%% Sources: LSHK Jyutping table (CC BY 4.0),',
         '%%          rime-cantonese jyut6ping3 dictionaries (CC BY 4.0),',
         '%%          OpenCC HK/TW variant tables (Apache-2.0),',
+        '%%          ToJyutping word list (CanCLID, BSD-2-Clause),',
     ]
     with open(REPO / 'xjyutping-chars.def', 'w', encoding='utf8') as f:
         f.write('\n'.join(header) + '\n%%          cantonese-books-data readings of '
@@ -660,7 +710,8 @@ def main():
     print('chars added from cantonese-books-data: %d (%s)' % (
         sum(from_books.values()), ', '.join('%s %d' % kv for kv in from_books.items())),
         file=sys.stderr)
-    print('words added from jyut-dict: %d (%s); not added: %s' % (
+    print('ToJyutping readings taken for words of the list: %d' % overridden, file=sys.stderr)
+    print('words added from jyut-dict and ToJyutping: %d (%s); not added: %s' % (
         len(added), ', '.join('%s %d' % kv for kv in sorted(from_cedict.items())),
         ', '.join('%d %s' % (n, why) for why, n in rejected.most_common())), file=sys.stderr)
 

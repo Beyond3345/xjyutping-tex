@@ -21,7 +21,7 @@
   {\end{Verbatim}\par\noindent\ignorespacesafterend}
 
 \title{\pkg{xjyutping}: Jyutping above Traditional Chinese characters}
-\author{Version 1.3.0}
+\author{Version 1.4.0}
 \date{29 September 2026}
 
 \begin{document}
@@ -451,15 +451,18 @@ Compile with \texttt{xelatex} or \texttt{lualatex} instead.
 
 \section{Data and licences}
 
-The readings come from four groups of sources, which
+The readings come from five groups of sources, which
 \texttt{tools/fetch-sources.sh} downloads at pinned commits,
 \begin{itemize}
 \item the \emph{Cantonese Pronunciation List of Characters for Computers}
   (粵拼表) of the LSHK and the \pkg{rime-cantonese} dictionaries (both
   CC~BY~4.0), which give the character readings, the defaults and most of
   the words, with rime-cantonese treated as authoritative,
+\item the word list of \pkg{ToJyutping} (BSD 2-Clause), which chooses
+  between the readings that rime-cantonese gives a word, following Hong Kong
+  usage (公園 \emph{gung1 jyun2}), and adds 494 words,
 \item CC-Canto and the Cantonese readings of CC-CEDICT (both CC~BY-SA~3.0, by
-  Pleco), as distributed with Jyut Dictionary, which add 2\,291 words, each
+  Pleco), as distributed with Jyut Dictionary, which add 2\,348 words, each
   only where it changes a reading and passes checks against rime-cantonese,
 \item the book data of 粵音資料集叢, which gives the readings of 640 rare
   characters that the others lack and
@@ -469,11 +472,18 @@ The tables at the top of \texttt{tools/build-data.py} hold the hand-checked
 corrections, and the script regenerates \texttt{xjyutping-chars.def} and
 \texttt{xjyutping-words.def} from these sources.
 
+We measured the accuracy against the Hong Kong Cantonese Corpus (HKCanCor),
+whose 161\,045 characters of conversation were annotated with Jyutping by
+hand. The package reads 94.1\% of these characters correctly, and 97.2\% of
+the characters outside sentence-final particles and interjections.
+
 The package code (\texttt{xjyutping.sty} and \texttt{xjyutping.lua}) is
 released under the \LaTeX{} Project Public License (LPPL) 1.3c. The data
 files are released under CC~BY-SA~4.0, since they adapt the CC~BY-SA word
-lists. The readings taken from 粵音資料集叢 come from data published without
-a licence statement and are used with attribution.
+lists. The word list of \pkg{ToJyutping} is used under the BSD 2-Clause
+License, whose notice is reproduced in \texttt{LICENSE}. The readings taken
+from 粵音資料集叢 come from data published without a licence statement and
+are used with attribution.
 
 \section{Acknowledgements}
 
@@ -490,13 +500,16 @@ We would like to thank the authors of every source of the readings,
 \item the Jyutping Workgroup of the LSHK, together with Prof Lu Qin, Dr Cheung
   Kwan Hin and Nathan Hammond, whom it thanks,
 \item the Cantonese Computational Linguistics Infrastructure Development
-  Workgroup (CanCLID) and the contributors of rime-cantonese,
+  Workgroup (CanCLID) and the contributors of rime-cantonese and
+  ToJyutping,
 \item 石見田 for 粵音資料集叢, together with the authors and editors of the
   dictionaries digitised there,
 \item Aaron Tan for Jyut Dictionary,
 \item Pleco for CC-Canto and the Cantonese readings of CC-CEDICT, together
-  with MDBG and the contributors of CC-CEDICT and
-\item Carbo Kuo (BYVoid) and the contributors of OpenCC.
+  with MDBG and the contributors of CC-CEDICT,
+\item Carbo Kuo (BYVoid) and the contributors of OpenCC and
+\item Kang Kwong Luke for the Hong Kong Cantonese Corpus (CC~BY~4.0), as
+  distributed with PyCantonese, which we used to measure the accuracy.
 \end{itemize}
 
 \end{document}

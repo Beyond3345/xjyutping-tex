@@ -1,6 +1,6 @@
 # xjyutping (LaTeX)
 
-Version 1.3.0 (2026-09-29). Versions follow
+Version 1.4.0 (2026-09-29). Versions follow
 [Semantic Versioning](https://semver.org), and the history of the project is
 kept in [`CHANGELOG.md`](CHANGELOG.md).
 
@@ -218,19 +218,24 @@ data.
 
 The readings are stored in `xjyutping-chars.def` (30 089 characters) and
 `xjyutping-words.def` (about 104 000 words). They are built by
-`tools/build-data.py` from five sources, which `tools/fetch-sources.sh`
+`tools/build-data.py` from six sources, which `tools/fetch-sources.sh`
 downloads,
 
 - the Jyutping table of the Linguistic Society of Hong Kong (LSHK), for the
   character readings,
 - rime-cantonese, for the default readings and the main word list,
+- ToJyutping, for the choice between the readings rime gives a word and for
+  494 more words,
 - CC-Canto and the Cantonese readings of CC-CEDICT from Jyut Dictionary, for
-  2 291 more words,
+  2 348 more words,
 - OpenCC, for variant shapes and
 - 粵音資料集叢, for the readings of 640 rare characters.
 
 Since rime-cantonese is treated as authoritative, the other sources only add
-what it lacks. To fix a reading,
+what it lacks. The one exception is ToJyutping, which may choose a different
+one of the readings that rime gives a word, since its choices follow Hong
+Kong usage (for example 公園 *gung1 jyun2* and 郵局 *jau4 guk2*). To fix a
+reading,
 
 1. Edit the hand-checked tables at the top of `tools/build-data.py`
 2. Run `python3 tools/build-data.py`
@@ -238,6 +243,15 @@ what it lacks. To fix a reading,
 The script looks for the sources in the folder that contains this repository
 (or in `--sources DIR`), and it also updates the data of xjyutping-py when
 that repository is next to this one.
+
+### Accuracy
+
+We measured the accuracy against the Hong Kong Cantonese Corpus (HKCanCor),
+a corpus of conversation recorded in the 1990s whose 161 045 characters were
+annotated with Jyutping by hand. The package reads 94.1% of these characters
+correctly, and 97.2% of the characters outside sentence-final particles and
+interjections, while ToJyutping 3.2.0 reads 92.8% and 96.2% under the same
+test. Part II, Section 9 of `CHANGELOG.md` describes the test.
 
 ## Testing
 
@@ -270,7 +284,10 @@ We also thank the authors of the data sources,
 - the Cantonese Computational Linguistics Infrastructure Development
   Workgroup (CanCLID) and its contributors, for
   [rime-cantonese](https://github.com/rime/rime-cantonese) (粵語拼音輸入方案,
-  CC BY 4.0), which gives the default readings and most of the words,
+  CC BY 4.0), which gives the default readings and most of the words, and
+  for [ToJyutping](https://github.com/CanCLID/ToJyutping) (BSD-2-Clause),
+  whose word list chooses between rime's readings of a word and adds 494
+  words,
 - 石見田, for 粵音資料集叢 ([jyut.net](https://jyut.net/about), data at
   [jyutnet/cantonese-books-data](https://github.com/jyutnet/cantonese-books-data)),
   together with the authors and editors of the thirteen dictionaries it
@@ -283,10 +300,13 @@ We also thank the authors of the data sources,
   which distributes CC-Canto (© 2015–17 Pleco Inc.,
   [cantonese.org](https://cantonese.org), CC BY-SA 3.0) and the Cantonese
   readings for CC-CEDICT (© 2015 Pleco Software Inc., CC BY-SA 3.0), together
-  with MDBG and the contributors of [CC-CEDICT](https://cc-cedict.org), and
+  with MDBG and the contributors of [CC-CEDICT](https://cc-cedict.org),
 - Carbo Kuo (BYVoid) and the contributors of OpenCC, for
   [OpenCC](https://github.com/BYVoid/OpenCC) (Apache-2.0), whose variant
-  tables let variant shapes find the same words.
+  tables let variant shapes find the same words, and
+- Kang Kwong Luke, for the Hong Kong Cantonese Corpus (HKCanCor, CC BY 4.0),
+  as distributed with [PyCantonese](https://github.com/jacksonllee/pycantonese),
+  which we used to measure the accuracy.
 
 ## Licence
 
@@ -294,7 +314,8 @@ The code (`xjyutping.sty`, `xjyutping.lua`, `tools/` and `tests/`) is
 released under the LaTeX Project Public License (LPPL) 1.3c, while the data
 files (`xjyutping-chars.def` and `xjyutping-words.def`) are released under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), since they
-adapt the CC BY-SA 3.0 word lists above. The readings of the 640 characters
-from 粵音資料集叢 come from data published without a licence and are used
-with attribution. To build the data without them, empty `BOOKS` in
+adapt the CC BY-SA 3.0 word lists above. The word list of ToJyutping is
+used under the BSD 2-Clause License, whose notice is reproduced in
+`LICENSE`. The readings of the 640 characters from 粵音資料集叢 come from
+data published without a licence and are used with attribution. To build the data without them, empty `BOOKS` in
 `tools/build-data.py`. The full terms are given in [`LICENSE`](LICENSE).

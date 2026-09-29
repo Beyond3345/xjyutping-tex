@@ -4,8 +4,9 @@
 %% Sources: LSHK Jyutping table (CC BY 4.0),
 %%          rime-cantonese jyut6ping3 dictionaries (CC BY 4.0),
 %%          OpenCC HK/TW variant tables (Apache-2.0),
+%%          ToJyutping word list (CanCLID, BSD-2-Clause),
 %%          cantonese-books-data readings of characters (no licence stated).
-\ProvidesFile{xjyutping-chars.def}[2026/09/29 v1.3.0 xjyutping character data]
+\ProvidesFile{xjyutping-chars.def}[2026/09/29 v1.4.0 xjyutping character data]
 \xjp@C 〇ling4;
 \xjp@C 㐀jau1;
 \xjp@C 㐁dou6;
@@ -469,7 +470,7 @@
 \xjp@C 㗋hau4;
 \xjp@C 㗌zat1;
 \xjp@C 㗍zaai1;
-\xjp@M 㗎ga3 gaa3 gaa2;
+\xjp@M 㗎gaa3 gaa2 ga3;
 \xjp@M 㗏waai1 wai1;
 \xjp@C 㗐haap3;
 \xjp@C 㗑baai3;
@@ -8655,7 +8656,7 @@
 \xjp@M 嘛maa3 maa5;
 \xjp@C 嘜mak1;
 \xjp@C 嘝huk6;
-\xjp@M 嘞la3 laak3 lak3;
+\xjp@M 嘞laak3 la3 lak3;
 \xjp@C 嘟dyut1;
 \xjp@M 嘠gaa4 gaat3;
 \xjp@C 嘡tong1;
@@ -8810,7 +8811,7 @@
 \xjp@C 嚶jing1;
 \xjp@C 嚷joeng6;
 \xjp@C 嚸dim2;
-\xjp@M 嚹la4 laa3 laa4;
+\xjp@M 嚹laa3 laa4 la4;
 \xjp@C 嚺daap6;
 \xjp@C 嚻hiu1;
 \xjp@C 嚼zoek3;
@@ -8839,7 +8840,7 @@
 \xjp@M 囓jit6 ngit6 ngaat6 nip6;
 \xjp@C 囔nong4;
 \xjp@C 囕hei3;
-\xjp@C 囖lo4;
+\xjp@M 囖lo1 lo4;
 \xjp@M 囗gwok3 wai4;
 \xjp@C 囘wui4;
 \xjp@C 囙jan1;
@@ -12207,7 +12208,7 @@
 \xjp@C 揻wai1;
 \xjp@M 揼dam1 dam3 dam2 dap6;
 \xjp@M 揽laam5 laam2;
-\xjp@C 揾wan3;
+\xjp@M 揾wan2 wan3;
 \xjp@C 揿gam6;
 \xjp@C 搀caam1;
 \xjp@C 搁gok3;

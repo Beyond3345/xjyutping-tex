@@ -17,6 +17,7 @@ RIME=259f0e48bba840c3a2e0d117539e96937f3d89bc     # rime/rime-cantonese, diction
 OPENCC=e02cb540b9f98b2da7868b4e8f7b43f88bacadc5   # BYVoid/OpenCC, 2026-09-20
 BOOKS=02740c7e136e2766d7931a37ed0633aa41009ae1    # jyutnet/cantonese-books-data, 2026-09-25
 JYUTDICT=26526015424de3f9c30cd9c7e42b96dadb068b6a # aaronhktan/jyut-dict, 2026-09-28
+TOJYUTPING=a692787e9af65b27310580604b1d69b96b2165be # CanCLID/ToJyutping 3.2.0, 2026-02-17
 
 dir=${1:-$(cd "$(dirname "$0")/../.." && pwd)}
 mkdir -p "$dir"
@@ -85,4 +86,10 @@ fi
 if missing jyut-dict; then
     repo aaronhktan/jyut-dict "$JYUTDICT" jyut-dict /README.md /LICENSE \
         /src/dictionaries/ /src/jyut-dict/ '!/src/jyut-dict/vendor/'
+fi
+
+# ToJyutping (BSD-2-Clause): the Python package, whose trie
+# (src/ToJyutping/trie.txt) holds the word list; build-data.py imports it.
+if missing ToJyutping-main; then
+    repo CanCLID/ToJyutping "$TOJYUTPING" ToJyutping-main
 fi
