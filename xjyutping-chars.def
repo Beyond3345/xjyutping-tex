@@ -5,7 +5,7 @@
 %%          rime-cantonese jyut6ping3 dictionaries (CC BY 4.0),
 %%          OpenCC HK/TW variant tables (Apache-2.0),
 %%          cantonese-books-data readings of characters (no licence stated).
-\ProvidesFile{xjyutping-chars.def}[2026/09/28 v1.2.0 xjyutping character data]
+\ProvidesFile{xjyutping-chars.def}[2026/09/29 v1.3.0 xjyutping character data]
 \xjp@C 〇ling4;
 \xjp@C 㐀jau1;
 \xjp@C 㐁dou6;

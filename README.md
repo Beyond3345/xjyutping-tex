@@ -1,15 +1,23 @@
 # xjyutping (LaTeX)
 
-Version 1.2.0 (2026-09-28). Versions follow
-[Semantic Versioning](https://semver.org), and the history is in
-[`CHANGELOG.md`](CHANGELOG.md).
+Version 1.3.0 (2026-09-29). Versions follow
+[Semantic Versioning](https://semver.org), and the history of the project is
+kept in [`CHANGELOG.md`](CHANGELOG.md).
 
-xjyutping is a LaTeX package that adds Cantonese Jyutping (粵拼) above
-Traditional Chinese characters. Pronunciation is determined by looking at the
-context and cross-referencing it with a list of about 104 000 words. The
-package supports XeLaTeX and LuaLaTeX. It was inspired by xpinyin, which adds
-Mandarin pinyin to Simplified Chinese characters. A Python version with the
-same readings is [xjyutping-py](https://github.com/Beyond3345/xjyutping-py).
+## Overview
+
+This project is a LaTeX package that adds Cantonese Jyutping (粵拼) above
+Traditional Chinese characters. It is aimed at anyone preparing Cantonese
+material in LaTeX, such as teaching notes, lyrics or poetry, where the
+pronunciation of each character should be shown above it.
+
+Pronunciation is determined by looking at the context and cross-referencing
+it with a list of about 104 000 words. The package supports XeLaTeX and
+LuaLaTeX, and it was inspired by xpinyin, which adds Mandarin pinyin to
+Simplified Chinese characters. A Python version that gives the same readings
+is available as [xjyutping-py](https://github.com/Beyond3345/xjyutping-py).
+
+A minimal document is,
 
 ```latex
 \documentclass{article}
@@ -23,12 +31,26 @@ same readings is [xjyutping-py](https://github.com/Beyond3345/xjyutping-py).
 \end{document}
 ```
 
-Here 行 is read *hong4* in 銀行 and *haang4* in 行路, and 長 is *zoeng2* in
-校長 and 長大.
+Looking at the output, 行 is read *hong4* in 銀行 but *haang4* in 行路, while
+長 is read *zoeng2* in both 校長 and 長大.
 
-You can load `xeCJK` (XeLaTeX) or `luatexja-fontspec` (LuaLaTeX) instead of
-`ctex`. If none of them is loaded, xjyutping loads `xeCJK` or LuaTeX-ja
-itself. The manual, [`xjyutping-doc.pdf`](xjyutping-doc.pdf), has the details.
+Instead of `ctex`, a document can load `xeCJK` (XeLaTeX) or
+`luatexja-fontspec` (LuaLaTeX). If none of them is loaded, the package loads
+`xeCJK` or LuaTeX-ja itself. The manual,
+[`xjyutping-doc.pdf`](xjyutping-doc.pdf), describes every command and option
+in detail.
+
+## Installing
+
+The package needs four files, `xjyutping.sty`, `xjyutping.lua` (used by
+LuaLaTeX), `xjyutping-chars.def` and `xjyutping-words.def`. Keep them
+together, either next to your document or in your personal tree
+(`~/Library/texmf` on macOS, `~/texmf` on Linux). To copy them into the
+personal tree, run,
+
+```bash
+d="$(kpsewhich -var-value TEXMFHOME)/tex/latex/xjyutping" && mkdir -p "$d" && cp xjyutping.sty xjyutping.lua xjyutping-*.def "$d"
+```
 
 ## Commands
 
@@ -36,16 +58,18 @@ itself. The manual, [`xjyutping-doc.pdf`](xjyutping-doc.pdf), has the details.
 | --- | --- |
 | `\begin{jyutpingscope}[opts] … \end{jyutpingscope}` | Annotate every character in the block. |
 | `\xjyutping*[opts]{text}` | Annotate a piece of running text. |
-| `\xjyutping[opts]{字}{reading}` | Give a character or word your own reading: `\xjyutping{銀行}{ngan4 hong4}`. |
+| `\xjyutping[opts]{字}{reading}` | Give a character or word your own reading, as in `\xjyutping{銀行}{ngan4 hong4}`. |
 | `\setjyutping{字}{reading}` | Change a character's default reading. |
-| `\setjyutping{詞}{readings}` | Add or change a word: `\setjyutping{重話}{zung6 waa6}`. |
+| `\setjyutping{詞}{readings}` | Add or change a word, as in `\setjyutping{重話}{zung6 waa6}`. |
 | `\disablejyutping`, `\enablejyutping` | Turn annotation off and on inside a scope. |
 | `\xjyutpingsetup{opts}` | Set options. They also work as package options. |
 
-A scope ends the paragraph, and its lines are spaced so that the Jyutping
-never touches the line above. `\setjyutping` is global and applies from where
-it appears, also in the middle of a scope. Inside a scope it applies even in
-`\iffalse … \fi`, so keep conditional settings outside the scope.
+A scope always ends the paragraph, and its lines are spaced so that the
+Jyutping never touches the line above. The `\setjyutping` command is global
+and applies from the point where it appears, including the middle of a
+scope. However, since a scope is read in full before it is typeset, a
+`\setjyutping` inside a scope applies even within `\iffalse … \fi`. Hence
+conditional settings should be kept outside the scope.
 
 ## Options
 
@@ -54,24 +78,25 @@ it appears, also in the middle of a scope. Inside a scope it applies even in
 | `ratio` | `0.45` | Size of the Jyutping relative to the text. |
 | `vsep` | `1.05em` | Height of the Jyutping's baseline above the character's. |
 | `hsep` | `0.15em plus 0.4em` | Space between characters. The stretch lets lines justify. |
-| `width` | `auto` | Cell width. `auto`: the same for the whole block, wide enough for its longest Jyutping. `natural`: each cell as wide as it needs. A length (`1.8em`): a fixed grid. |
+| `width` | `auto` | Cell width. With `auto` the width is the same for the whole block and fits its longest Jyutping, with `natural` each cell is as wide as it needs and a length such as `1.8em` gives a fixed grid. |
 | `font` | `\normalfont` | Font of the Jyutping. |
-| `format` | empty | Extra formatting, e.g. `\color{gray}`. |
-| `multiple` | empty | Formatting for guessed readings of characters with several readings, e.g. `\color{red}` for proofreading. |
-| `fancy` | `false` | Show tones the way Visual Jyutping does (see below). |
-| `linebreak` | `false` | Keep the lines of the source (see below). |
+| `format` | empty | Extra formatting, such as `\color{gray}`. |
+| `multiple` | empty | Formatting for guessed readings of characters with several readings, such as `\color{red}` for proofreading. |
+| `fancy` | `false` | Show tones in the style of Visual Jyutping (Section "Fancy tones"). |
+| `linebreak` | `false` | Keep the lines of the source (Section "Verse and lyrics"). |
+| `align` | `justify` | Alignment of the lines of a scope, which is `justify`, `left`, `centre` (or `center`) or `right`. The values also work on their own, as in `[linebreak,centre]`. |
 | `debug` | `false` | Log how each run of text was read. |
 
-In the debug log, `w` marks a word, `u` your own setting, `m` a guessed
-reading (the other readings follow in brackets) and `s` a character with one
-reading.
+In the debug log, `w` marks a word, `u` a reading you set, `m` a guessed
+reading (with the other readings in brackets) and `s` a character with only
+one reading.
 
 ## Fancy tones
 
-`fancy` replaces each tone number with a small stroke that shows the pitch of
-the tone, followed by a small tone number, the way
+The `fancy` option replaces each tone number with a small stroke showing the
+pitch of the tone, followed by a smaller tone number, in the same way as
 [Visual Jyutping](https://github.com/VincentTam/visual-jyutping) writes
-jyutˍ₆ ping˗₃:
+jyutˍ₆ ping˗₃. The six tones are drawn as,
 
 | Tone | Stroke | Number | Example |
 | --- | --- | --- | --- |
@@ -82,16 +107,18 @@ jyutˍ₆ ping˗₃:
 | 5 | rising from low (ˏ) | lowered | 市 si5 |
 | 6 | low level (ˍ) | lowered | 事 si6 |
 
-The strokes are drawn, not taken from a font, so they work with any `font`
-and colour, and the spacing adjusts to them. PDF bookmarks and the debug log
-keep plain tone numbers.
+Since the strokes are drawn rather than taken from a font, they work with any
+`font` and colour, and the spacing is adjusted to fit them. PDF bookmarks and
+the debug log keep the plain tone numbers.
 
-## Verse and lyrics: `linebreak`
+## Verse and lyrics
 
-With `linebreak`, each line of the source stays a line in the output:
+The `linebreak` option keeps the lines of the source, which suits verse and
+lyrics, while the `align` option sets the lines flush left, centred or flush
+right. For example,
 
 ```latex
-\begin{jyutpingscope}[linebreak]
+\begin{jyutpingscope}[linebreak,centre]
 床前明月光，
 疑是地上霜。
 
@@ -100,94 +127,127 @@ With `linebreak`, each line of the source stays a line in the output:
 \end{jyutpingscope}
 ```
 
-A line end becomes a line break (`\\`), and a blank line starts a new
-paragraph that follows the document's settings: indented by default, not
-indented with `\usepackage[parfill]{parskip}`. A word is never looked up
-across two lines. The option works in the environment only. It does nothing
-in `\xjyutping*`, in a scope inside a command's argument such as
-`\parbox{…}`, or in a scope nested in one without it.
+Specifically, each line end becomes a line break (`\\`), while a blank line
+leaves an empty line and starts a new paragraph. The new paragraph follows
+the settings of the document, so it is indented by default and not indented
+with `\usepackage[parfill]{parskip}`, whose paragraph space is added to the
+empty line. A `\centering` inside the scope also works, and an aligned scope
+starts a paragraph of its own. Since a line end also ends a run of
+characters, a word is never looked up across two lines.
+
+However, `linebreak` only works in the environment. It has no effect in
+`\xjyutping*`, in a scope inside the argument of a command such as
+`\parbox{…}` or in a scope nested inside one without the option.
 
 ## How readings are chosen
 
-The text is split into runs of Chinese characters. Punctuation, Latin text
-and most commands end a run, but formatting such as `\textbf` or `\color`
-does not, so `銀\textbf{行}` is still the word 銀行. Each run is split into
-the fewest words from the word list, and each word takes its reading from the
-list. A character on its own takes your `\setjyutping` reading, or else its
-default. `\xjyutping{…}{…}` always wins. Variant shapes such as 為/爲 and
-裡/裏 find the same words.
+The reading of each character is chosen in three steps.
+
+1. First, the text is split into runs of Chinese characters. Punctuation,
+   Latin text and most commands end a run, while formatting such as
+   `\textbf` or `\color` does not, so `銀\textbf{行}` is still read as the
+   word 銀行.
+2. Then each run is split into the fewest words from the word list, and each
+   word takes its reading from the list.
+3. Lastly, a character left on its own takes the reading set with
+   `\setjyutping`, or otherwise its default reading.
+
+A reading given with `\xjyutping{…}{…}` always takes priority. Variant shapes
+such as 為/爲 and 裡/裏 find the same words.
 
 ## XeLaTeX and LuaLaTeX
 
-The readings and options are the same under both engines. LuaLaTeX also
-needs `xjyutping.lua`, installed next to `xjyutping.sty`. Under LuaLaTeX:
+While the readings and options are the same under both engines, LuaLaTeX
+also needs `xjyutping.lua`, installed next to `xjyutping.sty`. Under LuaLaTeX,
 
-* punctuation and line breaks follow LuaTeX-ja's rules, so lines can break
-  differently;
-* a paragraph can be any length (under XeLaTeX, about 15 000 characters);
-* compiling takes about 1.6 times as long;
-* text that comes from a macro takes the `\setjyutping` readings in force at
+- punctuation and line breaks follow the rules of LuaTeX-ja, so lines can
+  break differently,
+- a paragraph can be any length, while XeLaTeX stops at about 15 000
+  characters,
+- compiling takes about 1.6 times as long and
+- text that comes from a macro takes the `\setjyutping` readings in force at
   the end of its paragraph.
 
 pdfLaTeX is not supported.
 
-## Things to know
+## Troubleshooting
 
-* The body of a scope is read in full before it is typeset, so `\verb` and
-  verbatim environments can't go inside, and a `%` in `\url` or `\href` must
-  be written `\%`.
-* Text from a macro, `\maketitle` or an `\include`d file is annotated one
-  character at a time, without word context. Put `\xjyutping*` in the macro,
-  or a scope in the file.
-* Arguments of `\label`, `\ref`, `\cite`, `\url`, `\includegraphics` and
-  similar commands are left alone. Give other commands their Chinese argument
-  in braces: `\textbf{行}`, not `\textbf 行`.
-* Section titles, captions and footnotes in a scope are annotated. The table
-  of contents is annotated only if `\tableofcontents` is in a scope. Running
-  heads and PDF bookmarks stay plain.
-* In beamer, write `\frametitle{\xjyutping*{…}}`.
-* Use `\underline` or `\uline` rather than xeCJKfntef's `\CJKunderline`.
-* Characters missing from the data get no Jyutping.
+### `\verb` inside a scope gives an error
+
+The body of a scope is read in full before it is typeset, in the same way as
+the argument of a command. Hence `\verb` and verbatim environments cannot go
+inside a scope, and a `%` in `\url` or `\href` must be written `\%`. Put
+verbatim material outside the scope.
+
+### Text from a macro is read one character at a time
+
+Since the package only sees the name of a macro when it reads a scope, text
+that comes from a macro, from `\maketitle` or from an `\include`d file is
+annotated one character at a time, without word context. Put `\xjyutping*`
+inside the macro, or a scope inside the included file.
+
+### A command's argument is annotated or left plain
+
+The arguments of `\label`, `\ref`, `\cite`, `\url`, `\includegraphics` and
+similar commands are left alone. Other commands need their Chinese argument
+in braces, so write `\textbf{行}` rather than `\textbf 行`.
+
+### The table of contents has no Jyutping
+
+Section titles, captions and footnotes inside a scope are annotated, while
+the table of contents is only annotated if `\tableofcontents` is itself
+inside a scope. Running heads and PDF bookmarks always stay plain.
+
+### A beamer frame title has no Jyutping
+
+In beamer, a `\frametitle` inside a scope is typeset after the scope has
+ended. Write `\frametitle{\xjyutping*{…}}` instead.
+
+### Underlines break the spacing
+
+The commands of xeCJKfntef, such as `\CJKunderline`, do not keep the spacing
+of the cells. Use `\underline` or `\uline` from ulem instead.
+
+### A character has no Jyutping
+
+The character is missing from the data. Give it a reading with
+`\setjyutping` or `\xjyutping`, which both work for characters outside the
+data.
 
 ## Data
 
-The readings are in `xjyutping-chars.def` (30 089 characters) and
-`xjyutping-words.def` (about 104 000 words). `tools/build-data.py` builds
-them from these sources, which `tools/fetch-sources.sh` downloads:
+The readings are stored in `xjyutping-chars.def` (30 089 characters) and
+`xjyutping-words.def` (about 104 000 words). They are built by
+`tools/build-data.py` from five sources, which `tools/fetch-sources.sh`
+downloads,
 
-* the LSHK Jyutping table (character readings);
-* rime-cantonese (default readings and the main word list);
-* CC-Canto and the Cantonese readings of CC-CEDICT, from Jyut Dictionary
-  (2 291 more words);
-* OpenCC (variant shapes);
-* 粵音資料集叢 (readings of 640 rare characters).
+- the Jyutping table of the Linguistic Society of Hong Kong (LSHK), for the
+  character readings,
+- rime-cantonese, for the default readings and the main word list,
+- CC-Canto and the Cantonese readings of CC-CEDICT from Jyut Dictionary, for
+  2 291 more words,
+- OpenCC, for variant shapes and
+- 粵音資料集叢, for the readings of 640 rare characters.
 
-rime-cantonese is authoritative, and the other sources only add what it
-lacks. To fix a reading, edit the hand-checked tables at the top of
-`tools/build-data.py` and run `python3 tools/build-data.py`. It looks for the
-sources in the folder that contains this repository (or `--sources DIR`), and
-it also updates the data of xjyutping-py when that repository is next to this
-one.
+Since rime-cantonese is treated as authoritative, the other sources only add
+what it lacks. To fix a reading,
 
-## Installing
+1. Edit the hand-checked tables at the top of `tools/build-data.py`
+2. Run `python3 tools/build-data.py`
 
-Keep `xjyutping.sty`, `xjyutping.lua`, `xjyutping-chars.def` and
-`xjyutping-words.def` together, next to your document or in your personal
-tree (`~/Library/texmf` on macOS, `~/texmf` on Linux):
-
-```bash
-d="$(kpsewhich -var-value TEXMFHOME)/tex/latex/xjyutping" && mkdir -p "$d" && cp xjyutping.sty xjyutping.lua xjyutping-*.def "$d"
-```
+The script looks for the sources in the folder that contains this repository
+(or in `--sources DIR`), and it also updates the data of xjyutping-py when
+that repository is next to this one.
 
 ## Testing
 
-`tests/run-tests.sh` checks the readings under both engines, with and
-without `fancy`. `tests/render.sh` renders a test file to PNG for a visual
-check.
+`tests/run-tests.sh` checks the readings under both engines, with and without
+`fancy`, while `tests/render.sh` renders a test file to PNG for a visual
+check, for example `tests/verse-check.tex` for `linebreak` and `align`.
 
 ## Acknowledgements and attributions
 
-xjyutping was inspired by the LaTeX package
+This project was inspired by the LaTeX package
 [xpinyin](https://ctan.org/pkg/xpinyin) by Qing Lee (李清), which adds pinyin
 to Simplified Chinese characters.
 
@@ -196,45 +256,45 @@ The `fancy` option was inspired by
 Tam, whose tone symbols it draws, and by the Visual Cantonese Fonts (粵語字體)
 by Jon Chui / A3I Ltd. ([canto.hk](https://canto.hk),
 [documentation](https://docs.visual-fonts.com),
-[source](https://github.com/jkwchui/visual-fonts-starlight-docs)). Thank you
-both.
+[source](https://github.com/jkwchui/visual-fonts-starlight-docs)). We would
+like to thank both of them.
 
-Thanks also to the authors of the data sources:
+We also thank the authors of the data sources,
 
-* the Jyutping Workgroup of the Linguistic Society of Hong Kong, for the
-  *Cantonese Pronunciation List of Characters for Computers*
+- the Jyutping Workgroup of the Linguistic Society of Hong Kong (LSHK), for
+  the *Cantonese Pronunciation List of Characters for Computers*
   (電腦用漢字粵語拼音表,
   [lshk-org/jyutping-table](https://github.com/lshk-org/jyutping-table),
-  CC BY 4.0), and to Prof Lu Qin and Dr Cheung Kwan Hin of the Hong Kong
-  Polytechnic University and Nathan Hammond, who are thanked there;
-* the Cantonese Computational Linguistics Infrastructure Development
-  Workgroup (CanCLID) and contributors, for
+  CC BY 4.0), together with Prof Lu Qin and Dr Cheung Kwan Hin of the Hong
+  Kong Polytechnic University and Nathan Hammond, who are thanked there,
+- the Cantonese Computational Linguistics Infrastructure Development
+  Workgroup (CanCLID) and its contributors, for
   [rime-cantonese](https://github.com/rime/rime-cantonese) (粵語拼音輸入方案,
-  CC BY 4.0), which gives the default readings and most of the words;
-* 石見田, for 粵音資料集叢 ([jyut.net](https://jyut.net/about), data at
+  CC BY 4.0), which gives the default readings and most of the words,
+- 石見田, for 粵音資料集叢 ([jyut.net](https://jyut.net/about), data at
   [jyutnet/cantonese-books-data](https://github.com/jyutnet/cantonese-books-data)),
-  and the authors and editors of the dictionaries it digitises: 廣州話正音字典
-  (2004), 廣州話標準音字彙 (1988), 粵語同音字典 (1974/1996), 粵語查音識字字典
-  (1985), 同音字彙 (1971), 部身字典 (1967), *The Student's Cantonese-English
-  Dictionary* (1947), 粵音韻彙 (1941), 道字典 (1941), 道漢字音 (1939),
-  民眾識字粵語拼音字彙 (1931), 廣話國語一貫未定稿 (1916) and
-  分部分音廣話九聲字宗 (1914);
-* Aaron Tan, for [Jyut Dictionary](https://github.com/aaronhktan/jyut-dict),
+  together with the authors and editors of the thirteen dictionaries it
+  digitises, namely 廣州話正音字典 (2004), 廣州話標準音字彙 (1988), 粵語同音字典 (1974/1996),
+  粵語查音識字字典 (1985), 同音字彙 (1971), 部身字典 (1967), *The Student's
+  Cantonese-English Dictionary* (1947), 粵音韻彙 (1941), 道字典 (1941),
+  道漢字音 (1939), 民眾識字粵語拼音字彙 (1931), 廣話國語一貫未定稿 (1916) and
+  分部分音廣話九聲字宗 (1914),
+- Aaron Tan, for [Jyut Dictionary](https://github.com/aaronhktan/jyut-dict),
   which distributes CC-Canto (© 2015–17 Pleco Inc.,
   [cantonese.org](https://cantonese.org), CC BY-SA 3.0) and the Cantonese
-  readings for CC-CEDICT (© 2015 Pleco Software Inc., CC BY-SA 3.0), and MDBG
-  and the contributors of [CC-CEDICT](https://cc-cedict.org);
-* Carbo Kuo (BYVoid) and contributors, for
+  readings for CC-CEDICT (© 2015 Pleco Software Inc., CC BY-SA 3.0), together
+  with MDBG and the contributors of [CC-CEDICT](https://cc-cedict.org), and
+- Carbo Kuo (BYVoid) and the contributors of OpenCC, for
   [OpenCC](https://github.com/BYVoid/OpenCC) (Apache-2.0), whose variant
   tables let variant shapes find the same words.
 
 ## Licence
 
-The code (`xjyutping.sty`, `xjyutping.lua`, `tools/`, `tests/`) is under the
-LaTeX Project Public License 1.3c. The data files (`xjyutping-chars.def`,
-`xjyutping-words.def`) are under
-[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), because they
+The code (`xjyutping.sty`, `xjyutping.lua`, `tools/` and `tests/`) is
+released under the LaTeX Project Public License (LPPL) 1.3c, while the data
+files (`xjyutping-chars.def` and `xjyutping-words.def`) are released under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), since they
 adapt the CC BY-SA 3.0 word lists above. The readings of the 640 characters
-from 粵音資料集叢 come from data published without a licence and are used with
-attribution; to build the data without them, empty `BOOKS` in
-`tools/build-data.py`. See [`LICENSE`](LICENSE).
+from 粵音資料集叢 come from data published without a licence and are used
+with attribution. To build the data without them, empty `BOOKS` in
+`tools/build-data.py`. The full terms are given in [`LICENSE`](LICENSE).

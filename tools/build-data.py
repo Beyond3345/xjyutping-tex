@@ -48,7 +48,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent     # xjyutping-tex
 ROOT = REPO.parent                                         # the sources
 PY_DATA = ROOT / 'xjyutping-py' / 'src' / 'xjyutping' / 'data'
 SYL = re.compile(r'^[a-z]+[1-6]$')
-VERSION = '2026/09/28 v1.2.0'
+VERSION = '2026/09/29 v1.3.0'
 
 # Standalone default readings.  The first block settles characters that
 # rime-cantonese leaves undecided (every reading has the same weight); the

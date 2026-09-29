@@ -5,7 +5,7 @@
 %%          rime-cantonese jyut6ping3 dictionaries (CC BY 4.0),
 %%          OpenCC HK/TW variant tables (Apache-2.0),
 %%          CC-Canto and CC-CEDICT Cantonese readings (CC BY-SA 3.0).
-\ProvidesFile{xjyutping-words.def}[2026/09/28 v1.2.0 xjyutping word data]
+\ProvidesFile{xjyutping-words.def}[2026/09/29 v1.3.0 xjyutping word data]
 \xjp@W 㓟皮=pai1 pei4;
 \xjp@W 㓟菠蘿皮=pai1 bo1 lo4 pei4;
 \xjp@W 㓟蘋果=pai1 ping4 gwo2;

@@ -1,0 +1,51 @@
+% Visual check of linebreak and align: render with tests/render.sh.
+% Each scope has two stanzas; lines of different lengths show the alignment.
+\documentclass{article}
+\usepackage{iftex}
+\ifXeTeX\usepackage{xeCJK}\else\usepackage[fontset=none]{ctex}\fi
+\setCJKmainfont{Songti TC}
+\usepackage[fancy]{xjyutping}
+\usepackage[parfill]{parskip}
+\begin{document}
+centre:
+
+\begin{jyutpingscope}[linebreak,centre]
+床前明月光，
+疑是地上霜。
+
+舉頭望明月，
+低頭思故鄉。
+春眠不覺曉，處處聞啼鳥。
+\end{jyutpingscope}
+left:
+
+\begin{jyutpingscope}[linebreak,left]
+床前明月光，
+疑是地上霜。
+
+舉頭望明月，
+低頭思故鄉。
+春眠不覺曉，處處聞啼鳥。
+\end{jyutpingscope}
+right:
+
+\begin{jyutpingscope}[linebreak,right]
+床前明月光，
+疑是地上霜。
+
+舉頭望明月，
+低頭思故鄉。
+春眠不覺曉，處處聞啼鳥。
+\end{jyutpingscope}
+\verb|\centering| in the scope:
+
+\begin{jyutpingscope}[linebreak]
+\centering
+床前明月光，
+疑是地上霜。
+
+舉頭望明月，
+低頭思故鄉。
+春眠不覺曉，處處聞啼鳥。
+\end{jyutpingscope}
+\end{document}
