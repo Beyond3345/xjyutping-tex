@@ -1,0 +1,57 @@
+xjyutping -- Jyutping above traditional Chinese characters
+Copyright (C) 2026 by the xjyutping authors
+https://github.com/Beyond3345/xjyutping-tex
+
+Code
+----
+
+The package code -- xjyutping.sty, xjyutping.lua, the scripts in tools/,
+the tests and the documentation source xjyutping-doc.tex -- may be
+distributed and/or modified under the conditions of the LaTeX Project Public
+License, either version 1.3c of this license or (at your option) any later
+version. The latest version of this license is in
+
+    https://www.latex-project.org/lppl.txt
+
+and version 1.3c or later is part of all distributions of LaTeX version
+2008 or later.
+
+This work has the LPPL maintenance status `maintained'.
+The Current Maintainer of this work is Beyond3345
+(https://github.com/Beyond3345).
+
+Data
+----
+
+The generated data files xjyutping-chars.def and xjyutping-words.def are
+distributed under the Creative Commons Attribution-ShareAlike 4.0
+International licence (CC BY-SA 4.0):
+
+    https://creativecommons.org/licenses/by-sa/4.0/
+
+They are adapted from:
+
+  * the Cantonese Pronunciation List of Characters for Computers
+    (電腦用漢字粵語拼音表), maintained by the Jyutping Workgroup of the
+    Linguistic Society of Hong Kong, https://github.com/lshk-org/jyutping-table,
+    Creative Commons Attribution 4.0 (CC BY 4.0);
+  * rime-cantonese (粵語拼音輸入方案) by the Cantonese Computational
+    Linguistics Infrastructure Development Workgroup (CanCLID) and its
+    contributors, https://github.com/rime/rime-cantonese,
+    Creative Commons Attribution 4.0 (CC BY 4.0);
+  * CC-Canto, Copyright (c) 2015-17 Pleco Inc., https://cantonese.org, and the
+    CC-CEDICT Cantonese readings, Copyright (c) 2015 Pleco Software Inc.,
+    both Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0), as
+    distributed with Jyut Dictionary by Aaron Tan,
+    https://github.com/aaronhktan/jyut-dict; the readings belong to words of
+    CC-CEDICT by MDBG and its contributors, https://cc-cedict.org;
+  * the Hong Kong and Taiwan variant tables of OpenCC by Carbo Kuo (BYVoid)
+    and its contributors, https://github.com/BYVoid/OpenCC,
+    Apache License 2.0;
+  * the readings of 640 characters from the book data of 粵音資料集叢 by
+    石見田, https://github.com/jyutnet/cantonese-books-data, which is
+    published without a licence statement and is used with attribution.
+
+The 'fancy' tone marks are drawn after the tone symbols of Visual Jyutping
+by Vincent Tam (https://github.com/VincentTam/visual-jyutping, MIT License);
+no code of it is included.

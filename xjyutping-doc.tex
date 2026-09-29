@@ -21,7 +21,7 @@
   {\end{Verbatim}\par\noindent\ignorespacesafterend}
 
 \title{\pkg{xjyutping}: Jyutping above traditional Chinese characters}
-\author{Version 1.1.0}
+\author{Version 1.2.0}
 \date{28 September 2026}
 
 \begin{document}
@@ -100,7 +100,9 @@ and no word list is perfect. There are three ways to say what you want.
 \end{description}
 
 \noindent
-Readings are Jyutping syllables separated by spaces, one per character.
+Readings are Jyutping syllables separated by spaces, one per Chinese
+character. Punctuation, Latin letters and commands among the characters take
+none, so \verb|\xjyutping{A行}{hong4}| reads 行 as \emph{hong4}.
 \cs{setjyutping} is global and takes effect from where it appears, so it can
 go in the preamble or in the middle of a scope.
 
@@ -215,6 +217,7 @@ Key & Default & Meaning \\
 \texttt{format} & & extra formatting, e.g.\ \verb|\color{gray}| \\
 \texttt{multiple} & & formatting for guessed polyphones \\
 \texttt{fancy} & \texttt{false} & tones as pitch strokes (section~\ref{sec:fancy}) \\
+\texttt{linebreak} & \texttt{false} & keep the lines of the source (section~\ref{sec:linebreak}) \\
 \texttt{debug} & \texttt{false} & log every run \\
 \bottomrule
 \end{tabular}
@@ -279,6 +282,43 @@ character. Like every option, \texttt{fancy} can be switched on or off for
 one scope: \verb|\begin{jyutpingscope}[fancy=false]|. A syllable given
 without a tone number (\verb|\xjyutping{唔}{m}|) is printed as it is.
 
+\section{Verse and lyrics}\label{sec:linebreak}
+
+With the \texttt{linebreak} option the lines of the source are kept: each
+line end inside \texttt{jyutpingscope} becomes a line break, as if it were
+written \verb|\\| or \cs{newline}, and each blank line a paragraph break, so
+that the next stanza starts a new paragraph by the document's usual rules
+(indented by default; with no indent and some space before it under
+\verb|\usepackage[parfill]{parskip}|).
+
+\begin{example}
+\begin{jyutpingscope}[linebreak]
+床前明月光，
+疑是地上霜。
+
+舉頭望明月，
+低頭思故鄉。
+\end{jyutpingscope}
+\end{example}
+\begin{jyutpingscope}[linebreak]
+床前明月光，
+疑是地上霜。
+
+舉頭望明月，
+低頭思故鄉。
+\end{jyutpingscope}
+
+\medskip\noindent
+Line ends at the start and the end of the scope, after a \verb|\\| and before
+\cs{begin}, \cs{end} or a new paragraph add no break, and a line ending in
+\verb|%| joins the next one as usual. A line break also ends a run of
+characters, so no word is looked up across two lines. The option works for
+the environment only, and only where the line ends are still in the source
+when the scope begins: not in \cs{xjyutping*}, nor in a scope inside the
+argument of a command (\verb|\parbox{...}|) or inside a scope without the
+option, whose text has been read already. Inside an environment such as
+\texttt{minipage} it works.
+
 \section{Xe\LaTeX{} and Lua\LaTeX{}}\label{sec:engines}
 
 The readings, the options and the layout are the same under both engines; only
@@ -291,13 +331,14 @@ out the line. So under Lua\LaTeX{}:
 
 \begin{itemize}
 \item \pkg{LuaTeX-ja}'s own rules for punctuation widths and line breaks
-  apply; for example, a line never breaks just before —— or …….
+  apply; for example, a line never breaks just before a dash (——) or an
+  ellipsis (……).
 \item A paragraph can be as long as you like (a paragraph of 40\,000
   characters compiles).
 \item Compiling takes about 1.6 times as long as with Xe\LaTeX{}.
-\item Text that comes from a macro is annotated when its paragraph is
-  finished, with the options in force at that point; its size is taken from
-  the character itself.
+\item Text that comes from a macro is annotated with the options and the
+  size of the place where it stands, but with the \cs{setjyutping} readings
+  in force when its paragraph ends.
 \end{itemize}
 
 \section{Limits}
@@ -345,16 +386,50 @@ out the line. So under Lua\LaTeX{}:
 
 \section{Data and licences}
 
-The readings come from the LSHK \emph{Cantonese Pronunciation List of
-Characters for Computers} (粵拼表) and from the \pkg{rime-cantonese}
-dictionaries, both under CC~BY~4.0; the variant-shape map comes from OpenCC
-(Apache-2.0). The \texttt{fancy} tone marks follow Visual Jyutping
-(MIT) by Vincent Tam. \texttt{tools/build-data.py}, at the root of the
-source repository, regenerates
-\texttt{xjyutping-chars.def} and \texttt{xjyutping-words.def} from these
-sources; its \texttt{CURATED\_DEFAULTS}, \texttt{CURATED\_FINALS},
-\texttt{CURATED\_VARIANTS} and \texttt{CURATED\_WORDS} tables hold the
-hand-checked corrections. The package code is under the \LaTeX{}
-Project Public License 1.3c.
+The readings come from these sources (the README lists them with their
+folders and commits):
+\begin{itemize}
+\item the LSHK \emph{Cantonese Pronunciation List of Characters for
+  Computers} (粵拼表) and the \pkg{rime-cantonese} dictionaries (both
+  CC~BY~4.0), which give the character readings, the defaults and most of
+  the words; rime-cantonese is authoritative;
+\item CC-Canto and the Cantonese readings of CC-CEDICT (both CC~BY-SA~3.0,
+  by Pleco), as distributed with Jyut Dictionary, which add about 2\,300
+  words, each only where it changes a reading and passes checks against
+  rime-cantonese;
+\item the book data of 粵音資料集叢, which gives the readings of 640 rare
+  characters the others lack;
+\item OpenCC's variant tables (Apache-2.0).
+\end{itemize}
+\texttt{tools/build-data.py} regenerates \texttt{xjyutping-chars.def} and
+\texttt{xjyutping-words.def} from these sources, and
+\texttt{tools/fetch-sources.sh} fetches them; the tables at the top of the
+build script hold the hand-checked corrections.
+
+The package code (\texttt{xjyutping.sty}, \texttt{xjyutping.lua}) is under
+the \LaTeX{} Project Public License 1.3c. The data files are distributed
+under CC~BY-SA~4.0, because they adapt the CC~BY-SA word lists. The readings
+taken from 粵音資料集叢 come from data published without a licence statement
+and are used with attribution.
+
+\section{Acknowledgements}
+
+\pkg{xjyutping} was inspired by the authors of the \LaTeX{} package
+\pkg{xpinyin} by Qing Lee (李清), which puts Hanyu Pinyin above simplified
+Chinese characters, and follows its way of annotating characters through
+\pkg{xeCJK}'s \cs{CJKsymbol} hook. The \texttt{fancy} option was inspired by
+Visual Jyutping by Vincent Tam, whose tone symbols it draws, and by the Visual
+Cantonese Fonts (粵語字體) by Jon Chui / A3I Ltd.\ (canto.hk,
+docs.visual-fonts.com).
+
+Many thanks to the authors of every source of the readings: the Jyutping
+Workgroup of the Linguistic Society of Hong Kong, and those it thanks, Prof
+Lu Qin, Dr Cheung Kwan Hin and Nathan Hammond; the Cantonese Computational
+Linguistics Infrastructure Development Workgroup (CanCLID) and the
+contributors of rime-cantonese; 石見田 and 粵音資料集叢, with the authors
+and editors of the dictionaries digitised there; Aaron Tan's Jyut
+Dictionary; Pleco for CC-Canto and the Cantonese readings of CC-CEDICT, and
+MDBG and the contributors of CC-CEDICT; and Carbo Kuo (BYVoid) and the
+contributors of OpenCC.
 
 \end{document}

@@ -1,16 +1,19 @@
 %% xjyutping.sty -- add Jyutping (Cantonese romanisation) above Chinese
-%% characters, with readings chosen from the surrounding words.
+%% characters, with readings chosen from the surrounding words.  Works with
+%% XeLaTeX (xeCJK) and LuaLaTeX (LuaTeX-ja; with xjyutping.lua).
 %%
 %% Copyright (C) 2026 by the xjyutping authors.
 %% This work may be distributed and/or modified under the conditions of the
 %% LaTeX Project Public License, version 1.3c or later.
 %%
-%% Reading data: LSHK Jyutping table and rime-cantonese (both CC BY 4.0),
-%% OpenCC variant tables (Apache-2.0).  The fancy tone marks follow Visual
-%% Jyutping (MIT).  See README.md; the history is in ../CHANGELOG.md.
+%% Inspired by xpinyin (Qing Lee); the fancy tone marks follow Visual
+%% Jyutping (Vincent Tam) and the Visual Cantonese Fonts (Jon Chui).  The
+%% reading data (xjyutping-*.def, CC BY-SA 4.0) comes from the LSHK Jyutping
+%% table, rime-cantonese, CC-Canto and the CC-CEDICT Cantonese readings,
+%% 粵音資料集叢 and OpenCC: see README.md.  The history is in CHANGELOG.md.
 %% Versions follow Semantic Versioning 2.0.0.
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{xjyutping}{2026-09-28}{1.1.0}
+\ProvidesExplPackage{xjyutping}{2026-09-28}{1.2.0}
   {Add Jyutping to traditional Chinese characters}
 
 \msg_new:nnn { xjyutping } { engine }
@@ -45,6 +48,7 @@
     format   .tl_set:N   = \l__xjyutping_format_tl ,
     multiple .tl_set:N   = \l__xjyutping_multiple_tl ,
     fancy    .bool_set:N = \l__xjyutping_fancy_bool ,
+    linebreak .bool_set:N = \l__xjyutping_linebreak_bool ,
     debug    .bool_set:N = \l__xjyutping_debug_bool ,
   }
 \keys_set:nn { xjyutping }
@@ -55,7 +59,8 @@
     width    = auto ,
     font     = \normalfont ,
   }
-\NewDocumentCommand \xjyutpingsetup { m } { \keys_set:nn { xjyutping } {#1} }
+\NewDocumentCommand \xjyutpingsetup { m }
+  { \keys_set:nn { xjyutping } {#1} \__xjyutping_lua_resnap: }
 
 % ---------------------------------------------------------------------------
 % Data.  \xjp@c@<char>: default reading.  \xjp@m@<char>: the other readings
@@ -751,13 +756,13 @@
         \exp_not:N #4
         \int_eval:n { \l__xjyutping_overlay_box } ~
         \int_eval:n { \l__xjyutping_cell_dim } ~
-        \int_eval:n { \tex_gluestretch:D \l__xjyutping_hsep_skip } ~
+        \skip_use:N \l__xjyutping_hsep_skip \scan_stop:
       }
   }
 \cs_generate_variant:Nn \__xjyutping_lua_build:nnnN { nVV }
 \cs_new_protected:Npn \__xjyutping_lua_mark:N #1
   {
-    \bool_lazy_or:nnTF { \token_if_letter_p:N #1 } { \token_if_other_p:N #1 }
+    \bool_lazy_and:nnTF { ! \mode_if_math_p: } { \__xjyutping_if_cjk_char_p:N #1 }
       {
         \tl_set:Ne \l__xjyutping_type_tl
           { \exp_args:NV \tl_head:n \g__xjyutping_mark_tl }
@@ -772,22 +777,62 @@
       }
       { \tl_gclear:N \g__xjyutping_mark_tl #1 }
   }
-\cs_new_protected:cpn { xjyutping@lua@nocontext } #1#2
+% \xjyutping@lua@nocontext {<char>} {<size>} {<snapshot>}, run by
+% xjyutping.lua while it wraps a paragraph or a box, builds the cell of a
+% character that came without a mark.  It works in a throwaway box: TeX's
+% current list is not a place to add to at that moment (a \selectfont may
+% append a whatsit).  The settings are those saved where the character was
+% typeset (\__xjyutping_lua_snapshot:), and pgf's font switch, if TikZ is
+% packing a node, is undone.
+\box_new:N \l__xjyutping_nocontext_box
+\cs_new_protected:cpn { xjyutping@lua@nocontext } #1#2#3
   {
-    \group_begin:
-      \fontsize {#2} { \f@baselineskip } \selectfont
-      \__xjyutping_lookup:nn {#1} { }
-      \bool_if:NT \l__xjyutping_debug_bool
-        {
-          \iow_log:e
-            { xjyutping>~ [no~context]~ #1 \l__xjyutping_reading_tl : \l__xjyutping_type_tl }
-        }
-      \tl_if_empty:NF \l__xjyutping_reading_tl
-        {
-          \__xjyutping_lua_build:nVVN {#1}
-            \l__xjyutping_reading_tl \l__xjyutping_type_tl \xjyutping@lua@storeonly
-        }
-    \group_end:
+    \hbox_set:Nn \l__xjyutping_nocontext_box
+      { \xjyutping@lua@restore #3 ~ \__xjyutping_lua_nocontext:nn {#1} {#2} }
+  }
+\cs_new_protected:Npn \__xjyutping_lua_nocontext:nn #1#2
+  {
+    \cs_if_exist:NT \pgf@selectfontorig
+      { \cs_set_eq:NN \selectfont \pgf@selectfontorig }
+    \fontsize {#2} { \f@baselineskip } \selectfont
+    \__xjyutping_lookup:nn {#1} { }
+    \bool_if:NT \l__xjyutping_debug_bool
+      {
+        \iow_log:e
+          { xjyutping>~ [no~context]~ #1 \l__xjyutping_reading_tl : \l__xjyutping_type_tl }
+      }
+    \tl_if_empty:NF \l__xjyutping_reading_tl
+      {
+        \__xjyutping_lua_build:nVVN {#1}
+          \l__xjyutping_reading_tl \l__xjyutping_type_tl \xjyutping@lua@storeonly
+      }
+  }
+% The settings a no-context cell needs, handed to xjyutping.lua, which
+% keeps one copy of each distinct set and tags what follows with its id.
+\cs_new:Npn \__xjyutping_snap_tl:N #1
+  { \tl_set:Nn \exp_not:N #1 { \exp_not:V #1 } }
+\cs_new:Npn \__xjyutping_snap_bool:N #1
+  { \bool_if:NTF #1 { \bool_set_true:N } { \bool_set_false:N } \exp_not:N #1 }
+\cs_new_protected:Npn \__xjyutping_lua_snapshot:
+  {
+    \use:e
+      {
+        \xjyutping@lua@on
+          {
+            \__xjyutping_snap_tl:N \l__xjyutping_ratio_tl
+            \__xjyutping_snap_tl:N \l__xjyutping_vsep_tl
+            \__xjyutping_snap_tl:N \l__xjyutping_hsep_tl
+            \__xjyutping_snap_tl:N \l__xjyutping_uniform_tl
+            \__xjyutping_snap_tl:N \l__xjyutping_font_tl
+            \__xjyutping_snap_tl:N \l__xjyutping_format_tl
+            \__xjyutping_snap_tl:N \l__xjyutping_multiple_tl
+            \__xjyutping_snap_bool:N \l__xjyutping_fancy_bool
+            \__xjyutping_snap_bool:N \l__xjyutping_debug_bool
+            \__xjyutping_snap_bool:N \l__xjyutping_scope_bool
+            \fp_set:Nn \exp_not:N \l__xjyutping_bls_fp { \fp_use:N \l__xjyutping_bls_fp }
+          }
+      }
+    \xjyutping@lua@size \f@size pt \scan_stop:
   }
 
 \sys_if_engine_xetex:TF
@@ -828,6 +873,7 @@
           }
       }
     \cs_new_eq:NN \__xjyutping_mark_next: \prg_do_nothing:
+    \cs_new_eq:NN \__xjyutping_lua_resnap: \prg_do_nothing:
   }
   {
     \cs_new_protected:Npn \__xjyutping_enable:
@@ -836,8 +882,8 @@
           {
             \tl_gclear:N \g__xjyutping_mark_tl
             \bool_set_true:N \l__xjyutping_enable_bool
-            \xjyutping@lua@on
           }
+        \__xjyutping_lua_snapshot:
       }
     \cs_new_protected:Npn \__xjyutping_disable:
       {
@@ -849,6 +895,43 @@
       }
     \cs_new_protected:Npn \__xjyutping_mark_next:
       { \peek_N_type:TF { \__xjyutping_lua_mark:N } { \tl_gclear:N \g__xjyutping_mark_tl } }
+    % the preprocessor's no-pad marker (see \__xjyutping_nopad: above)
+    \cs_set_protected:Npn \__xjyutping_nopad: { \xjyutping@lua@nopad }
+    \cs_new_protected:Npn \__xjyutping_lua_resnap:
+      { \bool_if:NT \l__xjyutping_enable_bool { \__xjyutping_lua_snapshot: } }
+    % the text size of what follows, for no-context cells
+    \AddToHook { selectfont }
+      { \bool_if:NT \l__xjyutping_enable_bool { \xjyutping@lua@size \f@size pt \scan_stop: } }
+    % no annotation in math (as under XeLaTeX, where xeCJK does not see
+    % it), but again in text inside a box in math: \text, \mbox, the cells
+    % of a tabular (LaTeX builds a tabular in math).  \everyhbox and
+    % \everyvbox are LuaTeX-ja's registers, run from the primitive ones.
+    \bool_new:N \l__xjyutping_math_bool
+    \AtBeginDocument
+      {
+        \tex_everymath:D \exp_after:wN
+          { \tex_the:D \tex_everymath:D \__xjyutping_math: }
+        \tex_everydisplay:D \exp_after:wN
+          { \tex_the:D \tex_everydisplay:D \__xjyutping_math: }
+        \everyhbox \exp_after:wN { \tex_the:D \everyhbox \__xjyutping_unmath: }
+        \everyvbox \exp_after:wN { \tex_the:D \everyvbox \__xjyutping_unmath: }
+      }
+    \cs_new_protected:Npn \__xjyutping_math:
+      {
+        \bool_if:NT \l__xjyutping_enable_bool
+          {
+            \xjyutping@lua@off
+            \bool_set_true:N \l__xjyutping_math_bool
+          }
+      }
+    \cs_new_protected:Npn \__xjyutping_unmath:
+      {
+        \bool_if:NT \l__xjyutping_math_bool
+          {
+            \bool_set_false:N \l__xjyutping_math_bool
+            \__xjyutping_lua_snapshot:
+          }
+      }
   }
 \bool_new:N \l__xjyutping_plain_bool
 \NewDocumentCommand \enablejyutping { }
@@ -960,6 +1043,7 @@
     \CJKsout , \CJKxout
   } { -1 } { } { t }
 \__xjyutping_declare:nnnn { \\ } { 0 } { row } { z }
+\__xjyutping_declare:nnnn { \__xjyutping_newline: } { 0 } { } { z }
 \__xjyutping_declare:nnnn
   {
     \par , \newline , \linebreak , \pagebreak , \nopagebreak ,
@@ -2030,13 +2114,89 @@
 \AddToHook { para/end }
   { \bool_if:NT \l__xjyutping_scope_bool { \__xjyutping_raise_baselineskip: } }
 
-\NewDocumentEnvironment { jyutpingscope } { O { } +b }
+% The environment collects its body itself, so that with the linebreak
+% option the line ends of the source can be read as characters of their
+% own: the catcode of ^^M is `other' while the body is read.  The body ends
+% as a +b argument does: at the first \end (outside braces) that does not
+% close a \begin of the body, whatever its environment, so that
+% \newenvironment{lesson}{\begin{jyutpingscope}}{\end{jyutpingscope}} works,
+% and that \end is left to read its argument itself.  LuaTeX-ja
+% hides the end of a line that ends in a Chinese character behind a comment
+% character (\ltjlineendcomment) when the line is read; that character is
+% made `ignored', for the first line of the body may have been read already
+% (looking for the optional argument).
+\tl_new:N \l__xjyutping_collect_tl
+\int_new:N \l__xjyutping_nest_int
+\NewDocumentEnvironment { jyutpingscope } { O { } }
   {
     \keys_set:nn { xjyutping } {#1}
     \__xjyutping_baselineskip:
-    \__xjyutping_prepare:n {#2}
+    \bool_if:NT \l__xjyutping_linebreak_bool
+      {
+        \char_set_catcode_other:n { 13 }
+        \cs_if_exist:NT \ltjlineendcomment
+          { \char_set_catcode_ignore:n { \ltjlineendcomment } }
+      }
+    \tl_clear:N \l__xjyutping_collect_tl
+    \int_zero:N \l__xjyutping_nest_int
+    \__xjyutping_collect:w \q_nil
   }
   { \__xjyutping_typeset: \par }
+% #1 is \q_nil and the text up to the next \end: the \q_nil keeps the braces
+% of a text that is a single group.
+\cs_new_protected:Npn \__xjyutping_collect:w #1 \end
+  {
+    \tl_put_right:No \l__xjyutping_collect_tl { \use_none:n #1 }
+    \__xjyutping_count_begins:w #1 \begin \q_nil \q_stop
+    \int_compare:nNnTF \l__xjyutping_nest_int = \c_zero_int
+      { \__xjyutping_collected: }
+      {
+        \int_decr:N \l__xjyutping_nest_int
+        \tl_put_right:Nn \l__xjyutping_collect_tl { \end }
+        \__xjyutping_collect:w \q_nil
+      }
+  }
+\cs_new_protected:Npn \__xjyutping_count_begins:w #1 \begin #2 \q_stop
+  {
+    \quark_if_nil:nF {#2}
+      {
+        \int_incr:N \l__xjyutping_nest_int
+        \__xjyutping_count_begins:w #2 \q_stop
+      }
+  }
+\cs_new_protected:Npn \__xjyutping_collected:
+  {
+    \bool_if:NTF \l__xjyutping_linebreak_bool
+      { \__xjyutping_lines:N \l__xjyutping_collect_tl }
+      { \tl_trim_spaces:N \l__xjyutping_collect_tl }
+    \exp_args:NV \__xjyutping_prepare:n \l__xjyutping_collect_tl
+    \end
+  }
+% linebreak: a line end of the source (a character 13) becomes a line break,
+% a blank line a paragraph break (\par, so the paragraph is indented or
+% spaced as usual), and line ends at the start and the end of the body are
+% dropped.  The break is \__xjyutping_newline:, a \newline that does nothing
+% where there is no line to end (after \begin{center}), nor before \begin,
+% \end or \par, where the paragraph ends anyway.
+\cs_new_protected:Npn \__xjyutping_lines:N #1
+  {
+    \regex_replace_all:nnN { \A [\ \r]+ | [\ \r]+ \Z } { } #1
+    \regex_replace_all:nnN { \ * \r (?: \ * \r )+ \ * } { \c{par} } #1
+    \regex_replace_all:nnN { (\c{\\} | \c{newline}) \ * \r \ * } { \1 } #1
+    \regex_replace_all:nnN { \ * \r \ * } { \c{__xjyutping_newline:} } #1
+  }
+\cs_new_protected:Npn \__xjyutping_newline:
+  { \mode_if_horizontal:T { \peek_after:Nw \__xjyutping_newline_aux: } }
+\cs_new_protected:Npn \__xjyutping_newline_aux:
+  {
+    \bool_lazy_any:nF
+      {
+        { \token_if_eq_meaning_p:NN \l_peek_token \begin }
+        { \token_if_eq_meaning_p:NN \l_peek_token \end }
+        { \token_if_eq_meaning_p:NN \l_peek_token \par }
+      }
+      { \newline }
+  }
 \NewDocumentCommand \xjyutping { s O { } m }
   {
     \bool_if:NTF \l__xjyutping_plain_bool
@@ -2054,6 +2214,32 @@
       }
   }
 \cs_new_protected:Npn \__xjyutping_clear_mark: { \tl_gclear:N \g__xjyutping_mark_tl }
+% \xjyutping{<text>}{<readings>}: each Chinese character of <text>, also
+% inside braces (\textbf{行}, {\color{red}行}), gets the next reading, and
+% gets it right before itself; anything else is left alone.
+\prg_new_conditional:Npnn \__xjyutping_if_cjk_char:N #1 { p , TF }
+  {
+    \bool_lazy_and:nnTF
+      { \bool_lazy_or_p:nn { \token_if_letter_p:N #1 } { \token_if_other_p:N #1 } }
+      {
+        \bool_lazy_or_p:nn
+          { \cs_if_exist_p:c { xjp@c@ #1 } }
+          {
+            \bool_lazy_any_p:n
+              {
+                { \int_compare_p:n { "3400 <= `#1 <= "4DBF } }
+                { \int_compare_p:n { "4E00 <= `#1 <= "9FFF } }
+                { \int_compare_p:n { "F900 <= `#1 <= "FAFF } }
+                { \int_compare_p:n { "20000 <= `#1 <= "3FFFF } }
+              }
+          }
+      }
+      { \prg_return_true: } { \prg_return_false: }
+  }
+\int_new:N \g__xjyutping_manual_int
+\seq_new:N \g__xjyutping_syl_seq
+\tl_new:N \g__xjyutping_out_tl
+\tl_new:N \l__xjyutping_save_tl
 \cs_new_protected:Npn \__xjyutping_manual:nn #1#2
   {
       \str_case:VnF \l__xjyutping_width_tl
@@ -2061,30 +2247,69 @@
         { \tl_set_eq:NN \l__xjyutping_uniform_tl \l__xjyutping_width_tl }
       \__xjyutping_enable:
       \__xjyutping_split:n {#2}
-      \int_compare:nNnF { \tl_count:n {#1} } = { \seq_count:N \l__xjyutping_syl_seq }
+      \seq_gset_eq:NN \g__xjyutping_syl_seq \l__xjyutping_syl_seq
+      \int_gzero:N \g__xjyutping_manual_int
+      \tl_gclear:N \g__xjyutping_out_tl
+      \__xjyutping_manual_map:n {#1}
+      \int_compare:nNnF { \g__xjyutping_manual_int } = { \seq_count:N \l__xjyutping_syl_seq }
         {
           \msg_warning:nneeee { xjyutping } { count-mismatch }
-            { \exp_not:n {#1} } { \tl_count:n {#1} } { \exp_not:n {#2} }
-            { \seq_count:N \l__xjyutping_syl_seq }
+            { \exp_not:n {#1} } { \int_use:N \g__xjyutping_manual_int }
+            { \exp_not:n {#2} } { \seq_count:N \l__xjyutping_syl_seq }
         }
-      \tl_clear:N \l__xjyutping_out_tl
-      \tl_map_inline:nn {#1}
-        {
-          \seq_pop_left:NNTF \l__xjyutping_syl_seq \l__xjyutping_syl_tl
-            {
-              \tl_put_right:Ne \l__xjyutping_out_tl
-                {
-                  \exp_not:N \xjyutping@mark { u \exp_not:V \l__xjyutping_syl_tl }
-                  \exp_not:n {##1}
-                }
-            }
-            { \tl_put_right:Nn \l__xjyutping_out_tl {##1} }
-        }
-      % a reading given for something that is not a Chinese character is
-      % dropped at the end, not passed on to the next character
+      \tl_set_eq:NN \l__xjyutping_out_tl \g__xjyutping_out_tl
+      % a reading left pending is dropped at the end, not passed on to the
+      % next character
       \group_insert_after:N \__xjyutping_clear_mark:
       \l__xjyutping_out_tl
     \group_end:
+  }
+% The text is walked token by token; a brace group stays a group (so that
+% \textbf{行} keeps its argument) and is walked inside.
+\cs_new_protected:Npn \__xjyutping_manual_map:n #1
+  {
+    \tl_if_empty:nF {#1}
+      {
+        \tl_if_head_is_space:nTF {#1}
+          {
+            \tl_gput_right:Nn \g__xjyutping_out_tl { ~ }
+            \exp_args:No \__xjyutping_manual_map:n { \__xjyutping_drop_space:w #1 }
+          }
+          {
+            \tl_if_head_is_group:nTF {#1}
+              { \exp_args:Ne \__xjyutping_manual_group:n { \tl_head:n {#1} } }
+              { \use:e { \exp_not:N \__xjyutping_manual_token:N \tl_head:n {#1} } }
+            \exp_args:Ne \__xjyutping_manual_map:n { \tl_tail:n {#1} }
+          }
+      }
+  }
+\use:n { \cs_new:Npn \__xjyutping_drop_space:w } ~ { }
+\cs_new_protected:Npn \__xjyutping_manual_group:n #1
+  {
+    \group_begin:
+      \tl_set_eq:NN \l__xjyutping_save_tl \g__xjyutping_out_tl
+      \tl_gclear:N \g__xjyutping_out_tl
+      \__xjyutping_manual_map:n {#1}
+      \tl_gset:Ne \g__xjyutping_out_tl
+        { \exp_not:V \l__xjyutping_save_tl { \exp_not:V \g__xjyutping_out_tl } }
+    \group_end:
+  }
+\cs_new_protected:Npn \__xjyutping_manual_token:N #1
+  {
+    \__xjyutping_if_cjk_char:NTF #1
+      {
+        \int_gincr:N \g__xjyutping_manual_int
+        \seq_gpop_left:NNTF \g__xjyutping_syl_seq \l__xjyutping_syl_tl
+          {
+            \tl_gput_right:Ne \g__xjyutping_out_tl
+              {
+                \exp_not:N \xjyutping@mark { u \exp_not:V \l__xjyutping_syl_tl }
+                \exp_not:n {#1}
+              }
+          }
+          { \tl_gput_right:Nn \g__xjyutping_out_tl {#1} }
+      }
+      { \tl_gput_right:Nn \g__xjyutping_out_tl {#1} }
   }
 
 % nameref writes section and caption titles to the .aux as strings; the

@@ -7,6 +7,8 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage[debug]{xjyutping}
+\newenvironment{lesson}{\begin{jyutpingscope}}{\end{jyutpingscope}}
+\newcommand\tab{\begin{tabular}{c}中文\end{tabular}}
 \begin{document}
 \begin{jyutpingscope}
 我哋去銀行，行路返屋企。校長喺學校長大。
@@ -20,5 +22,17 @@
 \section{銀行同行路}\label{sec:a}見\ref{sec:a}同\nameref{sec:a}。
 
 \xjyutping{家行}{gaa1 hang4}聽日嚟。佢重未嚟。\setjyutping{重}{zung6}佢重未嚟。
+\end{jyutpingscope}
+
+\begin{lesson}
+我哋去銀\begin{center}行路\end{center}返屋企。\tab $x\mbox{數學}$
+\end{lesson}
+
+\begin{jyutpingscope}[linebreak]
+我哋去銀
+行路。
+
+\textbf{銀}
+行
 \end{jyutpingscope}
 \end{document}
