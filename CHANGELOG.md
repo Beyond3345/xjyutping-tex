@@ -103,6 +103,8 @@ and so on.
   that `linebreak` can see the line ends. The body ends where a `+b`
   argument ended: at the first `\end` that does not close a `\begin` of the
   body, so a scope can still be opened and closed by a user environment.
+- The README is shorter: an overview, the command and option tables, and the
+  attributions. The manual keeps the details.
 - The `.def` files carry `v1.2.0`.
 - The history of the project (this file) now lives in this repository.
 
@@ -1742,10 +1744,8 @@ Changes:
 - Both repositories got a `.gitignore`.
   - The user's interim commit had picked up `.DS_Store` and
     `tools/__pycache__/build-data.cpython-313.pyc`. The `.pyc` came from an
-    agent that imported the script with importlib, and was deleted in a
-    later commit.
-  - `.DS_Store` is still tracked; `git rm --cached .DS_Store` would remove
-    it.
+    agent that imported the script with importlib. Both were deleted in
+    later commits.
 
 ### 7.3 The LuaLaTeX backend
 
@@ -2250,8 +2250,7 @@ Not in the README:
    only freely licensed material. Before uploading, ask 石見田 for
    permission (a GitHub issue or jyut.net), or empty `BOOKS` in
    `tools/build-data.py` and rebuild the data.
-7. `.DS_Store` is still tracked (section 7.2).
-8. Items 11–15 of section 4 (R3-14, R2-14, the line pitch after deep lines,
+7. Items 11–15 of section 4 (R3-14, R2-14, the line pitch after deep lines,
    ambiguous readings, the segmentation tie-break) are unchanged.
 
 ### 7.8 Tests and release files at 1.2.0
