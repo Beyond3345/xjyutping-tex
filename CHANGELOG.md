@@ -31,6 +31,34 @@ written for the next maintainer, human or agent.
 There are no unreleased changes yet. Add new entries here under
 `### Added`, `### Changed`, `### Fixed` and so on.
 
+## [1.5.1] - 2026-10-02
+
+### Fixed
+
+- Readings found wrong in the last judged round of 1.5.0, such as 難為
+  *wai4*, 掌櫃 *gwai6*, 發辦 *baan6*, 上門 *mun4*, 加重 *zung6*, 小女 and 魔女
+  *neoi5*, 生產 and 生病 *saang1*, 傢俱 *geoi6*, 競爭力 *ging6*, 遊山玩水
+  *waan4* and 定喇 *ding6 laa3*.
+- 下 after 情況, 環境, 前提, 影響, 領導, 幫助 and 支持 is *haa6* (喺呢個情況下),
+  and 上 after 塗, 寫, 填 and 掛 is *soeng5*.
+- 當 is *dong3* "treat as" in 當佢係, 當我係 and 當你係.
+- 平 is *peng4* "cheap" before a particle (平囉, 平啦), before 少 or 咗 and
+  after a degree word (好平, 咁平, 超平, 最平, 唔平, 越嚟越平), while 打平
+  "draw" is *ping4*.
+- 卡 alone is *kaat1* "card", and 咁 is *gam2* before 嚟 (就係咁嚟㗎).
+- The `debug` log gives in brackets the readings other than the one chosen.
+  It gave those other than the default, so that a reading taken from the
+  characters after it or at the end of a run was listed there itself, while
+  the default was missing (呢ni1:m(nei4 le1 ni1 nei1), now
+  呢ni1:m(ne1 nei4 le1 nei1)).
+
+### Changed
+
+- A run that ends in 平 no longer reads it *peng4*, since names such as 鄧小平,
+  蔣平 and 阿平 end in it too; the readings of 鄧小平, 習近平 and 林雪平 are
+  now words.
+- The `.def` files carry `v1.5.1`.
+
 ## [1.5.0] - 2026-10-02
 
 ### Added
@@ -423,8 +451,8 @@ tests/render.sh tests/fancy-check.tex lualatex
 
 For the open issues, Section 4 gives the state at 1.0.0 and says which of
 them 1.1.0 resolved, while Section 7.7 gives the state after 1.2.0, Section
-8.5 what 1.3.0 adds, Section 9.7 what 1.4.0 leaves and Section 10.8 what
-1.5.0 leaves.
+8.5 what 1.3.0 adds, Section 9.7 what 1.4.0 leaves, Section 10.8 what
+1.5.0 leaves and Section 11.5 what 1.5.1 leaves.
 
 The review artefacts cited below (the repro `.tex` files and the review
 JSON) lived in the session's temporary directory and are not part of the
@@ -2871,3 +2899,174 @@ With the corpora in `jyutData` (its `README.md` says where each comes from),
 Overall, version 1.5.0 reads 95.8% of HKCanCor correctly (94.1% in 1.4.0),
 97.5% of the particles that CantoMap heard (79.0%) and 91.7% of the
 characters of fresh text on which the systems disagree (72.2%).
+
+## 11. Version 1.5.1: the errors left by round 4 (2026-10-02)
+
+### 11.1 The request
+
+After 1.5.0, the user asked whether the errors that round 4 left (Section
+10.6), mostly cases of context such as 到 after a verb, 為, 下, 咁 and 請 and
+words such as 難為 and 掌櫃, could be removed without causing regressions,
+and to fix them where they could, with quality again the focus. Since round
+4 then guided the changes, it could no longer test them, so a fifth round of
+new sentences was judged in the same way to test 1.5.1 (Section 11.4).
+
+### 11.2 The errors of round 4
+
+Round 4 left 80 errors in 1 266 judged characters, 65 among the 787
+characters on which the systems disagree (D) and 15 among the 479 on which
+they all agree (A). For each error we pooled the verdicts of all four rounds
+on the same word or pattern with the readings of HKCanCor, and a change was
+kept only if it lost nothing on the corpora with Jyutping, the Wikipedia
+samples and the earlier rounds, or if its few losses were explained and
+clearly outweighed. The errors fall into three groups,
+
+- readings of a word, or of a character next to a known word, that the data
+  can fix, such as 難為 *naan4 wai4*, 掌櫃 *gwai6*, 喺呢個情況下 *haa6*, 當佢係
+  *dong3* and 平囉 *peng4*,
+- cases in which the judges accepted one of two readings that are both in
+  use while the other evidence is split, such as 到 after a verb, 哦 *o4* and
+  *o6* and 嚟 *lai4* and *lei4*, and
+- names and literary readings of the stories of WSYue and WenetSpeech-Yue
+  (龍少雲 *siu3*, 姓程名咬金 *ming4*), together with text broken by the speech
+  recogniser or by the conversion from simplified characters.
+
+Specifically, of the 92 judged characters of 到 after a verb, *dou3* was
+accepted 72 times and *dou2* 63 times, while HKCanCor writes *dou2* 458
+times, so neither reading can be chosen without losing on one side, and the
+reading of rime is kept (Section 10.7).
+
+### 11.3 Changes to the data
+
+The changes to the readings are again all in the tables of
+`tools/build-data.py`, and the only change to the code is the `debug` log of
+Section 11.6.
+
+First, the words. 54 entries were added to `CURATED_WORDS`, such as 難為
+*naan4 wai4*, 掌櫃 *zoeng2 gwai6*, 發辦 *baan6*, 上門 *mun4*, 加重 *zung6*,
+小女 and 魔女 *neoi5*, 生產 and 生病 *saang1*, 傢俱 *geoi6*, 競爭力 *ging6*,
+遊山玩水 *waan4*, 定喇 *ding6 laa3*, 處理得 (so that 導致到處理得 is not split
+as 到處 + 理得) and 魚身 *jyu4*. 下 after 情況, 環境, 前提, 影響, 領導, 幫助, 支持
+and 劍 and 上 after 塗, 寫, 填 and 掛 are words with *haa6* and *soeng5*, as are
+鄧小平, 習近平 and 林雪平 with *ping4*.
+
+Then the characters. `CURATED_NEXT` reads 當 *dong3* "treat as" before 佢係,
+我係 and 你係 (a sample of WenetSpeech-Yue shows that these mostly mean "treat
+as"), 平 *peng4* "cheap" before a particle, 咗 or 少 (平囉, 平咗) and 咁 *gam2*
+before 嚟, and `respell` gives 呀嘛 *aa1* like 啊嘛. Since a degree word
+before 平 alone almost always means "cheap",
+好平, 咁平, 幾平, 超平, 最平, 又平, 越平, 唔平 and 越嚟越平 are words with
+*peng4*, while 平靜, 平時 and 平方 still win the split on frequency, and 打平
+"draw" is *ping4*. Lastly, 卡 alone is *kaat1* "card", as the judges read it
+in every judged case.
+
+Not every attempt survived the checks, and four were reverted,
+
+- a pattern that read 為 *wai6* before 國, 民 and 公 broke 劃為國家 on the
+  Wikipedia samples, so the phrases 為國為民, 為國捐軀 and 為民請命 became
+  words instead,
+- the reading *peng4* of 平 at the end of a run (1.5.0) read names such as
+  鄧小平, 蔣平 and 阿平 as "cheap", and in a sample of WenetSpeech-Yue most
+  single 平 at the end of an utterance were names or "draw" (一勝三平), so
+  the degree words above replaced it,
+- the first version of 1.5.1 read 當日 *dong3*, 競爭 *ging6*, 知識 *zi1* and
+  當佢哋 *dong3* as the round-4 judges did, but HKCanCor has 當日 *dong1* 4
+  times, 競爭 *ging3* 6 times and 知識 *zi3* 4 times, and 當佢哋 is mostly
+  "when they" (round 5 judged one so), so these went back to the readings of
+  1.5.0, except 競爭力, where HKCanCor (5 of 5) and the judges agree on
+  *ging6*, and
+- a rule that read 啊 and 呀 *aa4* before a question mark was rejected,
+  since the judges read *aa3* there in 58 of 60 cases.
+
+### 11.4 Results
+
+Since round 4 guided these changes, the fifth round tests them. It was
+prepared like round 4 (`eval/prepare_round.py r5`), with new sentences only,
+and 11 of its 1 280 characters were left out as bad text or undecided. On
+the judged rounds, the share of characters read right is,
+
+| Round | Kind | Characters | xjyutping 1.4.0 | xjyutping 1.5.0 | xjyutping 1.5.1 | ToJyutping 3.2.0 | auto-canto 0.2.3 | PyCantonese 5.0.0 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2 (tuning) | D | 489 | 80.4% | 94.3% | 94.3% | 69.5% | 53.2% | 43.8% |
+| 2 (tuning) | A | 300 | 92.0% | 97.7% | 97.7% | 95.0% | 95.0% | 95.0% |
+| 3 (tuning) | D | 986 | 73.1% | 95.6% | 95.9% | 63.1% | 54.4% | 32.3% |
+| 3 (tuning) | A | 595 | 93.9% | 98.3% | 98.5% | 97.5% | 97.5% | 96.0% |
+| 4 (test of 1.5.0, tuning of 1.5.1) | D | 787 | 72.2% | 91.7% | 95.0% | 62.4% | 54.6% | 39.4% |
+| 4 (test of 1.5.0, tuning of 1.5.1) | A | 479 | 94.8% | 96.9% | 97.9% | 96.9% | 96.9% | 96.0% |
+| 5 (test) | D | 792 | 74.6% | 94.9% | 95.3% | 60.7% | 51.3% | 34.5% |
+| 5 (test) | A | 477 | 94.5% | 97.7% | 97.7% | 97.7% | 97.5% | 96.2% |
+
+Looking at round 4, 31 of the 80 errors of 1.5.0 are fixed and none is
+added. On round 5, 1.5.1 fixes 3 of the 51 errors of 1.5.0 and adds none,
+and by corpus the characters of disagreement are right in 100.0% of the
+cases on MagicHub, 99.0% on SpiCE, 90.8% on WenetSpeech-Yue and 91.3% on
+WSYue (99.5%, 99.0%, 89.8% and 91.3% for 1.5.0). While the gain on round 4
+is large, most of it is tuning, since the words fixed there seldom recur,
+and the gain on fresh text is the 0.4 points of round 5. Since 1.5.0 also
+scores higher on round 5 than on round 4, the rounds differ in difficulty,
+and only versions judged on the same round can be compared.
+
+On the corpora with Jyutping, the scores of the whole of each corpus are,
+
+| | HKCanCor: all | Content | Particles | CantoMap particles (by ear) | CantoMap other words (dictionary) |
+| --- | --- | --- | --- | --- | --- |
+| xjyutping 1.5.0 | 95.79% | 97.99% | 81.15% | 97.45% | 95.90% |
+| xjyutping 1.5.1 | 95.80% | 98.00% | 81.14% | 97.45% | 95.91% |
+
+Against 1.5.0, 1.5.1 reads better 20 characters of HKCanCor (6 worse), 5 of
+CantoMap (1 worse) and 2 of the Wikipedia samples (none worse). The losses
+are three 平 "cheap" at the end of a clause without a degree word
+(雖然係平，但係), 卡 in 桀桀卡卡 *kaa1* (twice) and one 當你係 that means "when
+you are", while the one loss on CantoMap (當佢係東南西北) comes from its
+dictionary readings and is *dong3* in fact. The one loss on the earlier
+rounds is again a 平 at the end of a clause (有啲係平，) of round 3. On the
+held-out half of HKCanCor the score is 95.65% (95.64% in 1.5.0), and 157 of
+159 and 450 of 454 characters of the Wikipedia samples are right.
+
+### 11.5 Open issues
+
+Of the issues of Section 10.8, the first is narrowed, since 當 before 佢係,
+我係 and 你係, 平 after a degree word and 下 after a noun of circumstance
+are now read in context, while the others remain. Round 5 leaves 48 errors
+in 1 269 characters, which are mostly,
+
+- readings that need more context than the next two characters, such as 下
+  *haa5* and *haa6*, 行 (一行字 *hong4*, 行禮 *hang4*), 上, 相, 坐 and 使
+  (唔使用手 is split as 唔 + 使用 + 手),
+- names and literary readings of the stories converted from simplified
+  characters, such as 竇建德 *dau6*, 殷公 *jan1*, 鍾會 *wui6*, 郭少天 *siu3*,
+  生者 *sang1* and 遇着 *zoek6*, and
+- readings on which the judges and HKCanCor differ or that follow the
+  intonation, such as 哦 *o4*, 吓 *haa2*, 啊 *aa4* in a question and 嚟 *lei4*,
+  together with 到 after a verb (8 of the 49 errors left on round 4).
+
+Further, 係呀？ is still read *aa3*, while HKCanCor writes *aa4*, which is
+its convention (Section 10.7).
+
+### 11.6 Tests
+
+- While checking the archive for CTAN, we found that the brackets of the
+  `debug` log listed the readings other than the default (`\xjp@m@<char>`)
+  rather than those other than the one chosen. Since 1.5.0, a reading from
+  `next.tsv` can differ from the default, and the log then gave, for
+  example, 呢ni1:m(nei4 le1 ni1 nei1). `\__xjyutping_result:nnn` now joins the
+  default and the other readings and removes the chosen one, and the parity
+  checks of xjyutping-py and `eval/texparity.py` build the brackets in the
+  same way. The readings themselves do not change.
+- `tests/run-tests.sh` gives `readings ok` for all four jobs, and
+  `tests/regression.expected` differs from that of 1.5.0 only in the two
+  brackets of 呢 *ni1*.
+- `eval/texparity.py` typeset all the corpora with XeLaTeX, and the
+  segments of its debug log are identical to those of the Python package
+  (405 509 segments of 46 028 texts and 704 484 characters), with no TeX
+  error.
+- xjyutping-py's `test_corpus_tuned_readings` checks the readings of
+  Section 11.3 (超平, 蔣平, 好平靜, 打平, 當佢係, 當佢哋, 當日 and 情況下), and
+  its README's example of a guessed reading is now 佢當我細路, since
+  佢當我係朋友 is read right without help. The same example replaces it in
+  `xjyutping-doc.tex`.
+
+Overall, version 1.5.1 fixes 31 of the 80 errors that round 4 left in 1.5.0
+without adding any, and on the fresh sentences of round 5 its reading is
+judged right in 95.3% of the characters on which the systems disagree,
+against 94.9% for 1.5.0 and 60.7% for ToJyutping.

@@ -6,7 +6,7 @@
 %%          OpenCC HK/TW variant tables (Apache-2.0),
 %%          ToJyutping word list (CanCLID, BSD-2-Clause),
 %%          CC-Canto and CC-CEDICT Cantonese readings (CC BY-SA 3.0).
-\ProvidesFile{xjyutping-words.def}[2026/10/02 v1.5.0 xjyutping word data]
+\ProvidesFile{xjyutping-words.def}[2026/10/02 v1.5.1 xjyutping word data]
 \xjp@W 㓟皮=pai1 pei4;
 \xjp@W 㓟菠蘿皮=pai1 bo1 lo4 pei4;
 \xjp@W 㓟蘋果=pai1 ping4 gwo2;
@@ -1889,7 +1889,7 @@
 \xjp@W 上鎖=soeng5 so2;
 \xjp@W 上鏈=soeng5 lin2;
 \xjp@W 上鏡=soeng5 geng3;
-\xjp@W 上門=soeng5 mun2;
+\xjp@W 上門=soeng5 mun4;
 \xjp@W 上門費=soeng5 mun2 fai3;
 \xjp@W 上門開鎖=soeng5 mun2 hoi1 so2;
 \xjp@W 上限=soeng6 haan6;
@@ -4917,7 +4917,6 @@
 \xjp@W 交迫=gaau1 bik1;
 \xjp@W 交送=gaau1 sung3;
 \xjp@W 交通=gaau1 tung1;
-\xjp@W 交通卡=gaau1 tung1 kaat1;
 \xjp@W 交通圖=gaau1 tung1 tou4;
 \xjp@W 交通工具=gaau1 tung1 gung1 geoi6;
 \xjp@W 交通擁擠=gaau1 tung1 jung2 zai1;
@@ -6080,6 +6079,7 @@
 \xjp@W 伊波拉病毒=ji1 bo1 laai1 beng6 duk6;
 \xjp@W 伊犁哈薩克自治州=ji1 lai4 haa1 saat3 hak1 zi6 zi6 zau1;
 \xjp@W 伊盧利薩特=ji1 lou4 lei6 saat3 dak6;
+\xjp@W 伊薩卡=ji1 saat3 kaa1;
 \xjp@W 伊藤園=ji1 tang4 jyun6;
 \xjp@W 伊通滿族自治縣=ji1 tung1 mun5 zuk6 zi6 zi6 jyun6;
 \xjp@W 伊通火山羣=ji1 tung1 fo2 saan1 kwan4;
@@ -6784,7 +6784,7 @@
 \xjp@W 你唔使問=nei5 m4 sai2 man6;
 \xjp@W 你唔係㗎=nei5 m4 hai6 gaa3;
 \xjp@W 你唔係去=nei5 m4 hai6 heoi3;
-\xjp@W 你唔係呀嘛=nei5 m4 hai6 aa3 maa3;
+\xjp@W 你唔係呀嘛=nei5 m4 hai6 aa1 maa3;
 \xjp@W 你唔信=nei5 m4 seon3;
 \xjp@W 你唔好=nei5 m4 hou2;
 \xjp@W 你唔好理=nei5 m4 hou2 lei5;
@@ -8328,7 +8328,6 @@
 \xjp@W 借花敬佛=ze3 faa1 ging3 fat6;
 \xjp@W 借花獻佛=ze3 faa1 hin3 fat6;
 \xjp@W 借記=ze3 gei3;
-\xjp@W 借記卡=ze3 gei3 kaat1;
 \xjp@W 借詞=ze3 ci4;
 \xjp@W 借課室=ze3 fo3 sat1;
 \xjp@W 借讀=ze3 duk6;
@@ -9006,6 +9005,7 @@
 \xjp@W 傢俬=gaa1 si1;
 \xjp@W 傢俬舖=gaa1 si1 pou2;
 \xjp@W 傢俬雜物=gaa1 si1 zaap6 mat6;
+\xjp@W 傢俱=gaa1 geoi6;
 \xjp@W 傢具=gaa1 geoi6;
 \xjp@W 催乳激素=ceoi1 jyu5 gik1 sou3;
 \xjp@W 催促=ceoi1 cuk1;
@@ -9606,7 +9606,6 @@
 \xjp@W 儲物櫃=cyu5 mat6 gwai6;
 \xjp@W 儲精囊=cyu5 zing1 nong4;
 \xjp@W 儲蓄=cyu5 cuk1;
-\xjp@W 儲蓄卡=cyu5 cuk1 kaat1;
 \xjp@W 儲蓄咭=cyu5 cuk1 kaat1;
 \xjp@W 儲蓄帳戶=cyu5 cuk1 zoeng3 wu6;
 \xjp@W 儲蓄戶口=cyu5 cuk1 wu6 hau2;
@@ -10285,6 +10284,7 @@
 \xjp@W 內切球=noi6 cit3 kau4;
 \xjp@W 內功=noi6 gung1;
 \xjp@W 內務=noi6 mou6;
+\xjp@W 內卡河=noi6 kaa1 ho4;
 \xjp@W 內向=noi6 hoeng3;
 \xjp@W 內向型=noi6 hoeng3 jing4;
 \xjp@W 內含體=noi6 ham4 tai2;
@@ -10986,6 +10986,7 @@
 \xjp@W 公畝=gung1 mau5;
 \xjp@W 公益=gung1 jik1;
 \xjp@W 公益金=gung1 jik1 gam1;
+\xjp@W 公眾號=gung1 zung3 hou6;
 \xjp@W 公祭=gung1 zai3;
 \xjp@W 公私兼顧=gung1 si1 gim1 gu3;
 \xjp@W 公積金=gung1 zik1 gam1;
@@ -13159,6 +13160,7 @@
 \xjp@W 利喙=lei6 fui3;
 \xjp@W 利器=lei6 hei3;
 \xjp@W 利國利民=lei6 gwok3 lei6 man4;
+\xjp@W 利多卡因=lei6 do1 kaa1 jan1;
 \xjp@W 利多於弊=lei6 do1 jyu1 bai6;
 \xjp@W 利好=lei6 hou2;
 \xjp@W 利字當頭=lei6 zi6 dong1 tau4;
@@ -13211,7 +13213,6 @@
 \xjp@W 刪簡壓縮=saan1 gaan2 aat3 suk1;
 \xjp@W 刪繁就簡=saan1 faan4 zau6 gaan2;
 \xjp@W 刪除=saan1 ceoi4;
-\xjp@W 刮刮卡=gwaat3 gwaat3 kaat1;
 \xjp@W 刮刮叫=gwaat3 gwaat3 giu3;
 \xjp@W 刮刮埋埋=gwaat3 gwaat3 maai4 maai4;
 \xjp@W 刮削=gwaat3 soek3;
@@ -13497,6 +13498,7 @@
 \xjp@W 前所未聞=cin4 so2 mei6 man4;
 \xjp@W 前排=cin4 paai2;
 \xjp@W 前提=cin4 tai4;
+\xjp@W 前提下=cin4 tai4 haa6;
 \xjp@W 前提條件=cin4 tai4 tiu4 gin2;
 \xjp@W 前文=cin4 man4;
 \xjp@W 前方=cin4 fong1;
@@ -13879,6 +13881,7 @@
 \xjp@W 劉錫祥=lau4 sek6 coeng4;
 \xjp@W 劉鶚=lau4 ngok6;
 \xjp@W 劊子手=kui2 zi2 sau2;
+\xjp@W 劍下=gim3 haa6;
 \xjp@W 劍咀=gim3 zeoi2;
 \xjp@W 劍嘴鶥=gim3 zeoi2 mei4;
 \xjp@W 劍尖=gim3 zim1;
@@ -14152,7 +14155,7 @@
 \xjp@W 加里寧格勒=gaa1 lei5 ning4 gaak3 lak6;
 \xjp@W 加里波第=gaa1 lei5 bo1 dai6;
 \xjp@W 加里肋亞=gaa1 lei5 lak6 aa3;
-\xjp@W 加重=gaa1 cung5;
+\xjp@W 加重=gaa1 zung6;
 \xjp@W 加重語氣=gaa1 cung5 jyu5 hei3;
 \xjp@W 加錢=gaa1 cin2;
 \xjp@W 加鐘=gaa1 zung1;
@@ -15195,6 +15198,7 @@
 \xjp@W 千分之=cin1 fan6 zi1;
 \xjp@W 千副牌=cin1 fu3 paai2;
 \xjp@W 千千萬萬=cin1 cin1 maan6 maan6;
+\xjp@W 千卡=cin1 kaa1;
 \xjp@W 千古=cin1 gu2;
 \xjp@W 千古恨=cin1 gu2 han6;
 \xjp@W 千古罪人=cin1 gu2 zeoi6 jan4;
@@ -15705,13 +15709,20 @@
 \xjp@W 占有率=zim3 jau5 leot2;
 \xjp@W 占着茅坑不拉屎=zim3 zoek6 maau4 haang1 bat1 laai1 si2;
 \xjp@W 占美尼斯=zim1 mei5 nei4 si1;
+\xjp@W 卡丁車=kaa1 ding1 ce1;
 \xjp@W 卡介苗=kaa1 gaai3 miu4;
+\xjp@W 卡仙尼=kaa1 sin1 nei4;
 \xjp@W 卡位=kaa1 wai2;
 \xjp@W 卡住=kaa1 zyu6;
 \xjp@W 卡佬=kaa1 lou2;
 \xjp@W 卡債=kaat1 zaai3;
+\xjp@W 卡內基=kaa1 noi6 gei1;
 \xjp@W 卡其=kaa1 kei4;
 \xjp@W 卡冚卡=kaat1 kam2 kaat1;
+\xjp@W 卡利亞里=kaa1 lei6 aa3 lei5;
+\xjp@W 卡利卡特=kaa1 lei6 kaa1 dak6;
+\xjp@W 卡利多尼亞=kaa1 lei6 do1 nei4 aa3;
+\xjp@W 卡利科=kaa1 lei6 fo1;
 \xjp@W 卡到陰=kaa1 dou2 jam1;
 \xjp@W 卡加利=kaa1 gaa1 lei6;
 \xjp@W 卡卡聲=kaa4 kaa2 seng1;
@@ -15725,46 +15736,97 @@
 \xjp@W 卡啦蘇=kaa4 laa1 sou1;
 \xjp@W 卡喇=kaa3 laa1;
 \xjp@W 卡嚓=kaa1 caat3;
+\xjp@W 卡地亞=kaa1 dei6 aa3;
+\xjp@W 卡塔尼亞=kaa1 taap3 nei4 aa3;
 \xjp@W 卡塔爾=kaa1 taap3 ji5;
 \xjp@W 卡塔赫納=kaa1 taap3 haak1 naap6;
 \xjp@W 卡墊=kaa1 zin3;
 \xjp@W 卡士=kaa1 si2;
+\xjp@W 卡夫卡=kaa1 fu1 kaa1;
 \xjp@W 卡娃伊=kaa6 waa1 ji1;
 \xjp@W 卡尺=kaa1 cek3;
+\xjp@W 卡尼丁=kaa1 nei4 ding1;
+\xjp@W 卡巴斯基=kaa1 baa1 si1 gei1;
+\xjp@W 卡巴萊=kaa1 baa1 loi4;
 \xjp@W 卡布其諾=kaa1 bou3 kei4 nok6;
 \xjp@W 卡布其諾咖啡=kaa1 bou3 kei4 nok6 gaa3 fe1;
+\xjp@W 卡布奇諾=kaa1 bou3 kei4 nok6;
 \xjp@W 卡式帶=kaa1 sik1 daai2;
 \xjp@W 卡式機=kaa1 sik1 gei1;
 \xjp@W 卡式證=kaa1 sik1 zing3;
+\xjp@W 卡扎菲=kaa1 zaat3 fei1;
+\xjp@W 卡拉什尼科夫=kaa1 laai1 sap6 nei4 fo1 fu1;
+\xjp@W 卡拉卡斯=kaa1 laai1 kaa1 si1;
+\xjp@W 卡拉奇=kaa1 laai1 kei4;
+\xjp@W 卡拉姆昌德=kaa1 laai1 mou5 coeng1 dak1;
+\xjp@W 卡拉季奇=kaa1 laai1 gwai3 kei4;
+\xjp@W 卡拉布里亞=kaa1 laai1 bou3 lei5 aa3;
+\xjp@W 卡拉比拉=kaa1 laai1 bei2 laai1;
+\xjp@W 卡拉膠=kaa1 laai1 gaau1;
 \xjp@W 卡拉馬佐夫兄弟=kaa1 laai1 maa5 zo3 fu1 hing1 dai6;
 \xjp@W 卡數=kaat1 sou3;
+\xjp@W 卡文迪什=kaa1 man4 dik6 sap6;
+\xjp@W 卡斯特利翁=kaa1 si1 dak6 lei6 jung1;
+\xjp@W 卡斯特羅=kaa1 si1 dak6 lo4;
+\xjp@W 卡斯翠=kaa1 si1 ceoi3;
+\xjp@W 卡斯蒂利亞=kaa1 si1 dai3 lei6 aa3;
+\xjp@W 卡曲衫=kaa1 kuk1 saam1;
 \xjp@W 卡板=kaa1 baan2;
 \xjp@W 卡板車=kaa1 baan2 ce1;
+\xjp@W 卡桑德拉=kaa1 song1 dak1 laai1;
+\xjp@W 卡梅倫=kaa1 mui4 leon4;
+\xjp@W 卡森城=kaa1 sam1 sing4;
+\xjp@W 卡樂星=kaa1 lok6 sing1;
 \xjp@W 卡死=kaa1 sei2;
+\xjp@W 卡波耶拉=kaa1 bo1 je4 laai1;
 \xjp@W 卡波西氏肉瘤=kaa1 bo1 sai1 si6 juk6 lau4;
+\xjp@W 卡洛娜=kaa1 lok6 naa4;
+\xjp@W 卡洛斯=kaa1 lok6 si1;
 \xjp@W 卡爾加里=kaa1 ji5 gaa1 lei5;
+\xjp@W 卡爾巴拉=kaa1 ji5 baa1 laai1;
+\xjp@W 卡爾德龍=kaa1 ji5 dak1 lung4;
 \xjp@W 卡爾文=kaa1 ji5 man4;
 \xjp@W 卡爾文克萊因=kaa1 ji5 man4 hak1 loi4 jan1;
 \xjp@W 卡爾斯魯厄=kaa1 ji5 si1 lou5 ak1;
 \xjp@W 卡爾曼濾波=kaa1 ji5 maan6 leoi6 bo1;
 \xjp@W 卡爾紮伊=kaa1 ji5 zaat3 ji1;
+\xjp@W 卡爾頓=kaa1 ji5 deon6;
 \xjp@W 卡片=kaat1 pin2;
 \xjp@W 卡片夾=kaa1 pin2 gep2;
 \xjp@W 卡特彼勒公司=kaa1 dak6 bei2 lak6 gung1 si1;
+\xjp@W 卡特爾=kaa1 dak6 ji5;
+\xjp@W 卡瓦格博峯=kaa1 ngaa5 gaak3 bok3 fung1;
+\xjp@W 卡瓦格博峰=kaa1 ngaa5 gaak3 bok3 fung1;
 \xjp@W 卡盤=kaa1 pun4;
+\xjp@W 卡秋莎=kaa1 cau1 saa1;
 \xjp@W 卡窿=kaa1 lung1;
+\xjp@W 卡納塔克邦=kaa1 naap6 taap3 hak1 bong1;
+\xjp@W 卡納維拉爾角=kaa1 naap6 wai4 laai1 ji5 gok3;
+\xjp@W 卡納維爾角=kaa1 naap6 wai4 ji5 gok3;
+\xjp@W 卡納達語=kaa1 naap6 daat6 jyu5;
 \xjp@W 卡罅=kaa3 laa3;
+\xjp@W 卡羅利納=kaa1 lo4 lei6 naap6;
+\xjp@W 卡美拉=kaa1 mei5 laai1;
 \xjp@W 卡美洛=kaa1 mei5 lok6;
+\xjp@W 卡脖子=kaa1 but6 zi2;
+\xjp@W 卡薩布蘭卡=kaa1 saat3 bou3 laan4 kaa1;
+\xjp@W 卡薩諾瓦=kaa1 saat3 nok6 ngaa5;
+\xjp@W 卡西尼=kaa1 sai1 nei4;
+\xjp@W 卡西歐=kaa1 sai1 au1;
 \xjp@W 卡西米爾效應=kaa1 sai1 mai5 ji5 haau6 jing3;
+\xjp@W 卡西莫夫=kaa1 sai1 mok6 fu1;
 \xjp@W 卡賓槍=kaa1 ban1 coeng1;
 \xjp@W 卡路里=kaa1 lou6 lei5;
 \xjp@W 卡車=kaa1 ce1;
+\xjp@W 卡迪夫=kaa1 dik6 fu1;
 \xjp@W 卡通=kaa1 tung1;
 \xjp@W 卡通包=kaa1 tung1 baau1;
 \xjp@W 卡通片=kaa1 tung1 pin2;
 \xjp@W 卡那=kaa3 laa1;
 \xjp@W 卡邦尼=kaa1 bong1 nei4;
 \xjp@W 卡邦尼意粉=kaa1 bong1 nei4 ji3 fan2;
+\xjp@W 卡門柏乳酪=kaa1 mun4 paak3 jyu5 lok6;
+\xjp@W 卡門貝=kaa1 mun4 bui3;
 \xjp@W 卡關=kaa1 gwaan1;
 \xjp@W 卡類通信=kaa1 leoi6 tung1 seon3;
 \xjp@W 卡駱馳=kaa1 lok3 ci4;
@@ -16346,6 +16408,7 @@
 \xjp@W 又嬲又醜=jau6 nau1 jau6 cau2;
 \xjp@W 又嬲又驚=jau6 nau1 jau6 ging1;
 \xjp@W 又屎又巴閉=jau6 si2 jau6 baa1 bai3;
+\xjp@W 又平=jau6 peng4;
 \xjp@W 又幾似=jau6 gei2 ci5;
 \xjp@W 又幾盞喎=jau6 gei2 zaan2 wo3;
 \xjp@W 又打爛咗=jau6 daa2 laan6 zo2;
@@ -17754,6 +17817,7 @@
 \xjp@W 吉之島=gat1 zi1 dou2;
 \xjp@W 吉事=gat1 si6;
 \xjp@W 吉事果=gat1 si6 gwo2;
+\xjp@W 吉亞卡摩=gat1 aa3 kaa1 mo1;
 \xjp@W 吉人天相=gat1 jan4 tin1 soeng3;
 \xjp@W 吉人自有天相=gat1 jan4 zi6 jau5 tin1 soeng3;
 \xjp@W 吉他=gat1 taa1;
@@ -18565,7 +18629,7 @@
 \xjp@W 吽逗=ngau6 dau6;
 \xjp@W 吾生也有涯=ng4 sang1 jaa5 jau5 ngaai4;
 \xjp@W 呀呀聲=aa3 aa2 seng1;
-\xjp@W 呀嘛=aa6 maa3;
+\xjp@W 呀嘛=aa1 maa3;
 \xjp@W 呀支呀左=aa3 zi1 aa3 zo1;
 \xjp@W 呀爸=aa3 baa1;
 \xjp@W 呂塞爾斯海姆=leoi5 coi3 ji5 si1 hoi2 mou5;
@@ -19610,6 +19674,7 @@
 \xjp@W 哈伯太空望遠鏡=haa1 baak3 taai3 hung1 mong6 jyun5 geng3;
 \xjp@W 哈伯瑪斯=haa1 baak3 maa5 si1;
 \xjp@W 哈佬=haa1 lou2;
+\xjp@W 哈努卡=haa1 nou5 kaa1;
 \xjp@W 哈哈=haa1 haa1;
 \xjp@W 哈哈哈哈哈=haa1 haa1 haa1 haa1 haa1;
 \xjp@W 哈哈好咯=haa1 haa1 hou2 lo3;
@@ -19630,6 +19695,7 @@
 \xjp@W 哈爾濱=haa1 ji5 ban1;
 \xjp@W 哈特福德=haa1 dak6 fuk1 dak1;
 \xjp@W 哈瓦那=haa1 ngaa5 naa5;
+\xjp@W 哈米爾卡=haa1 mai5 ji5 kaa1;
 \xjp@W 哈薩克=haa1 saat3 hak1;
 \xjp@W 哈薩克斯坦=haa1 saat3 hak1 si1 taan2;
 \xjp@W 哈薩克語=haa1 saat3 hak1 jyu5;
@@ -20151,6 +20217,7 @@
 \xjp@W 唔少=m4 siu2;
 \xjp@W 唔少得=m4 siu2 dak1;
 \xjp@W 唔屌唔鬆化=m4 diu2 m4 sung1 faa3;
+\xjp@W 唔平=m4 peng4;
 \xjp@W 唔建議=m4 gin3 ji5;
 \xjp@W 唔彈=m4 daan6;
 \xjp@W 唔得=m4 dak1;
@@ -20462,6 +20529,7 @@
 \xjp@W 唔遲唔早=m4 ci4 m4 zou2;
 \xjp@W 唔選擇=m4 syun2 zaak6;
 \xjp@W 唔醒水=m4 sing2 seoi2;
+\xjp@W 唔重=m4 cung5;
 \xjp@W 唔錯=m4 co3;
 \xjp@W 唔錯唔錯=m4 co3 m4 co3;
 \xjp@W 唔錯啊=m4 co3 aa3;
@@ -20853,7 +20921,7 @@
 \xjp@W 啤咩啊=be1 me1 aa3;
 \xjp@W 啤哩叭啦=bi1 li1 baa1 laa1;
 \xjp@W 啤哩壁叻=bi4 li1 bek4 lek4;
-\xjp@W 啤啤=bi1 bi1;
+\xjp@W 啤啤=be1 be1;
 \xjp@W 啤啤仔=bi4 bi1 zai2;
 \xjp@W 啤啤佢=be1 be1 keoi5;
 \xjp@W 啤啤俘=pe1 pe1 fu1;
@@ -23295,6 +23363,7 @@
 \xjp@W 圖則=tou4 zik1;
 \xjp@W 圖博=tou4 bok3;
 \xjp@W 圖名=tou4 ming4;
+\xjp@W 圖坦卡門=tou4 taan2 kaa1 mun4;
 \xjp@W 圖層=tou4 cang4;
 \xjp@W 圖形=tou4 jing4;
 \xjp@W 圖形卡=tou4 jing4 kaat1;
@@ -24572,6 +24641,7 @@
 \xjp@W 塔里班=taap3 lei5 baan1;
 \xjp@W 塔門漁民=taap3 mun4 jyu4 man4;
 \xjp@W 塕埲=jung2 pung1;
+\xjp@W 塗上=tou4 soeng5;
 \xjp@W 塗家=tou4 gaa1;
 \xjp@W 塗寫=tou4 se2;
 \xjp@W 塗抹=tou4 mut3;
@@ -24647,6 +24717,7 @@
 \xjp@W 塞車吖嘛=sak1 ce1 aa1 maa3;
 \xjp@W 塞錢入你袋=sak1 cin2 jap6 nei5 doi2;
 \xjp@W 塞韋里諾=coi3 wai5 lei5 nok6;
+\xjp@W 填上=tin4 soeng5;
 \xjp@W 填充=tin4 cung1;
 \xjp@W 填充劑=tin4 cung1 zai1;
 \xjp@W 填列=tin4 lit6;
@@ -24806,6 +24877,7 @@
 \xjp@W 墨畫=mak6 waa2;
 \xjp@W 墨盒=mak6 hap2;
 \xjp@W 墨硯=mak6 jin2;
+\xjp@W 墨竹工卡=mak6 zuk1 gung1 kaa1;
 \xjp@W 墨筆=mak6 bat1;
 \xjp@W 墨紙=mak6 zi2;
 \xjp@W 墨累=mak6 leoi6;
@@ -27667,6 +27739,7 @@
 \xjp@W 奢麗=ce1 lai6;
 \xjp@W 奧丁諧振器=ou3 ding1 haai4 zan3 hei3;
 \xjp@W 奧匈帝國=ou3 hung1 dai3 gwok3;
+\xjp@W 奧卡姆剃刀=ou3 kaa1 mou5 tai3 dou1;
 \xjp@W 奧地利=ou3 dei6 lei6;
 \xjp@W 奧塞羅=ou3 coi3 lo4;
 \xjp@W 奧妙=ou3 miu6;
@@ -29685,6 +29758,7 @@
 \xjp@W 安唔安排=on1 m4 on1 paai4;
 \xjp@W 安圖=on1 tou4;
 \xjp@W 安土重遷=on1 tou2 cung4 cin1;
+\xjp@W 安地卡及巴布達=on1 dei6 kaa1 kap6 baa1 bou3 daat6;
 \xjp@W 安培=on1 pui4;
 \xjp@W 安塞=on1 coi3;
 \xjp@W 安士=on1 si2;
@@ -29929,7 +30003,7 @@
 \xjp@W 定啦=ding2 laa1;
 \xjp@W 定啲啲=ding6 di1 di1;
 \xjp@W 定啲嚟=ding6 di1 lai4;
-\xjp@W 定喇=ding2 laak3;
+\xjp@W 定喇=ding6 laa3;
 \xjp@W 定嘞=ding2 laak3;
 \xjp@W 定型=ding6 jing4;
 \xjp@W 定型水=ding6 jing4 seoi2;
@@ -30787,6 +30861,7 @@
 \xjp@W 審酌=sam2 zoek3;
 \xjp@W 審閱=sam2 jyut6;
 \xjp@W 審音=sam2 jam1;
+\xjp@W 寫上=se2 soeng5;
 \xjp@W 寫下=se2 haa6;
 \xjp@W 寫代碼=se2 doi6 maa5;
 \xjp@W 寫低=se2 dai1;
@@ -31394,6 +31469,7 @@
 \xjp@W 導管=dou6 gun2;
 \xjp@W 導管組織=dou6 gun2 zou2 zik1;
 \xjp@W 導致=dou6 zi3;
+\xjp@W 導致到=dou6 zi3 dou3;
 \xjp@W 導航=dou6 hong4;
 \xjp@W 導航員=dou6 hong4 jyun4;
 \xjp@W 導航鍵=dou6 hong4 gin6;
@@ -31476,7 +31552,7 @@
 \xjp@W 小壽星=siu2 sau6 sing1;
 \xjp@W 小太太=siu2 taai3 taai2;
 \xjp@W 小太平鳥=siu2 taai3 ping4 niu5;
-\xjp@W 小女=siu2 neoi2;
+\xjp@W 小女=siu2 neoi5;
 \xjp@W 小女皇=siu2 neoi5 wong4;
 \xjp@W 小妹=siu2 mui2;
 \xjp@W 小姐=siu2 ze2;
@@ -31888,6 +31964,7 @@
 \xjp@W 尤其=jau4 kei4;
 \xjp@W 尤其係=jau4 kei4 hai6;
 \xjp@W 尤其是=jau4 kei4 si6;
+\xjp@W 尤卡坦=jau4 kaa1 taan2;
 \xjp@W 尤爲=jau4 wai4;
 \xjp@W 尤爾欽科=jau4 ji5 jam1 fo1;
 \xjp@W 尤物=jau4 mat6;
@@ -33261,6 +33338,7 @@
 \xjp@W 巴爾喀什湖=baa1 ji5 kaa3 sap6 wu4;
 \xjp@W 巴爾幹半島=baa1 ji5 gon3 bun3 dou2;
 \xjp@W 巴甫洛夫=baa1 pou2 lok6 fu1;
+\xjp@W 巴祖卡=baa1 zou2 kaa1;
 \xjp@W 巴結=baa1 git3;
 \xjp@W 巴絲=baa1 si1;
 \xjp@W 巴膠=baa1 gaau1;
@@ -33419,6 +33497,7 @@
 \xjp@W 帕米爾山脈=paak3 mai5 ji5 saan1 mak6;
 \xjp@W 帕米爾高原=paak3 mai5 ji5 gou1 jyun4;
 \xjp@W 帕累托法則=paak3 leoi6 tok3 faat3 zak1;
+\xjp@W 帕蘭卡=paak3 laan4 kaa1;
 \xjp@W 帕金森病=paak3 gam1 sam1 beng6;
 \xjp@W 帖撒羅尼迦=tip3 saat3 lo4 nei4 gaa1;
 \xjp@W 帖撒羅尼迦前書=tip3 saat3 lo4 nei4 gaa1 cin4 syu1;
@@ -33627,6 +33706,7 @@
 \xjp@W 幫凶=bong1 hung1;
 \xjp@W 幫到你=bong1 dou3 nei5;
 \xjp@W 幫助=bong1 zo6;
+\xjp@W 幫助下=bong1 zo6 haa6;
 \xjp@W 幫助之下=bong1 zo6 zi1 haa6;
 \xjp@W 幫口=bong1 hau2;
 \xjp@W 幫咗人=bong1 zo2 jan4;
@@ -35227,6 +35307,7 @@
 \xjp@W 影音=jing2 jam1;
 \xjp@W 影音器材=jing2 jam1 hei3 coi4;
 \xjp@W 影響=jing2 hoeng2;
+\xjp@W 影響下=jing2 hoeng2 haa6;
 \xjp@W 影響健康=jing2 hoeng2 gin6 hong1;
 \xjp@W 影響力=jing2 hoeng2 lik6;
 \xjp@W 彳亍=cik1 cuk1;
@@ -37246,6 +37327,7 @@
 \xjp@W 情殺=cing4 saat3;
 \xjp@W 情比金堅=cing4 bei2 gam1 gin1;
 \xjp@W 情況=cing4 fong3;
+\xjp@W 情況下=cing4 fong3 haa6;
 \xjp@W 情液=cing4 jik6;
 \xjp@W 情深款款=cing4 sam1 fun2 fun2;
 \xjp@W 情深義重=cing4 sam1 ji6 zung6;
@@ -39193,6 +39275,7 @@
 \xjp@W 房產中介=fong4 caan2 zung1 gaai3;
 \xjp@W 房祖名=fong4 zou2 ming4;
 \xjp@W 房署=fong4 cyu5;
+\xjp@W 房舍=fong4 se3;
 \xjp@W 房艙=fong4 cong1;
 \xjp@W 房車=fong2 ce1;
 \xjp@W 房鋪租售=fong4 pou3 zou1 sau6;
@@ -39768,6 +39851,7 @@
 \xjp@W 打工妹=daa2 gung1 mui1;
 \xjp@W 打工廠工=daa2 gung1 cong2 gung1;
 \xjp@W 打工皇帝=daa2 gung1 wong4 dai3;
+\xjp@W 打平=daa2 ping4;
 \xjp@W 打底=daa2 dai2;
 \xjp@W 打底褲=daa2 dai2 fu3;
 \xjp@W 打後=daa2 hau6;
@@ -40212,6 +40296,7 @@
 \xjp@W 托派=tok3 paai3;
 \xjp@W 托炮=tok3 paau3;
 \xjp@W 托病=tok3 beng6;
+\xjp@W 托皮卡=tok3 pei4 kaa1;
 \xjp@W 托盤=tok3 pun2;
 \xjp@W 托盤車=tok3 pun4 ce1;
 \xjp@W 托福=tok3 fuk1;
@@ -41128,7 +41213,6 @@
 \xjp@W 抽血=cau1 hyut3;
 \xjp@W 抽血紙=cau1 hyut3 zi2;
 \xjp@W 抽褲=jau1 fu3;
-\xjp@W 抽認卡=cau1 jing6 kaat1;
 \xjp@W 抽調=cau1 diu6;
 \xjp@W 抽象=cau1 zoeng6;
 \xjp@W 抽象域=cau1 zoeng6 wik6;
@@ -41231,6 +41315,7 @@
 \xjp@W 拉交情=laai1 gaau1 cing4;
 \xjp@W 拉人=laai1 jan4;
 \xjp@W 拉人封艇=laai1 jan4 fung1 teng5;
+\xjp@W 拉什卡爾加=laai1 sap6 kaa1 ji5 gaa1;
 \xjp@W 拉伸強度=laai1 san1 koeng4 dou6;
 \xjp@W 拉個平過=laai1 go3 ping4 gwo3;
 \xjp@W 拉個手=laai1 go3 sau2;
@@ -41292,6 +41377,7 @@
 \xjp@W 拉筋=laai1 gan1;
 \xjp@W 拉管=laai1 gun2;
 \xjp@W 拉米夫定=laai1 mai5 fu1 ding6;
+\xjp@W 拉納卡=laai1 naap6 kaa1;
 \xjp@W 拉線=laai1 sin3;
 \xjp@W 拉纜=laai1 laam6;
 \xjp@W 拉脫維亞=laai1 tyut3 wai4 aa3;
@@ -42612,7 +42698,7 @@
 \xjp@W 掌政=zoeng2 zing3;
 \xjp@W 掌故=zoeng2 gu3;
 \xjp@W 掌柜=zoeng2 gwai2;
-\xjp@W 掌櫃=zoeng2 gwai2;
+\xjp@W 掌櫃=zoeng2 gwai6;
 \xjp@W 掌權=zoeng2 kyun4;
 \xjp@W 掌璽大臣=zoeng2 saai2 daai6 san4;
 \xjp@W 掌相=zoeng2 soeng3;
@@ -42763,6 +42849,7 @@
 \xjp@W 掙扎=zang1 zaat3;
 \xjp@W 掙滿晒=zaang6 mun5 saai3;
 \xjp@W 掙脫=zang1 tyut3;
+\xjp@W 掛上=gwaa3 soeng5;
 \xjp@W 掛住=gwaa3 zyu6;
 \xjp@W 掛住你咯=gwaa3 zyu6 nei5 lo3;
 \xjp@W 掛住我啊=gwaa3 zyu6 ngo5 aa3;
@@ -44235,6 +44322,7 @@
 \xjp@W 摧殘=ceoi1 caan4;
 \xjp@W 摧毀=ceoi1 wai2;
 \xjp@W 摩些=mo1 se1;
+\xjp@W 摩卡=mo1 kaa1;
 \xjp@W 摩卡咖啡=mo1 kaa1 gaa3 fe1;
 \xjp@W 摩囉差玩音樂=mo1 lo1 caa1 waan2 jam1 ngok6;
 \xjp@W 摩囉差都有殖民地=mo1 lo1 caa1 dou1 jau5 zik6 man4 dei6;
@@ -45594,6 +45682,7 @@
 \xjp@W 支承=zi1 sing4;
 \xjp@W 支招=zi1 ziu1;
 \xjp@W 支持=zi1 ci4;
+\xjp@W 支持下=zi1 ci4 haa6;
 \xjp@W 支持下你=zi1 ci4 haa5 nei5;
 \xjp@W 支持支持=zi1 ci4 zi1 ci4;
 \xjp@W 支持者=zi1 ci4 ze2;
@@ -47969,6 +48058,7 @@
 \xjp@W 昂首挺胸=ngong5 sau2 ting5 hung1;
 \xjp@W 昆仲=kwan1 zung6;
 \xjp@W 昆劇=kwan1 kek6;
+\xjp@W 昆卡=kwan1 kaa1;
 \xjp@W 昆布=kwan1 bou3;
 \xjp@W 昆廷=kwan1 ting4;
 \xjp@W 昆明=kwan1 ming4;
@@ -48660,7 +48750,6 @@
 \xjp@W 智者見智=zi3 ze2 gin3 zi3;
 \xjp@W 智育=zi3 juk6;
 \xjp@W 智能=zi3 nang4;
-\xjp@W 智能卡=zi3 nang4 kaat1;
 \xjp@W 智能手機=zi3 nang4 sau2 gei1;
 \xjp@W 智能設計=zi3 nang4 cit3 gai3;
 \xjp@W 智能障礙=zi3 nang4 zoeng3 ngoi6;
@@ -50176,6 +50265,7 @@
 \xjp@W 木偶戲=muk6 ngau5 hei3;
 \xjp@W 木偶秀=muk6 ngau5 sau3;
 \xjp@W 木匠=muk6 zoeng6;
+\xjp@W 木卡姆=muk6 kaa1 mou5;
 \xjp@W 木口木面=muk6 hau2 muk6 min6;
 \xjp@W 木吒=muk6 zaa1;
 \xjp@W 木吶=muk6 naap6;
@@ -50923,6 +51013,7 @@
 \xjp@W 林語堂=lam4 jyu5 tong2;
 \xjp@W 林鄭=lam4 zeng6;
 \xjp@W 林鄭月娥=lam4 zeng6 jyut6 ngo4;
+\xjp@W 林雪平=lam4 syut3 ping4;
 \xjp@W 林鷚=lam4 lau6;
 \xjp@W 林鷸=lam4 wat6;
 \xjp@W 枘鑿=jeoi6 zok6;
@@ -56058,6 +56149,7 @@
 \xjp@W 波瀾=bo1 laan4;
 \xjp@W 波瀾壯闊=bo1 laan4 zong3 fut3;
 \xjp@W 波瀾起伏=bo1 laan4 hei2 fuk6;
+\xjp@W 波爾卡=bo1 ji5 kaa1;
 \xjp@W 波牛=bo1 ngau4;
 \xjp@W 波特率=bo1 dak6 leot2;
 \xjp@W 波狀=bo1 zong6;
@@ -57962,7 +58054,6 @@
 \xjp@W 游乾水=jau4 gon1 seoi2;
 \xjp@W 游埠=jau4 fau6;
 \xjp@W 游客止步=jau4 haak3 zi2 bou6;
-\xjp@W 游山玩水=jau4 saan1 wun6 seoi2;
 \xjp@W 游弋=jau4 jik6;
 \xjp@W 游戲池=jau4 hei3 ci4;
 \xjp@W 游擊=jau4 gik1;
@@ -58386,6 +58477,7 @@
 \xjp@W 滋陰=zi1 jam1;
 \xjp@W 滋養=zi1 joeng5;
 \xjp@W 滋養層=zi1 joeng5 cang4;
+\xjp@W 滌卡=dik6 kaa1;
 \xjp@W 滌去=dik6 heoi3;
 \xjp@W 滌塵=dik6 can4;
 \xjp@W 滌慮=dik6 leoi6;
@@ -58886,6 +58978,7 @@
 \xjp@W 潔淨無瑕=git3 zing6 mou4 haa4;
 \xjp@W 潔癖=git3 pik1;
 \xjp@W 潔白=git3 baak6;
+\xjp@W 潔西卡=git3 sai1 kaa1;
 \xjp@W 潔身自好=git3 san1 zi6 hou2;
 \xjp@W 潔身自愛=git3 san1 zi6 oi3;
 \xjp@W 潔面露=git3 min6 lou6;
@@ -59793,7 +59886,10 @@
 \xjp@W 為保護=wai6 bou2 wu6;
 \xjp@W 為免=wai6 min5;
 \xjp@W 為咩=wai6 me1;
+\xjp@W 為國捐軀=wai6 gwok3 gyun1 keoi1;
+\xjp@W 為國為民=wai6 gwok3 wai6 man4;
 \xjp@W 為方便=wai6 fong1 bin6;
+\xjp@W 為民請命=wai6 man4 cing2 ming6;
 \xjp@W 為求=wai6 kau4;
 \xjp@W 為的是=wai6 dik1 si6;
 \xjp@W 為確保=wai6 kok3 bou2;
@@ -61597,6 +61693,7 @@
 \xjp@W 爲善最樂=wai4 sin6 zeoi3 lok6;
 \xjp@W 爲國出力=wai4 gwok3 ceot1 lik6;
 \xjp@W 爲國捐軀=wai6 gwok3 gyun1 keoi1;
+\xjp@W 爲國爲民=wai6 gwok3 wai6 man4;
 \xjp@W 爲威喂=wai4 wai1 wai3;
 \xjp@W 爲害=wai4 hoi6;
 \xjp@W 爲富不仁=wai4 fu3 bat1 jan4;
@@ -62044,6 +62141,7 @@
 \xjp@W 牟平區=muk6 ping4 keoi1;
 \xjp@W 牠們=taa1 mun4;
 \xjp@W 牡丹=maau5 daan1;
+\xjp@W 牡丹卡=maau5 daan1 kaa1;
 \xjp@W 牡丹樓=maau5 daan1 lau4;
 \xjp@W 牡丹皮=maau5 daan1 pei4;
 \xjp@W 牡丹雖好=maau5 daan1 seoi1 hou2;
@@ -63521,6 +63619,7 @@
 \xjp@W 瑤臺=jiu4 ji4;
 \xjp@W 瑪仁糖=maa5 jan4 tong2;
 \xjp@W 瑪俐歐=maa5 lei6 au1;
+\xjp@W 瑪卡=maa5 kaa1;
 \xjp@W 瑪多=maa5 do1;
 \xjp@W 瑪律=maa5 leot6;
 \xjp@W 瑪瑙=maa5 nou5;
@@ -63559,6 +63658,7 @@
 \xjp@W 環保鬥士=waan4 bou2 dau3 si6;
 \xjp@W 環化=waan4 faa3;
 \xjp@W 環境=waan4 ging2;
+\xjp@W 環境下=waan4 ging2 haa6;
 \xjp@W 環境保護署=waan4 ging2 bou2 wu6 cyu5;
 \xjp@W 環境問題=waan4 ging2 man6 tai4;
 \xjp@W 環境影響評估=waan4 ging2 jing2 hoeng2 ping4 gu2;
@@ -63644,6 +63744,8 @@
 \xjp@W 瓜褦藤=gwaa1 nang3 tang4;
 \xjp@W 瓜賴藤藤賴瓜=gwaa1 laai6 tang4 tang4 laai6 gwaa1;
 \xjp@W 瓜農=gwaa1 nung4;
+\xjp@W 瓜達卡納爾島=gwaa1 daat6 kaa1 naap6 ji5 dou2;
+\xjp@W 瓜達卡納爾戰役=gwaa1 daat6 kaa1 naap6 ji5 zin3 jik6;
 \xjp@W 瓜達拉馬=gwaa1 daat6 laai1 maa5;
 \xjp@W 瓜𠮨藤藤𠮨瓜=gwaa1 naai3 tang4 tan4 naai3 gwaa1;
 \xjp@W 瓠瓜=wu6 gwaa1;
@@ -64062,7 +64164,7 @@
 \xjp@W 生生不息=sang1 sang1 bat1 sik1;
 \xjp@W 生生世世=sang1 sang1 sai3 sai3;
 \xjp@W 生生猛猛=saang1 saang1 maang5 maang5;
-\xjp@W 生產=sang1 caan2;
+\xjp@W 生產=saang1 caan2;
 \xjp@W 生產力=sang1 caan2 lik6;
 \xjp@W 生產勞動=sang1 caan2 lou4 dung6;
 \xjp@W 生產反應堆=sang1 caan2 faan2 jing3 deoi1;
@@ -64071,14 +64173,12 @@
 \xjp@W 生產線=sang1 caan2 sin3;
 \xjp@W 生產費=sang1 caan2 fai3;
 \xjp@W 生產資料=sang1 caan2 zi1 liu2;
-\xjp@W 生產量=sang1 caan2 loeng6;
 \xjp@W 生產關係=sang1 caan2 gwaan1 hai6;
-\xjp@W 生產隊=sang1 caan2 deoi2;
 \xjp@W 生番=saang1 faan1;
 \xjp@W 生番薯=saang1 faan1 syu4;
 \xjp@W 生疏=saang1 so1;
 \xjp@W 生疑=sang1 ji4;
-\xjp@W 生病=sang1 beng6;
+\xjp@W 生病=saang1 beng6;
 \xjp@W 生瘌痢=saang1 laat3 lei1;
 \xjp@W 生癪=saang1 zik1;
 \xjp@W 生眼挑針=saang1 ngaan5 tiu1 zam1;
@@ -64840,6 +64940,7 @@
 \xjp@W 畜肥=cuk1 fei4;
 \xjp@W 畜類=cuk1 leoi6;
 \xjp@W 畝產量=mau5 caan2 loeng6;
+\xjp@W 畢卡索=bat1 kaa1 sok3;
 \xjp@W 畢命=bat1 ming6;
 \xjp@W 畢地=bat1 dei6;
 \xjp@W 畢恭畢敬=bat1 gung1 bat1 ging3;
@@ -65955,7 +66056,7 @@
 \xjp@W 發軔=faat3 jan6;
 \xjp@W 發軟=faat3 jyun5;
 \xjp@W 發軟蹄=faat3 jyun5 tai4;
-\xjp@W 發辦=faat3 baan2;
+\xjp@W 發辦=faat3 baan6;
 \xjp@W 發送=faat3 sung3;
 \xjp@W 發送功率=faat3 sung3 gung1 leot2;
 \xjp@W 發送器=faat3 sung3 hei3;
@@ -66624,6 +66725,7 @@
 \xjp@W 皮包=pei4 baau1;
 \xjp@W 皮包骨=pei4 baau1 gwat1;
 \xjp@W 皮包骨頭=pei4 baau1 gwat1 tau4;
+\xjp@W 皮卡爾=pei4 kaa1 ji5;
 \xjp@W 皮喼=pei4 gip1;
 \xjp@W 皮嘢=pei4 je5;
 \xjp@W 皮圈=pei4 hyun1;
@@ -66944,6 +67046,7 @@
 \xjp@W 盤龍臥虎=pun4 lung4 ngo6 fu2;
 \xjp@W 盥洗室=gun3 sai2 sat1;
 \xjp@W 盥洗盆=gun3 sai2 pun4;
+\xjp@W 盧卡=lou4 kaa1;
 \xjp@W 盧塞恩=lou4 coi3 jan1;
 \xjp@W 盧布=lou4 bou3;
 \xjp@W 盧旺達=lou4 wong6 daat6;
@@ -66952,6 +67055,7 @@
 \xjp@W 盧溝橋事變=lou4 kau1 kiu4 si6 bin3;
 \xjp@W 盧照鄰=lou4 ziu3 leon4;
 \xjp@W 盧瓦爾河=lou4 ngaa5 ji5 ho4;
+\xjp@W 盧薩卡=lou4 saat3 kaa1;
 \xjp@W 盪失路=dong6 sat1 lou6;
 \xjp@W 盪漾=dong6 joeng6;
 \xjp@W 盪然=dong6 jin4;
@@ -68286,6 +68390,7 @@
 \xjp@W 瞓着=fan3 zoek6;
 \xjp@W 瞓着未=fan3 zoek6 mei6;
 \xjp@W 瞓着眼=fan3 zoek6 ngaan5;
+\xjp@W 瞓緊覺=fan3 gan2 gaau3;
 \xjp@W 瞓耐啲=fan3 noi6 di1;
 \xjp@W 瞓腍晒=fan3 nam4 saai3;
 \xjp@W 瞓街=fan3 gaai1;
@@ -71209,7 +71314,7 @@
 \xjp@W 競投=ging3 tau4;
 \xjp@W 競步=ging3 bou6;
 \xjp@W 競爭=ging3 zang1;
-\xjp@W 競爭力=ging3 zang1 lik6;
+\xjp@W 競爭力=ging6 zang1 lik6;
 \xjp@W 競爭和聚合=ging6 zang1 wo4 zeoi6 hap6;
 \xjp@W 競爭性=ging6 zang1 sing3;
 \xjp@W 競爭模式=ging6 zang1 mou4 sik1;
@@ -72979,6 +73084,8 @@
 \xjp@W 納鴻=naap6 hung4;
 \xjp@W 紐倫堡=nau2 leon4 bou2;
 \xjp@W 紐元=nau2 jyun4;
+\xjp@W 紐卡斯爾=nau2 kaa1 si1 ji5;
+\xjp@W 紐卡素=nau2 kaa1 sou3;
 \xjp@W 紐埃=nau2 aai1;
 \xjp@W 紐子=nau2 zi2;
 \xjp@W 紐幾內亞=nau2 gei1 noi6 aa3;
@@ -73086,7 +73193,7 @@
 \xjp@W 紙紮舖=zi2 zaat3 pou2;
 \xjp@W 紙菸=zi2 jin1;
 \xjp@W 紙葉子=zi2 jip6 zi2;
-\xjp@W 紙角=zi1 gok3;
+\xjp@W 紙角=zi2 gok3;
 \xjp@W 紙貴洛陽=zi2 gwai3 lok3 joeng4;
 \xjp@W 紙質=zi2 zat1;
 \xjp@W 紙鈔=zi2 caau1;
@@ -74950,6 +75057,7 @@
 \xjp@W 羅宋湯=lo4 sung3 tong1;
 \xjp@W 羅密歐與朱麗葉=lo4 mat6 au1 jyu5 zyu1 lai6 jip6;
 \xjp@W 羅巴切夫斯基=lo4 baa1 cit3 fu1 si1 gei1;
+\xjp@W 羅布林卡=lo4 bou3 lam4 kaa1;
 \xjp@W 羅布泊=lo4 bou3 bok6;
 \xjp@W 羅布麻=lo4 bou3 maa4;
 \xjp@W 羅庚=lo4 gaang1;
@@ -75336,6 +75444,7 @@
 \xjp@W 習慣用語=zaap6 gwaan3 jung6 jyu5;
 \xjp@W 習慣自然=zaap6 gwaan3 zi6 jin4;
 \xjp@W 習武=zaap6 mou5;
+\xjp@W 習近平=zaap6 gan6 ping4;
 \xjp@W 習非成是=zaap6 fei1 sing4 si6;
 \xjp@W 翔實=coeng4 sat6;
 \xjp@W 翕動=jap1 dung6;
@@ -76352,6 +76461,7 @@
 \xjp@W 聰明=cung1 ming4;
 \xjp@W 聰明一世=cung1 ming4 jat1 sai3;
 \xjp@W 聰明伶俐=cung1 ming4 ling4 lei6;
+\xjp@W 聰明卡=cung1 ming4 kaa1;
 \xjp@W 聰明反被聰明誤=cung1 ming4 faan2 bei6 cung1 ming4 ng6;
 \xjp@W 聰明過頭=cung1 ming4 gwo3 tau4;
 \xjp@W 聰穎=cung1 wing6;
@@ -79095,6 +79205,7 @@
 \xjp@W 艾草=ngaai6 cou2;
 \xjp@W 艾菲爾鐵塔=ngaai6 fei1 ji5 tit3 taap3;
 \xjp@W 艾葉油=ngaai6 jip6 jau4;
+\xjp@W 艾迪卡拉=ngaai6 dik6 kaa1 laai1;
 \xjp@W 艾迪生=ngaai6 dik6 sang1;
 \xjp@W 艾鼬=ngaai6 jau6;
 \xjp@W 芋絲=wu6 si1;
@@ -80242,6 +80353,7 @@
 \xjp@W 菸黑叉尾海燕=jin1 hak1 caa1 mei5 hoi2 jin3;
 \xjp@W 萃取=zyut3 ceoi2;
 \xjp@W 萇楚=coeng4 co2;
+\xjp@W 萊卡=loi4 kaa1;
 \xjp@W 萊姆酒=loi4 mou5 zau2;
 \xjp@W 萊特幣=loi4 dak6 bai6;
 \xjp@W 萊索托=loi4 sok3 tok3;
@@ -80251,6 +80363,7 @@
 \xjp@W 萌生=mang4 sang1;
 \xjp@W 萌發=mang4 faat3;
 \xjp@W 萌芽=mang4 ngaa4;
+\xjp@W 萍卡菲爾特=ping4 kaa1 fei1 ji5 dak6;
 \xjp@W 萍水相逢=ping4 seoi2 soeng1 fung4;
 \xjp@W 萍蓬草=ping4 pung4 cou2;
 \xjp@W 萎凋=wai2 diu1;
@@ -80564,6 +80677,7 @@
 \xjp@W 葉公好龍=jip6 gung1 hou3 lung4;
 \xjp@W 葉卡捷琳堡=jip6 kaa1 zit6 lam4 bou2;
 \xjp@W 葉卡捷琳娜=jip6 kaa1 zit6 lam4 naa4;
+\xjp@W 葉卡特琳娜堡=jip6 kaa1 dak6 lam4 naa4 bou2;
 \xjp@W 葉子=jip6 zi2;
 \xjp@W 葉子列=jip6 zi2 lit6;
 \xjp@W 葉宅=jip6 zaak6;
@@ -80684,6 +80798,7 @@
 \xjp@W 蒙召=mung4 ziu6;
 \xjp@W 蒙哄=mung4 hung6;
 \xjp@W 蒙在鼓裏=mung4 zoi6 gu2 leoi5;
+\xjp@W 蒙地卡羅=mung4 dei6 kaa1 lo4;
 \xjp@W 蒙塾=mung4 suk6;
 \xjp@W 蒙師=mung4 si1;
 \xjp@W 蒙恬=mung4 tim4;
@@ -80693,6 +80808,7 @@
 \xjp@W 蒙混過關=mung4 wan6 gwo3 gwaan1;
 \xjp@W 蒙版=mung4 baan2;
 \xjp@W 蒙特利爾=mung4 dak6 lei6 ji5;
+\xjp@W 蒙特卡洛=mung4 dak6 kaa1 lok6;
 \xjp@W 蒙特卡羅方法=mung4 dak6 kaa1 lo4 fong1 faat3;
 \xjp@W 蒙納=mung4 naap6;
 \xjp@W 蒙羅維亞=mung4 lo4 wai4 aa3;
@@ -81046,6 +81162,7 @@
 \xjp@W 薩克洛夫=saat3 hak1 lok6 fu1;
 \xjp@W 薩克洛夫獎=saat3 hak1 lok6 fu1 zoeng2;
 \xjp@W 薩其馬=saat3 kei4 maa5;
+\xjp@W 薩卡什維利=saat3 kaa1 sap6 wai4 lei6;
 \xjp@W 薩哈羅夫=saat3 haa1 lo4 fu1;
 \xjp@W 薩哈羅夫獎=saat3 haa1 lo4 fu1 zoeng2;
 \xjp@W 薩嘎=saat3 gaa1;
@@ -81098,7 +81215,6 @@
 \xjp@W 藊豆=bin2 dau2;
 \xjp@W 藍光機=laam4 gwong1 gei1;
 \xjp@W 藍剔=laam4 tik1;
-\xjp@W 藍卡=laam4 kaat1;
 \xjp@W 藍哋=laam4 dei2;
 \xjp@W 藍喉仙鶲=laam4 hau4 sin1 jung1;
 \xjp@W 藍喉太陽鳥=laam4 hau4 taai3 joeng4 niu5;
@@ -81481,6 +81597,7 @@
 \xjp@W 處理包=cyu5 lei5 baau1;
 \xjp@W 處理器=cyu2 lei5 hei3;
 \xjp@W 處理垃圾=cyu2 lei5 laap6 saap3;
+\xjp@W 處理得=cyu5 lei5 dak1;
 \xjp@W 處理方法=cyu2 lei5 fong1 faat3;
 \xjp@W 處理程序=cyu2 lei5 cing4 zeoi6;
 \xjp@W 處理藥物=cyu2 lei5 joek6 mat6;
@@ -83133,7 +83250,6 @@
 \xjp@W 補助費=bou2 zo6 fai3;
 \xjp@W 補助金=bou2 zo6 gam1;
 \xjp@W 補助額=bou2 zo6 ngaak6;
-\xjp@W 補卡=bou2 kaat1;
 \xjp@W 補呔=bou2 taai1;
 \xjp@W 補品=bou2 ban2;
 \xjp@W 補地價=bou2 dei6 gaa3;
@@ -86307,7 +86423,6 @@
 \xjp@W 讀下書=duk6 haa5 syu1;
 \xjp@W 讀乜=duk6 mat1;
 \xjp@W 讀勝=duk6 sing3;
-\xjp@W 讀卡器=duk6 kaat1 hei3;
 \xjp@W 讀友=duk6 jau5;
 \xjp@W 讀取=duk6 ceoi2;
 \xjp@W 讀口黃=duk6 hau2 wong2;
@@ -86846,6 +86961,8 @@
 \xjp@W 貔貅仔=pei4 jau1 zai2;
 \xjp@W 貝丘=bui3 jau1;
 \xjp@W 貝克勒爾=bui3 hak1 lak6 ji5;
+\xjp@W 貝利卡登=bui3 lei6 kaa1 dang1;
+\xjp@W 貝勒=bui3 lak6;
 \xjp@W 貝南=bui3 naam4;
 \xjp@W 貝卡谷地=bui3 kaa1 guk1 dei6;
 \xjp@W 貝塔=bui3 taap3;
@@ -87364,7 +87481,6 @@
 \xjp@W 賀壽=ho6 sau6;
 \xjp@W 賀客=ho6 haak3;
 \xjp@W 賀年=ho6 nin4;
-\xjp@W 賀年卡=ho6 nin4 kaat1;
 \xjp@W 賀年咭=ho6 nin4 kaat1;
 \xjp@W 賀年片=ho6 nin4 pin2;
 \xjp@W 賀朝=ho6 ciu4;
@@ -88307,6 +88423,7 @@
 \xjp@W 超小型=ciu1 siu2 jing4;
 \xjp@W 超少人=ciu1 siu2 jan4;
 \xjp@W 超市=ciu1 si5;
+\xjp@W 超平=ciu1 peng4;
 \xjp@W 超平面=ciu1 ping4 min2;
 \xjp@W 超度=ciu1 dou6;
 \xjp@W 超弦=ciu1 jin4;
@@ -88397,6 +88514,7 @@
 \xjp@W 超齡=ciu1 ling4;
 \xjp@W 越位=jyut6 wai6;
 \xjp@W 越來越=jyut6 loi4 jyut6;
+\xjp@W 越來越平=jyut6 loi4 jyut6 peng4;
 \xjp@W 越俎代庖=jyut6 zo2 doi6 paau4;
 \xjp@W 越僑=jyut6 kiu4;
 \xjp@W 越出界線=jyut6 ceot1 gaai3 sin3;
@@ -88408,9 +88526,11 @@
 \xjp@W 越南話=jyut6 naam4 waa2;
 \xjp@W 越嚟越=jyut6 lai4 jyut6;
 \xjp@W 越嚟越似=jyut6 lai4 jyut6 ci5;
+\xjp@W 越嚟越平=jyut6 lai4 jyut6 peng4;
 \xjp@W 越嚟越難=jyut6 lai4 jyut6 naan4;
 \xjp@W 越席=jyut6 zik6;
 \xjp@W 越幫越忙=jyut6 bong1 jyut6 mong4;
+\xjp@W 越平=jyut6 peng4;
 \xjp@W 越戰=jyut6 zin3;
 \xjp@W 越描越黑=jyut6 miu4 jyut6 hak1;
 \xjp@W 越權=jyut6 kyun4;
@@ -88801,6 +88921,7 @@
 \xjp@W 路標=lou6 biu1;
 \xjp@W 路段=lou6 dyun6;
 \xjp@W 路氹=lou6 tam5;
+\xjp@W 路沙卡=lou6 saa1 kaa1;
 \xjp@W 路牌=lou6 paai2;
 \xjp@W 路環=lou6 waan4;
 \xjp@W 路由協定=lou6 jau4 hip3 ding6;
@@ -89606,6 +89727,7 @@
 \xjp@W 輕快=hing1 faai3;
 \xjp@W 輕忽=hing1 fat1;
 \xjp@W 輕慢=hing1 maan6;
+\xjp@W 輕手輕腳=heng1 sau2 heng1 goek3;
 \xjp@W 輕捷=hing1 zit6;
 \xjp@W 輕描淡寫=hing1 miu4 daam6 se2;
 \xjp@W 輕擊棒=hing1 gik1 paang5;
@@ -91374,7 +91496,7 @@
 \xjp@W 遊學生=jau4 hok6 saang1;
 \xjp@W 遊客=jau4 haak3;
 \xjp@W 遊導=jau4 dou6;
-\xjp@W 遊山玩水=jau4 saan1 wun6 seoi2;
+\xjp@W 遊山玩水=jau4 saan1 waan4 seoi2;
 \xjp@W 遊弋=jau4 jik6;
 \xjp@W 遊必有方=jau4 bit1 jau5 fong1;
 \xjp@W 遊戲=jau4 hei3;
@@ -92602,6 +92724,7 @@
 \xjp@W 鄙賤=pei2 zin6;
 \xjp@W 鄙陋=pei2 lau6;
 \xjp@W 鄧世昌=dang6 sai3 coeng1;
+\xjp@W 鄧小平=dang6 siu2 ping4;
 \xjp@W 鄧小平理論=dang6 siu2 ping4 lei5 leon6;
 \xjp@W 鄭人爭年=zeng6 jan4 zang1 nin4;
 \xjp@W 鄭光祖=zeng6 gwong1 zou2;
@@ -93167,7 +93290,6 @@
 \xjp@W 重歷舊遊=cung4 lik6 gau6 jau4;
 \xjp@W 重氫=cung5 hing1;
 \xjp@W 重水反應堆=cung5 seoi2 faan2 jing3 deoi1;
-\xjp@W 重水生產=cung5 seoi2 sang1 caan2;
 \xjp@W 重活兒=cung5 wut6 ji4;
 \xjp@W 重活化劑=cung5 wut6 faa3 zai1;
 \xjp@W 重溫=cung4 wan1;
@@ -93789,7 +93911,6 @@
 \xjp@W 銀行=ngan4 hong4;
 \xjp@W 銀行仔=ngan4 hong4 zai2;
 \xjp@W 銀行假=ngan4 hong4 gaa3;
-\xjp@W 銀行卡=ngan4 hong4 kaat1;
 \xjp@W 銀行咭=ngan4 hong4 kaat1;
 \xjp@W 銀行單=ngan4 hong4 daan1;
 \xjp@W 銀行對賬單=ngan4 hong4 deoi3 zoeng3 daan1;
@@ -93943,6 +94064,7 @@
 \xjp@W 鋪路=pou1 lou6;
 \xjp@W 鋪軌=pou1 gwai2;
 \xjp@W 鋪面房=pou3 min6 fong4;
+\xjp@W 鋪頭=pou3 tau2;
 \xjp@W 鋪首=pou1 sau2;
 \xjp@W 鋰離子電池=lei5 lei4 zi2 din6 ci4;
 \xjp@W 鋸到一頸血=goe1 dou3 jat1 geng2 hyut3;
@@ -94162,7 +94284,6 @@
 \xjp@W 鍵盤俠=gin6 pun2 hap6;
 \xjp@W 鍵盤戰士=gin6 pun2 zin3 si6;
 \xjp@W 鍵盤鼠標=gin6 pun2 syu2 biu1;
-\xjp@W 鍼卡=zam1 kaat1;
 \xjp@W 鍼灸=zam1 gau3;
 \xjp@W 鍼灸療法=zam1 gau3 liu4 faat3;
 \xjp@W 鍼砭=zam1 bin2;
@@ -95730,6 +95851,9 @@
 \xjp@W 阿加力膠=aa3 gaa1 lik1 gaau1;
 \xjp@W 阿努比斯=aa3 nou5 bei2 si1;
 \xjp@W 阿勒泰=aa3 lak6 taai3;
+\xjp@W 阿卡提=aa3 kaa1 tai4;
+\xjp@W 阿卡普爾科=aa3 kaa1 pou2 ji5 fo1;
+\xjp@W 阿卡迪亞=aa3 kaa1 dik6 aa3;
 \xjp@W 阿叉=aa3 caa1;
 \xjp@W 阿叔=aa3 suk1;
 \xjp@W 阿司匹林=aa3 si1 pat1 lam4;
@@ -95837,6 +95961,7 @@
 \xjp@W 阿爾伯塔=aa3 ji5 baak3 taap3;
 \xjp@W 阿爾卑斯山=aa3 ji5 bei1 si1 saan1;
 \xjp@W 阿爾卑斯山脈=aa3 ji5 bei1 si1 saan1 mak6;
+\xjp@W 阿爾卡特=aa3 ji5 kaa1 dak6;
 \xjp@W 阿爾及利亞=aa3 ji5 kap6 lei6 aa3;
 \xjp@W 阿爾及利亞人=aa3 ji5 kap6 lei6 aa3 jan4;
 \xjp@W 阿爾坎塔拉=aa3 ji5 ham2 taap3 laai1;
@@ -97349,6 +97474,7 @@
 \xjp@W 難民=naan6 man4;
 \xjp@W 難民營=naan6 man4 jing4;
 \xjp@W 難混=naan4 wan6;
+\xjp@W 難為=naan4 wai4;
 \xjp@W 難爲=naan4 wai2;
 \xjp@W 難爲情=naan4 wai4 cing4;
 \xjp@W 難產=naan4 caan2;
@@ -99140,6 +99266,7 @@
 \xjp@W 領域=ling5 wik6;
 \xjp@W 領存=ling5 cyun4;
 \xjp@W 領導=ling5 dou6;
+\xjp@W 領導下=ling5 dou6 haa6;
 \xjp@W 領導層=ling5 dou6 cang4;
 \xjp@W 領導體系=ling5 dou6 tai2 hai6;
 \xjp@W 領岩鷚=ling5 ngaam4 lau6;
@@ -100918,6 +101045,7 @@
 \xjp@W 馬勃菌=maa5 but6 kwan2;
 \xjp@W 馬勒=maa5 lak6;
 \xjp@W 馬匹=maa5 pat1;
+\xjp@W 馬卡龍=maa5 kaa1 lung4;
 \xjp@W 馬友=maa5 jau5;
 \xjp@W 馬可波羅=maa5 ho2 bo1 lo4;
 \xjp@W 馬命=maa5 meng6;
@@ -100991,6 +101119,7 @@
 \xjp@W 馬燈=maa5 dang1;
 \xjp@W 馬爾他=maa5 ji5 taa1;
 \xjp@W 馬爾代夫=maa5 ji5 doi6 fu1;
+\xjp@W 馬爾卡河=maa5 ji5 kaa1 ho4;
 \xjp@W 馬爾可夫=maa5 ji5 ho2 fu1;
 \xjp@W 馬爾可夫過程=maa5 ji5 ho2 fu1 gwo3 cing4;
 \xjp@W 馬爾可夫鏈=maa5 ji5 ho2 fu1 lin2;
@@ -101005,9 +101134,11 @@
 \xjp@W 馬狂螂=maa5 kong4 long4;
 \xjp@W 馬玲=maa5 ling4;
 \xjp@W 馬甲=maa5 gaap3;
+\xjp@W 馬略卡=maa5 loek6 kaa1;
 \xjp@W 馬票=maa5 biu1;
 \xjp@W 馬竿=maa5 gon1;
 \xjp@W 馬糞紙=maa5 fan3 zi2;
+\xjp@W 馬約卡=maa5 joek3 kaa1;
 \xjp@W 馬累=maa5 leoi5;
 \xjp@W 馬紹爾羣島=maa5 siu6 ji5 kwan4 dou2;
 \xjp@W 馬紹爾群島=maa5 siu6 ji5 kwan4 dou2;
@@ -102296,7 +102427,7 @@
 \xjp@W 魔力=mo1 lik6;
 \xjp@W 魔力橋=mo1 lik6 kiu4;
 \xjp@W 魔咒=mo1 zau3;
-\xjp@W 魔女=mo1 neoi2;
+\xjp@W 魔女=mo1 neoi5;
 \xjp@W 魔幻=mo1 waan6;
 \xjp@W 魔影=mo1 jing2;
 \xjp@W 魔怔=mo1 zing1;
@@ -102421,6 +102552,7 @@
 \xjp@W 魚貫=jyu4 gun3;
 \xjp@W 魚貫而入=jyu4 gun3 ji4 jap6;
 \xjp@W 魚貫而出=jyu4 gun3 ji4 ceot1;
+\xjp@W 魚身=jyu4 san1;
 \xjp@W 魚鉤=jyu4 ngau1;
 \xjp@W 魚鍋=jyu4 wo1;
 \xjp@W 魚雁往返=jyu4 ngaan6 wong5 faan2;
@@ -103029,6 +103161,7 @@
 \xjp@W 麗實=lai6 sat6;
 \xjp@W 麗星鷯鶥=lai6 sing1 liu4 mei4;
 \xjp@W 麗水地區=lai6 seoi2 dei6 keoi1;
+\xjp@W 麗池卡登=lai6 ci4 kaa1 dang1;
 \xjp@W 麗色噪鶥=lai6 sik1 cou3 mei4;
 \xjp@W 麗色奇鶥=lai6 sik1 kei4 mei4;
 \xjp@W 麗語=lai6 jyu5;
@@ -103046,6 +103179,7 @@
 \xjp@W 麥克米蘭=mak6 hak1 mai5 laan4;
 \xjp@W 麥克維=mak6 hak1 wai4;
 \xjp@W 麥兜菠蘿油王子=mak6 dau1 bo1 lo4 jau4 wong4 zi2;
+\xjp@W 麥司卡林=mak6 si1 kaa1 lam4;
 \xjp@W 麥噹噹=mak6 dong1 dong1;
 \xjp@W 麥子=mak6 zi2;
 \xjp@W 麥樂雞=mak6 lok6 gai1;
@@ -108493,7 +108627,6 @@
 \xjp@K 交迫=142;
 \xjp@K 交送=175;
 \xjp@K 交通=108;
-\xjp@K 交通卡=141;
 \xjp@K 交通圖=198;
 \xjp@K 交通工具=127;
 \xjp@K 交通擁擠=143;
@@ -109454,6 +109587,7 @@
 \xjp@K 伊波拉=143;
 \xjp@K 伊波拉病毒=178;
 \xjp@K 伊犁哈薩克自治州=141;
+\xjp@K 伊薩卡=143;
 \xjp@K 伊通滿族自治縣=143;
 \xjp@K 伊通火山羣=148;
 \xjp@K 伊通自然保護區=157;
@@ -111270,7 +111404,6 @@
 \xjp@K 借花敬佛=159;
 \xjp@K 借花獻佛=142;
 \xjp@K 借記=185;
-\xjp@K 借記卡=138;
 \xjp@K 借詞=146;
 \xjp@K 借讀=141;
 \xjp@K 借財仔=178;
@@ -111830,6 +111963,7 @@
 \xjp@K 傢伙=111;
 \xjp@K 傢俬=121;
 \xjp@K 傢俬雜物=159;
+\xjp@K 傢俱=123;
 \xjp@K 催乳激素=146;
 \xjp@K 催促=122;
 \xjp@K 催化=140;
@@ -112357,7 +112491,6 @@
 \xjp@K 儲物櫃=151;
 \xjp@K 儲精囊=147;
 \xjp@K 儲蓄=127;
-\xjp@K 儲蓄卡=172;
 \xjp@K 儲蓄帳戶=146;
 \xjp@K 儲蓄戶口=157;
 \xjp@K 儲蓄金=147;
@@ -112912,6 +113045,7 @@
 \xjp@K 內切球=150;
 \xjp@K 內功=114;
 \xjp@K 內務=138;
+\xjp@K 內卡河=147;
 \xjp@K 內向=122;
 \xjp@K 內向型=178;
 \xjp@K 內含體=150;
@@ -113516,6 +113650,7 @@
 \xjp@K 公畝=146;
 \xjp@K 公益=119;
 \xjp@K 公益金=149;
+\xjp@K 公眾號=109;
 \xjp@K 公祭=140;
 \xjp@K 公私兼顧=145;
 \xjp@K 公積金=135;
@@ -115273,7 +115408,6 @@
 \xjp@K 刪簡壓縮=165;
 \xjp@K 刪繁就簡=144;
 \xjp@K 刪除=128;
-\xjp@K 刮刮卡=142;
 \xjp@K 刮刮叫=149;
 \xjp@K 刮削=143;
 \xjp@K 刮勺=149;
@@ -115516,6 +115650,7 @@
 \xjp@K 前所未聞=143;
 \xjp@K 前排=125;
 \xjp@K 前提=123;
+\xjp@K 前提下=139;
 \xjp@K 前提條件=136;
 \xjp@K 前文=110;
 \xjp@K 前方=114;
@@ -115820,6 +115955,7 @@
 \xjp@K 劉義慶=149;
 \xjp@K 劉鶚=144;
 \xjp@K 劊子手=135;
+\xjp@K 劍下=142;
 \xjp@K 劍尖=123;
 \xjp@K 劍拔弩張=139;
 \xjp@K 劍指=156;
@@ -116891,6 +117027,7 @@
 \xjp@K 千刀萬剮=135;
 \xjp@K 千分之=136;
 \xjp@K 千千萬萬=127;
+\xjp@K 千卡=142;
 \xjp@K 千古=120;
 \xjp@K 千古恨=142;
 \xjp@K 千古罪人=140;
@@ -117310,12 +117447,17 @@
 \xjp@K 占星=140;
 \xjp@K 占星家=144;
 \xjp@K 占星師=143;
+\xjp@K 卡丁車=135;
 \xjp@K 卡介苗=159;
+\xjp@K 卡仙尼=150;
 \xjp@K 卡位=133;
 \xjp@K 卡住=132;
 \xjp@K 卡債=178;
+\xjp@K 卡內基=142;
 \xjp@K 卡其=144;
 \xjp@K 卡冚卡=185;
+\xjp@K 卡利卡特=146;
+\xjp@K 卡利科=149;
 \xjp@K 卡加利=185;
 \xjp@K 卡卡聲=178;
 \xjp@K 卡口=172;
@@ -117325,28 +117467,69 @@
 \xjp@K 卡啦=134;
 \xjp@K 卡啦蘇=185;
 \xjp@K 卡嚓=149;
+\xjp@K 卡地亞=198;
+\xjp@K 卡塔尼亞=142;
 \xjp@K 卡塔爾=129;
 \xjp@K 卡塔赫納=145;
 \xjp@K 卡士=152;
+\xjp@K 卡夫卡=139;
 \xjp@K 卡尺=141;
+\xjp@K 卡巴斯基=128;
+\xjp@K 卡巴萊=146;
 \xjp@K 卡布其諾=143;
 \xjp@K 卡布其諾咖啡=147;
+\xjp@K 卡布奇諾=142;
 \xjp@K 卡式帶=185;
+\xjp@K 卡扎菲=142;
+\xjp@K 卡拉什尼科夫=145;
+\xjp@K 卡拉奇=142;
+\xjp@K 卡拉姆昌德=150;
+\xjp@K 卡拉季奇=144;
+\xjp@K 卡拉布里亞=146;
+\xjp@K 卡拉比拉=198;
+\xjp@K 卡拉膠=144;
 \xjp@K 卡拉馬佐夫兄弟=145;
 \xjp@K 卡數=134;
+\xjp@K 卡文迪什=144;
+\xjp@K 卡斯特利翁=150;
+\xjp@K 卡斯特羅=139;
+\xjp@K 卡斯翠=155;
+\xjp@K 卡斯蒂利亞=145;
 \xjp@K 卡板=164;
+\xjp@K 卡桑德拉=144;
+\xjp@K 卡梅倫=143;
+\xjp@K 卡樂星=149;
 \xjp@K 卡死=138;
+\xjp@K 卡波耶拉=148;
 \xjp@K 卡波西氏肉瘤=150;
+\xjp@K 卡洛娜=151;
+\xjp@K 卡洛斯=138;
 \xjp@K 卡爾加里=143;
+\xjp@K 卡爾巴拉=147;
+\xjp@K 卡爾德龍=144;
 \xjp@K 卡爾文=142;
 \xjp@K 卡爾文克萊因=159;
 \xjp@K 卡爾斯魯厄=142;
+\xjp@K 卡爾頓=142;
 \xjp@K 卡片=125;
 \xjp@K 卡特彼勒公司=145;
+\xjp@K 卡特爾=143;
+\xjp@K 卡瓦格博峯=145;
+\xjp@K 卡瓦格博峰=145;
 \xjp@K 卡盤=142;
 \xjp@K 卡窿=178;
+\xjp@K 卡納塔克邦=146;
+\xjp@K 卡納維拉爾角=145;
+\xjp@K 卡納維爾角=150;
+\xjp@K 卡羅利納=157;
+\xjp@K 卡美拉=148;
 \xjp@K 卡美洛=150;
+\xjp@K 卡脖子=145;
+\xjp@K 卡薩布蘭卡=142;
+\xjp@K 卡西尼=143;
+\xjp@K 卡西歐=138;
 \xjp@K 卡西米爾效應=150;
+\xjp@K 卡西莫夫=149;
 \xjp@K 卡賓槍=143;
 \xjp@K 卡路里=136;
 \xjp@K 卡車=128;
@@ -117354,6 +117537,7 @@
 \xjp@K 卡通片=117;
 \xjp@K 卡那=161;
 \xjp@K 卡邦尼=175;
+\xjp@K 卡門貝=152;
 \xjp@K 卡關=175;
 \xjp@K 卦義=147;
 \xjp@K 卯兔=143;
@@ -118954,6 +119138,7 @@
 \xjp@K 吉之島=154;
 \xjp@K 吉事=170;
 \xjp@K 吉事果=168;
+\xjp@K 吉亞卡摩=152;
 \xjp@K 吉人天相=143;
 \xjp@K 吉人自有天相=160;
 \xjp@K 吉他=122;
@@ -120365,6 +120550,7 @@
 \xjp@K 哈伯太空望遠鏡=149;
 \xjp@K 哈伯瑪斯=150;
 \xjp@K 哈佬=143;
+\xjp@K 哈努卡=152;
 \xjp@K 哈哈=90;
 \xjp@K 哈哈哈哈哈=115;
 \xjp@K 哈哈鏡=141;
@@ -120381,6 +120567,7 @@
 \xjp@K 哈爾濱=135;
 \xjp@K 哈特福德=144;
 \xjp@K 哈瓦那=141;
+\xjp@K 哈米爾卡=150;
 \xjp@K 哈薩克=135;
 \xjp@K 哈薩克斯坦=139;
 \xjp@K 哈薩克語=144;
@@ -122966,6 +123153,7 @@
 \xjp@K 圖像用戶介面=158;
 \xjp@K 圖則=168;
 \xjp@K 圖名=144;
+\xjp@K 圖坦卡門=145;
 \xjp@K 圖層=134;
 \xjp@K 圖形=125;
 \xjp@K 圖形卡=143;
@@ -124011,6 +124199,7 @@
 \xjp@K 塔里木河=141;
 \xjp@K 塔里木盆地=140;
 \xjp@K 塔里班=147;
+\xjp@K 塗上=149;
 \xjp@K 塗家=135;
 \xjp@K 塗寫=143;
 \xjp@K 塗抹=131;
@@ -124061,6 +124250,7 @@
 \xjp@K 塞豆窿=185;
 \xjp@K 塞車=122;
 \xjp@K 塞韋里諾=151;
+\xjp@K 填上=149;
 \xjp@K 填充=135;
 \xjp@K 填充劑=142;
 \xjp@K 填列=185;
@@ -124199,6 +124389,7 @@
 \xjp@K 墨畫=145;
 \xjp@K 墨盒=134;
 \xjp@K 墨硯=141;
+\xjp@K 墨竹工卡=141;
 \xjp@K 墨筆=143;
 \xjp@K 墨紙=144;
 \xjp@K 墨累=146;
@@ -128172,6 +128363,7 @@
 \xjp@K 安唔安排=185;
 \xjp@K 安圖=140;
 \xjp@K 安土重遷=146;
+\xjp@K 安地卡及巴布達=154;
 \xjp@K 安培=142;
 \xjp@K 安塞=140;
 \xjp@K 安士=159;
@@ -129116,6 +129308,7 @@
 \xjp@K 審酌=148;
 \xjp@K 審閱=134;
 \xjp@K 審音=185;
+\xjp@K 寫上=149;
 \xjp@K 寫下=126;
 \xjp@K 寫代碼=170;
 \xjp@K 寫低=119;
@@ -130027,6 +130220,7 @@
 \xjp@K 尤其=104;
 \xjp@K 尤其係=112;
 \xjp@K 尤其是=109;
+\xjp@K 尤卡坦=145;
 \xjp@K 尤爲=130;
 \xjp@K 尤爾欽科=159;
 \xjp@K 尤物=148;
@@ -131179,6 +131373,7 @@
 \xjp@K 帕米爾山脈=153;
 \xjp@K 帕米爾高原=142;
 \xjp@K 帕累托法則=147;
+\xjp@K 帕蘭卡=148;
 \xjp@K 帕金森病=141;
 \xjp@K 帖撒羅尼迦=145;
 \xjp@K 帖撒羅尼迦前書=147;
@@ -131352,6 +131547,7 @@
 \xjp@K 幫兇=143;
 \xjp@K 幫到你=122;
 \xjp@K 幫助=99;
+\xjp@K 幫助下=198;
 \xjp@K 幫助之下=144;
 \xjp@K 幫口=133;
 \xjp@K 幫咗人=165;
@@ -134419,6 +134615,7 @@
 \xjp@K 情殺=152;
 \xjp@K 情比金堅=166;
 \xjp@K 情況=84;
+\xjp@K 情況下=138;
 \xjp@K 情深款款=152;
 \xjp@K 情深義重=170;
 \xjp@K 情狀=141;
@@ -135981,6 +136178,7 @@
 \xjp@K 房產中介=137;
 \xjp@K 房祖名=198;
 \xjp@K 房署=164;
+\xjp@K 房舍=142;
 \xjp@K 房艙=147;
 \xjp@K 房車=132;
 \xjp@K 房間=99;
@@ -136404,6 +136602,7 @@
 \xjp@K 打工妹=139;
 \xjp@K 打工廠工=178;
 \xjp@K 打工皇帝=175;
+\xjp@K 打平=147;
 \xjp@K 打底=130;
 \xjp@K 打底褲=166;
 \xjp@K 打後=135;
@@ -137445,6 +137644,7 @@
 \xjp@K 拉丁語系=146;
 \xjp@K 拉交情=148;
 \xjp@K 拉人=129;
+\xjp@K 拉什卡爾加=149;
 \xjp@K 拉個手=148;
 \xjp@K 拉克替醇=150;
 \xjp@K 拉制=143;
@@ -137493,6 +137693,7 @@
 \xjp@K 拉筋=145;
 \xjp@K 拉管=144;
 \xjp@K 拉米夫定=142;
+\xjp@K 拉納卡=147;
 \xjp@K 拉線=138;
 \xjp@K 拉纜=185;
 \xjp@K 拉脫維亞=138;
@@ -138608,6 +138809,7 @@
 \xjp@K 掙個=175;
 \xjp@K 掙扎=104;
 \xjp@K 掙脫=130;
+\xjp@K 掛上=149;
 \xjp@K 掛住=94;
 \xjp@K 掛住你咯=172;
 \xjp@K 掛住我啊=157;
@@ -139655,6 +139857,7 @@
 \xjp@K 摟錢=145;
 \xjp@K 摧殘=137;
 \xjp@K 摧毀=119;
+\xjp@K 摩卡=141;
 \xjp@K 摩卡咖啡=144;
 \xjp@K 摩天大廈=140;
 \xjp@K 摩天嶺=142;
@@ -140537,6 +140740,7 @@
 \xjp@K 支承=141;
 \xjp@K 支招=136;
 \xjp@K 支持=94;
+\xjp@K 支持下=140;
 \xjp@K 支持下你=170;
 \xjp@K 支持支持=165;
 \xjp@K 支持者=130;
@@ -142475,6 +142679,7 @@
 \xjp@K 昂貴=133;
 \xjp@K 昂首挺胸=139;
 \xjp@K 昆仲=144;
+\xjp@K 昆卡=147;
 \xjp@K 昆布=136;
 \xjp@K 昆明=120;
 \xjp@K 昆水=185;
@@ -143037,7 +143242,6 @@
 \xjp@K 智者見智=142;
 \xjp@K 智育=143;
 \xjp@K 智能=119;
-\xjp@K 智能卡=138;
 \xjp@K 智能手機=128;
 \xjp@K 智能設計=144;
 \xjp@K 智能障礙=145;
@@ -144232,6 +144436,7 @@
 \xjp@K 木偶戲=142;
 \xjp@K 木偶秀=152;
 \xjp@K 木匠=132;
+\xjp@K 木卡姆=143;
 \xjp@K 木口木面=141;
 \xjp@K 木吒=144;
 \xjp@K 木嘴=152;
@@ -144825,6 +145030,7 @@
 \xjp@K 林語堂=141;
 \xjp@K 林鄭=146;
 \xjp@K 林鄭月娥=154;
+\xjp@K 林雪平=146;
 \xjp@K 枘鑿=150;
 \xjp@K 枚乘=145;
 \xjp@K 果不其然=145;
@@ -148899,6 +149105,7 @@
 \xjp@K 波瀾=137;
 \xjp@K 波瀾壯闊=137;
 \xjp@K 波瀾起伏=142;
+\xjp@K 波爾卡=142;
 \xjp@K 波牛=170;
 \xjp@K 波特率=142;
 \xjp@K 波狀=143;
@@ -150433,7 +150640,6 @@
 \xjp@K 渴慕=142;
 \xjp@K 渴望=113;
 \xjp@K 渴求=128;
-\xjp@K 游山玩水=175;
 \xjp@K 游弋=178;
 \xjp@K 游擊=134;
 \xjp@K 游標=185;
@@ -150769,6 +150975,7 @@
 \xjp@K 滋陰=133;
 \xjp@K 滋養=136;
 \xjp@K 滋養層=144;
+\xjp@K 滌卡=146;
 \xjp@K 滌去=146;
 \xjp@K 滌塵=144;
 \xjp@K 滌慮=147;
@@ -151154,6 +151361,7 @@
 \xjp@K 潔淨無瑕=147;
 \xjp@K 潔癖=137;
 \xjp@K 潔白=130;
+\xjp@K 潔西卡=143;
 \xjp@K 潔身自好=141;
 \xjp@K 潔身自愛=142;
 \xjp@K 潔面露=143;
@@ -151808,6 +152016,8 @@
 \xjp@K 炸魚薯條=153;
 \xjp@K 為免=142;
 \xjp@K 為咩=113;
+\xjp@K 為國捐軀=151;
+\xjp@K 為民請命=158;
 \xjp@K 為求=132;
 \xjp@K 為的是=170;
 \xjp@K 為確保=166;
@@ -153504,6 +153714,7 @@
 \xjp@K 牟平區=142;
 \xjp@K 牠們=147;
 \xjp@K 牡丹=122;
+\xjp@K 牡丹卡=142;
 \xjp@K 牡丹樓=178;
 \xjp@K 牡丹皮=172;
 \xjp@K 牡丹雖好=147;
@@ -154734,6 +154945,7 @@
 \xjp@K 環保鬥士=148;
 \xjp@K 環化=143;
 \xjp@K 環境=94;
+\xjp@K 環境下=198;
 \xjp@K 環境保護署=178;
 \xjp@K 環境問題=137;
 \xjp@K 環境影響評估=145;
@@ -154799,6 +155011,8 @@
 \xjp@K 瓜葛=135;
 \xjp@K 瓜蒂=144;
 \xjp@K 瓜農=142;
+\xjp@K 瓜達卡納爾島=150;
+\xjp@K 瓜達卡納爾戰役=159;
 \xjp@K 瓜達拉馬=151;
 \xjp@K 瓢潑=142;
 \xjp@K 瓢潑大雨=142;
@@ -155125,9 +155339,7 @@
 \xjp@K 生產線=127;
 \xjp@K 生產費=146;
 \xjp@K 生產資料=135;
-\xjp@K 生產量=140;
 \xjp@K 生產關係=139;
-\xjp@K 生產隊=138;
 \xjp@K 生番=143;
 \xjp@K 生番薯=168;
 \xjp@K 生疏=130;
@@ -155612,6 +155824,7 @@
 \xjp@K 畜肥=149;
 \xjp@K 畜類=144;
 \xjp@K 畝產量=175;
+\xjp@K 畢卡索=145;
 \xjp@K 畢命=145;
 \xjp@K 畢恭畢敬=142;
 \xjp@K 畢業=102;
@@ -156933,6 +157146,7 @@
 \xjp@K 皮包=131;
 \xjp@K 皮包骨=137;
 \xjp@K 皮包骨頭=185;
+\xjp@K 皮卡爾=146;
 \xjp@K 皮嘢=155;
 \xjp@K 皮圈=178;
 \xjp@K 皮塔餅=150;
@@ -157189,6 +157403,7 @@
 \xjp@K 盤點=121;
 \xjp@K 盤龍臥虎=147;
 \xjp@K 盥洗室=143;
+\xjp@K 盧卡=143;
 \xjp@K 盧塞恩=143;
 \xjp@K 盧布=138;
 \xjp@K 盧旺達=157;
@@ -157197,6 +157412,7 @@
 \xjp@K 盧溝橋事變=142;
 \xjp@K 盧照鄰=144;
 \xjp@K 盧瓦爾河=145;
+\xjp@K 盧薩卡=144;
 \xjp@K 盪失路=144;
 \xjp@K 盪漾=131;
 \xjp@K 目下=141;
@@ -161995,6 +162211,8 @@
 \xjp@K 納霍德卡=145;
 \xjp@K 納鴻=154;
 \xjp@K 紐倫堡=140;
+\xjp@K 紐卡斯爾=139;
+\xjp@K 紐卡素=143;
 \xjp@K 紐子=146;
 \xjp@K 紐幾內亞=150;
 \xjp@K 紐扣=153;
@@ -163593,6 +163811,7 @@
 \xjp@K 羅宋湯=140;
 \xjp@K 羅密歐與朱麗葉=141;
 \xjp@K 羅巴切夫斯基=146;
+\xjp@K 羅布林卡=143;
 \xjp@K 羅布泊=139;
 \xjp@K 羅布麻=143;
 \xjp@K 羅庚=168;
@@ -163917,6 +164136,7 @@
 \xjp@K 習慣用語=141;
 \xjp@K 習慣自然=145;
 \xjp@K 習武=147;
+\xjp@K 習近平=138;
 \xjp@K 習非成是=149;
 \xjp@K 翔實=139;
 \xjp@K 翕動=144;
@@ -166893,6 +167113,7 @@
 \xjp@K 艾茲病=148;
 \xjp@K 艾草=139;
 \xjp@K 艾菲爾鐵塔=142;
+\xjp@K 艾迪卡拉=155;
 \xjp@K 艾迪生=145;
 \xjp@K 芋絲=175;
 \xjp@K 芋艿=143;
@@ -167750,6 +167971,7 @@
 \xjp@K 菸鹼酸=144;
 \xjp@K 萃取=134;
 \xjp@K 萇楚=147;
+\xjp@K 萊卡=138;
 \xjp@K 萊索托=143;
 \xjp@K 萊齊耶三世=152;
 \xjp@K 萋萋=142;
@@ -167757,6 +167979,7 @@
 \xjp@K 萌生=135;
 \xjp@K 萌發=136;
 \xjp@K 萌芽=139;
+\xjp@K 萍卡菲爾特=198;
 \xjp@K 萍水相逢=135;
 \xjp@K 萍蓬草=147;
 \xjp@K 萎縮=134;
@@ -168016,6 +168239,7 @@
 \xjp@K 葉公好龍=143;
 \xjp@K 葉卡捷琳堡=143;
 \xjp@K 葉卡捷琳娜=143;
+\xjp@K 葉卡特琳娜堡=173;
 \xjp@K 葉子=126;
 \xjp@K 葉子列=158;
 \xjp@K 葉振邦=163;
@@ -168108,12 +168332,14 @@
 \xjp@K 蒙召=145;
 \xjp@K 蒙哄=148;
 \xjp@K 蒙在鼓裏=160;
+\xjp@K 蒙地卡羅=143;
 \xjp@K 蒙塾=157;
 \xjp@K 蒙師=146;
 \xjp@K 蒙恬=133;
 \xjp@K 蒙查查=142;
 \xjp@K 蒙求=146;
 \xjp@K 蒙特利爾=138;
+\xjp@K 蒙特卡洛=142;
 \xjp@K 蒙特卡羅方法=145;
 \xjp@K 蒙羅維亞=145;
 \xjp@K 蒙羞=139;
@@ -168382,6 +168608,7 @@
 \xjp@K 薩克洛夫=161;
 \xjp@K 薩克洛夫獎=163;
 \xjp@K 薩其馬=145;
+\xjp@K 薩卡什維利=143;
 \xjp@K 薩哈羅夫=146;
 \xjp@K 薩哈羅夫獎=149;
 \xjp@K 薩嘎=143;
@@ -168722,6 +168949,7 @@
 \xjp@K 處理下=151;
 \xjp@K 處理器=122;
 \xjp@K 處理垃圾=170;
+\xjp@K 處理得=198;
 \xjp@K 處理方法=134;
 \xjp@K 處理程序=172;
 \xjp@K 處男=132;
@@ -170029,7 +170257,6 @@
 \xjp@K 補助費=141;
 \xjp@K 補助金=141;
 \xjp@K 補助額=147;
-\xjp@K 補卡=185;
 \xjp@K 補品=142;
 \xjp@K 補地價=164;
 \xjp@K 補報=141;
@@ -172556,7 +172783,6 @@
 \xjp@K 譽爲=129;
 \xjp@K 讀下書=150;
 \xjp@K 讀乜=175;
-\xjp@K 讀卡器=133;
 \xjp@K 讀友=144;
 \xjp@K 讀取=146;
 \xjp@K 讀唔出=170;
@@ -172969,6 +173195,8 @@
 \xjp@K 貓鼬=144;
 \xjp@K 貔貅=137;
 \xjp@K 貝丘=145;
+\xjp@K 貝利卡登=149;
+\xjp@K 貝勒=139;
 \xjp@K 貝卡谷地=146;
 \xjp@K 貝塔=140;
 \xjp@K 貝多芬=132;
@@ -173384,7 +173612,6 @@
 \xjp@K 賀壽=146;
 \xjp@K 賀客=144;
 \xjp@K 賀年=139;
-\xjp@K 賀年卡=143;
 \xjp@K 賀年片=144;
 \xjp@K 賀朝=149;
 \xjp@K 賀歲=132;
@@ -175117,6 +175344,7 @@
 \xjp@K 輕快=131;
 \xjp@K 輕忽=142;
 \xjp@K 輕慢=142;
+\xjp@K 輕手輕腳=142;
 \xjp@K 輕捷=142;
 \xjp@K 輕描淡寫=133;
 \xjp@K 輕擊棒=156;
@@ -177642,6 +177870,7 @@
 \xjp@K 鄙賤=146;
 \xjp@K 鄙陋=144;
 \xjp@K 鄧世昌=141;
+\xjp@K 鄧小平=130;
 \xjp@K 鄧小平理論=140;
 \xjp@K 鄭光祖=145;
 \xjp@K 鄭州=120;
@@ -178111,7 +178340,6 @@
 \xjp@K 重武器=142;
 \xjp@K 重氫=146;
 \xjp@K 重水反應堆=148;
-\xjp@K 重水生產=151;
 \xjp@K 重活兒=147;
 \xjp@K 重活化劑=151;
 \xjp@K 重溫=119;
@@ -178569,7 +178797,6 @@
 \xjp@K 銀蝶=185;
 \xjp@K 銀行=101;
 \xjp@K 銀行假=185;
-\xjp@K 銀行卡=127;
 \xjp@K 銀貨兩訖=147;
 \xjp@K 銀針粉=185;
 \xjp@K 銀錢=136;
@@ -178687,6 +178914,7 @@
 \xjp@K 鋪路=137;
 \xjp@K 鋪軌=142;
 \xjp@K 鋪面房=146;
+\xjp@K 鋪頭=122;
 \xjp@K 鋪首=145;
 \xjp@K 鋰離子電池=141;
 \xjp@K 鋸工=149;
@@ -180057,6 +180285,9 @@
 \xjp@K 阿利坎特=145;
 \xjp@K 阿努比斯=170;
 \xjp@K 阿勒泰=140;
+\xjp@K 阿卡提=157;
+\xjp@K 阿卡普爾科=144;
+\xjp@K 阿卡迪亞=144;
 \xjp@K 阿叉=160;
 \xjp@K 阿叔=103;
 \xjp@K 阿司匹林=139;
@@ -180143,6 +180374,7 @@
 \xjp@K 阿爾伯塔=144;
 \xjp@K 阿爾卑斯山=148;
 \xjp@K 阿爾卑斯山脈=143;
+\xjp@K 阿爾卡特=137;
 \xjp@K 阿爾及利亞=139;
 \xjp@K 阿爾及利亞人=146;
 \xjp@K 阿爾坎塔拉=149;
@@ -181367,6 +181599,7 @@
 \xjp@K 難民=133;
 \xjp@K 難民營=141;
 \xjp@K 難混=143;
+\xjp@K 難為=120;
 \xjp@K 難爲=117;
 \xjp@K 難爲情=131;
 \xjp@K 難產=136;
@@ -182814,6 +183047,7 @@
 \xjp@K 領土=125;
 \xjp@K 領域=113;
 \xjp@K 領導=109;
+\xjp@K 領導下=198;
 \xjp@K 領導層=137;
 \xjp@K 領帶=132;
 \xjp@K 領悟=123;
@@ -185807,6 +186041,7 @@
 \xjp@K 麒麟菜=146;
 \xjp@K 麗實=151;
 \xjp@K 麗水地區=144;
+\xjp@K 麗池卡登=156;
 \xjp@K 麗語=149;
 \xjp@K 麗質=148;
 \xjp@K 麗音=185;
@@ -185819,6 +186054,7 @@
 \xjp@K 麥克白夫人=146;
 \xjp@K 麥克米蘭=144;
 \xjp@K 麥克維=147;
+\xjp@K 麥司卡林=149;
 \xjp@K 麥噹噹=154;
 \xjp@K 麥子=128;
 \xjp@K 麥樂雞=151;
@@ -187687,7 +187923,7 @@
 \xjp@E 堇3;
 \xjp@E 堊2;
 \xjp@E 堝2;
-\xjp@E 堡5;
+\xjp@E 堡6;
 \xjp@E 堤4;
 \xjp@E 堪4;
 \xjp@E 堯3;
@@ -189168,7 +189404,7 @@
 \xjp@E 洒2;
 \xjp@E 洗4;
 \xjp@E 洙3;
-\xjp@E 洛3;
+\xjp@E 洛4;
 \xjp@E 洞7;
 \xjp@E 津4;
 \xjp@E 洩2;
@@ -189375,6 +189611,7 @@
 \xjp@E 炮4;
 \xjp@E 炳4;
 \xjp@E 炸5;
+\xjp@E 為2;
 \xjp@E 烈6;
 \xjp@E 烊2;
 \xjp@E 烏4;
@@ -191406,7 +191643,7 @@
 \xjp@E 酢2;
 \xjp@E 酣4;
 \xjp@E 酥3;
-\xjp@E 酪4;
+\xjp@E 酪5;
 \xjp@E 酬5;
 \xjp@E 酮7;
 \xjp@E 酯7;

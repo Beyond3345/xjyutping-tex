@@ -1,6 +1,6 @@
 # xjyutping (LaTeX)
 
-Version 1.5.0 (2026-10-02). Versions follow
+Version 1.5.1 (2026-10-02). Versions follow
 [Semantic Versioning](https://semver.org), and the history of the project is
 kept in [`CHANGELOG.md`](CHANGELOG.md).
 
@@ -266,8 +266,8 @@ sentence-final particles and interjections, while ToJyutping 3.2.0 reads
 92.6% and 96.1%. On the particles of CantoMap, which were transcribed by ear,
 it reads 97.5% (79.0% in 1.4.0, 83.0% for ToJyutping). On fresh sentences of
 SpiCE, MagicHub and WenetSpeech-Yue, where the systems disagree, the reading
-of xjyutping was judged right in 91.7% of the cases, against 62.4%
-for ToJyutping. Part II, Section 10 of `CHANGELOG.md` describes the tests.
+of xjyutping was judged right in 95.3% of the cases (94.9% in 1.5.0), against
+60.7% for ToJyutping. Part II, Sections 10 and 11 of `CHANGELOG.md` describe the tests.
 
 ## Testing
 

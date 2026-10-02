@@ -6,7 +6,7 @@
 %%          OpenCC HK/TW variant tables (Apache-2.0),
 %%          ToJyutping word list (CanCLID, BSD-2-Clause),
 %%          cantonese-books-data readings of characters (no licence stated).
-\ProvidesFile{xjyutping-chars.def}[2026/10/02 v1.5.0 xjyutping character data]
+\ProvidesFile{xjyutping-chars.def}[2026/10/02 v1.5.1 xjyutping character data]
 \xjp@C 〇ling4;
 \xjp@C 㐀jau1;
 \xjp@C 㐁dou6;
@@ -7956,7 +7956,7 @@
 \xjp@C 卞bin6;
 \xjp@C 卟buk1;
 \xjp@C 占zim1;
-\xjp@M 卡kaa1 kaat1 kaa3;
+\xjp@M 卡kaat1 kaa1 kaa3;
 \xjp@M 卢lou4 lou2;
 \xjp@C 卣jau5;
 \xjp@C 卤lou5;
@@ -30174,7 +30174,6 @@
 \xjp@V 麵麪;
 \xjp@F 咁gam2;
 \xjp@F 重cung5;
-\xjp@F 平peng4;
 \xjp@F 請ceng2;
 \xjp@N 上得=soeng5;
 \xjp@N 下一=haa6;
@@ -30335,6 +30334,7 @@
 \xjp@N 咁嘅=gam2;
 \xjp@N 咁嘛=gam2;
 \xjp@N 咁噃=gam2;
+\xjp@N 咁嚟=gam2;
 \xjp@N 咁囉=gam2;
 \xjp@N 咁如=gam2;
 \xjp@N 咁我=gam2;
@@ -30441,6 +30441,14 @@
 \xjp@N 哩餐=ni1;
 \xjp@N 哩首=ni1;
 \xjp@N 哩點=ni1;
+\xjp@N 平㗎=peng4;
+\xjp@N 平呀=peng4;
+\xjp@N 平咗=peng4;
+\xjp@N 平啊=peng4;
+\xjp@N 平啦=peng4;
+\xjp@N 平喎=peng4;
+\xjp@N 平囉=peng4;
+\xjp@N 平少=peng4;
 \xjp@N 成世=seng4;
 \xjp@N 成包=seng4;
 \xjp@N 成句=seng4;
@@ -30462,6 +30470,9 @@
 \xjp@N 為我=wai6;
 \xjp@N 畫一=waak6;
 \xjp@N 畫個=waak6;
+\xjp@N 當你係=dong3;
+\xjp@N 當佢係=dong3;
+\xjp@N 當我係=dong3;
 \xjp@N 請人=ceng2;
 \xjp@N 請佢=ceng2;
 \xjp@N 請嘅=ceng2;

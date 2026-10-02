@@ -56,7 +56,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent     # xjyutping-tex
 ROOT = REPO.parent / 'jyutData'                            # the sources
 PY_DATA = REPO.parent / 'xjyutping-py' / 'src' / 'xjyutping' / 'data'
 SYL = re.compile(r'^[a-z]+[1-6]$')
-VERSION = '2026/10/02 v1.5.0'
+VERSION = '2026/10/02 v1.5.1'
 
 # Standalone default readings.  The first block settles characters that
 # rime-cantonese leaves undecided (every reading has the same weight); the
@@ -115,6 +115,7 @@ CURATED_DEFAULTS = {
     '哦': 'o6', '斷': 'tyun5', '畫': 'waak6', '相': 'soeng2', '訂': 'deng6',
     '欸': 'e6', '擗': 'pek6', '扱': 'kap1', '拂': 'fat1', '魏': 'ngai6',
     '繩': 'sing2', '醒': 'seng2', '呣': 'm6',
+    '卡': 'kaat1',  # 'card' alone (寫卡); 卡通, 卡路里 are words
 }
 
 # The reading of a character standing alone before the character(s) given:
@@ -136,7 +137,7 @@ PARTICLE_BEFORE = ['一定', '一齊', '一直', '一係', '一路', '一早', '
 # before a pronoun or a word that starts a clause (咁我哋去啦, 係咁㗎,
 # 咁但係, 咁所以, 咁即係).
 LOWER_BEFORE = '一個半'
-MANNER_BEFORE = '㗎囉啦喎嘅呀啊咩喇嘛呢咧咋啫噃誒欸嗯我你佢又都點咪但所其如而即跟另首'
+MANNER_BEFORE = '㗎囉啦喎嘅呀啊咩喇嘛呢咧咋啫噃誒欸嗯嚟我你佢又都點咪但所其如而即跟另首'
 # 哩 is also written for the demonstrative (哩個, 哩度, as in HKCanCor);
 # alone it stays lei5 'mile'.
 # Other characters, found on the tuning half of HKCanCor and checked
@@ -151,6 +152,8 @@ CURATED_NEXT = {**{d + c: 'ni1' for d in '呢哩' for c in DEMONSTRATIVE_BEFORE}
                 '請食': 'ceng2', '請我': 'ceng2', '請佢': 'ceng2', '請人': 'ceng2',
                 '為佢': 'wai6', '為你': 'wai6', '為我': 'wai6', '上得': 'soeng5',
                 '朝下': 'ciu4', '朝上': 'ciu4', '朝向': 'ciu4', '朝住': 'ciu4',
+                **{'平' + c: 'peng4' for c in '囉啦喎㗎呀啊咗少'},
+                '當佢係': 'dong3', '當我係': 'dong3', '當你係': 'dong3',
                 **{'成' + c: 'seng4' for c in '世句堆晚條棟隻架盒碟包'},
                 **{'下' + c: 'haa6' for c in LOWER_BEFORE},
                 **{'咁' + c: 'gam2' for c in MANNER_BEFORE}}
@@ -177,7 +180,7 @@ def respell(word, syls):
     out = ['laak3' if c == '嘞' and s in ('laa3', 'laak3') else s for c, s in zip(word, out)]
     if len(out) == len(word):
         out = [PARTICLE_ANYWHERE.get((c, s), s) for c, s in zip(word, out)]
-        if word.endswith('啊嘛'):
+        if word.endswith('啊嘛') or word.endswith('呀嘛'):
             out[-2] = 'aa1'
         if out:
             out[-1] = FINAL_PARTICLE_TONE.get((word[-1], out[-1]), out[-1])
@@ -189,7 +192,6 @@ def respell(word, syls):
 CURATED_FINALS = {
     '咁': 'gam2',    # 就係咁, 唔好咁
     '重': 'cung5',   # 唔算重: 'still' never ends a clause
-    '平': 'peng4',   # 好似幾平 'cheap'; 陰平, 和平 ... are words
     '請': 'ceng2',   # 有人請, 我請 'treat'; 'please' never ends a clause
 }
 
@@ -357,6 +359,29 @@ CURATED_WORDS = {
     '行上': 'haang4 soeng5', '走上': 'zau2 soeng5', '爬上': 'paa4 soeng5',
     '跳上': 'tiu3 soeng5', '飛上': 'fei1 soeng5', '搬上': 'bun1 soeng5',
     '擺上': 'baai2 soeng5', '啱著': 'ngaam1 zoek3',
+    # after the last judged round
+    '難為': 'naan4 wai4', '掌櫃': 'zoeng2 gwai6', '發辦': 'faat3 baan6',
+    '上門': 'soeng5 mun4', '加重': 'gaa1 zung6', '小女': 'siu2 neoi5',
+    '魔女': 'mo1 neoi5', '生產': 'saang1 caan2', '生病': 'saang1 beng6',
+    '打平': 'daa2 ping4', '傢俱': 'gaa1 geoi6', '輕手輕腳': 'heng1 sau2 heng1 goek3',
+    '鋪頭': 'pou3 tau2', '情況下': 'cing4 fong3 haa6', '環境下': 'waan4 ging2 haa6',
+    '前提下': 'cin4 tai4 haa6', '影響下': 'jing2 hoeng2 haa6', '領導下': 'ling5 dou6 haa6',
+    '幫助下': 'bong1 zo6 haa6', '支持下': 'zi1 ci4 haa6', '劍下': 'gim3 haa6',
+    '塗上': 'tou4 soeng5', '寫上': 'se2 soeng5', '填上': 'tin4 soeng5',
+    '掛上': 'gwaa3 soeng5', '導致到': 'dou6 zi3 dou3', '房舍': 'fong4 se3',
+    '處理得': 'cyu5 lei5 dak1', '魚身': 'jyu4 san1',
+    '競爭力': 'ging6 zang1 lik6', '紙角': 'zi2 gok3',
+    '公眾號': 'gung1 zung3 hou6', '遊山玩水': 'jau4 saan1 waan4 seoi2',
+    '啤啤': 'be1 be1', '貝勒': 'bui3 lak6', '瞓緊覺': 'fan3 gan2 gaau3',
+    '唔重': 'm4 cung5', '定喇': 'ding6 laa3',
+    '為國為民': 'wai6 gwok3 wai6 man4', '為國捐軀': 'wai6 gwok3 gyun1 keoi1',
+    '為民請命': 'wai6 man4 cing2 ming6', '鄧小平': 'dang6 siu2 ping4',
+    '習近平': 'zaap6 gan6 ping4', '林雪平': 'lam4 syut3 ping4',
+    # 平 alone after a degree word is 'cheap' (好平啊, 越嚟越平), while 平靜
+    # and 平時 still win the split on frequency
+    **{d + '平': r + ' peng4' for d, r in (('好', 'hou2'), ('咁', 'gam3'), ('幾', 'gei2'),
+        ('超', 'ciu1'), ('最', 'zeoi3'), ('又', 'jau6'), ('越', 'jyut6'), ('唔', 'm4'))},
+    '越嚟越平': 'jyut6 lai4 jyut6 peng4', '越來越平': 'jyut6 loi4 jyut6 peng4',
 }
 
 # Words of CC-Canto and the CC-CEDICT Cantonese readings that are not added

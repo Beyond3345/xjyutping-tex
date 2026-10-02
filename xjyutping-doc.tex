@@ -21,7 +21,7 @@
   {\end{Verbatim}\par\noindent\ignorespacesafterend}
 
 \title{\pkg{xjyutping}: Jyutping above Traditional Chinese characters}
-\author{Version 1.5.0}
+\author{Version 1.5.1}
 \date{29 September 2026}
 
 \begin{document}
@@ -135,12 +135,12 @@ read \emph{gaa1 hang4},
 \begin{example}
 \setjyutping{當我}{dong3 ngo5}
 \begin{jyutpingscope}
-佢當我係朋友，\xjyutping{家行}{gaa1 hang4}都係。
+佢當我細路，\xjyutping{家行}{gaa1 hang4}都係。
 \end{jyutpingscope}
 \end{example}
 \setjyutping{當我}{dong3 ngo5}
 \begin{jyutpingscope}
-佢當我係朋友，\xjyutping{家行}{gaa1 hang4}都係。
+佢當我細路，\xjyutping{家行}{gaa1 hang4}都係。
 \end{jyutpingscope}
 
 \subsection{Formatting inside words}
@@ -208,17 +208,17 @@ readings. For example,
 \begin{example}
 \xjyutpingsetup{multiple=\color{red}, debug}
 \begin{jyutpingscope}
-佢當佢係朋友。
+佢當佢細路。
 \end{jyutpingscope}
 \end{example}
 \begin{jyutpingscope}[multiple=\color{red}]
-佢當佢係朋友。
+佢當佢細路。
 \end{jyutpingscope}
 
 \noindent
 The log then contains a line such as,
 \begin{Verbatim}[fontsize=\small]
-xjyutping> 佢keoi5:s |當dong1:m(dong3) |佢keoi5:s |係hai6:s |朋pang4:w友jau5:w |
+xjyutping> 佢keoi5:s |當dong1:m(dong3) |佢keoi5:s |細sai3:w路lou6:w |
 \end{Verbatim}
 Each character is followed by its reading and a type, which is \texttt{w}
 for a reading from the word list, \texttt{u} for a reading you set,
@@ -489,7 +489,7 @@ the half of the files kept out of the tuning, and 97.9\% of the characters
 outside sentence-final particles and interjections. On the particles of
 CantoMap, which were transcribed by ear, it reads 97.5\%, and on fresh
 sentences of SpiCE, MagicHub and WenetSpeech-Yue, where the systems
-disagree, its reading was judged right in 91.7\% of the cases.
+disagree, its reading was judged right in 95.3\% of the cases.
 
 The package code (\texttt{xjyutping.sty} and \texttt{xjyutping.lua}) is
 released under the \LaTeX{} Project Public License (LPPL) 1.3c. The data
