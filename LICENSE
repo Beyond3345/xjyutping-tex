@@ -54,7 +54,13 @@ They are adapted from:
     Apache License 2.0;
   * the readings of 640 characters from the book data of 粵音資料集叢 by
     石見田, https://github.com/jyutnet/cantonese-books-data, which is
-    published without a licence statement and is used with attribution.
+    published without a licence statement and is used with attribution;
+  * word frequencies: essay-cantonese.txt of rime-cantonese (CC BY 4.0, as
+    above) and tools/wenetspeech-yue-counts.tsv, the number of times each
+    word is used in the transcripts of WenetSpeech-Yue by the ASLP-lab,
+    https://github.com/ASLP-lab/WenetSpeech-Yue, Creative Commons
+    Attribution-NonCommercial 4.0 (CC BY-NC 4.0). The counts are statistics
+    of the corpus; no text of it is included.
 
 The 'fancy' tone marks are drawn after the tone symbols of Visual Jyutping
 by Vincent Tam (https://github.com/VincentTam/visual-jyutping, MIT License);

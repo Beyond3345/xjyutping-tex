@@ -23,7 +23,8 @@ d=$tmp/xjyutping
 mkdir -p "$d/tools" "$d/tests"
 cp README.md LICENSE CHANGELOG.md xjyutping.sty xjyutping.lua \
   xjyutping-chars.def xjyutping-words.def xjyutping-doc.tex xjyutping-doc.pdf "$d/"
-cp tools/build-data.py tools/fetch-sources.sh tools/make-ctan-zip.sh "$d/tools/"
+cp tools/build-data.py tools/fetch-sources.sh tools/make-ctan-zip.sh \
+  tools/wenetspeech-yue-counts.tsv "$d/tools/"
 cp tests/run-tests.sh tests/render.sh tests/regression.tex tests/regression.expected \
   tests/layout-check.tex tests/fancy-check.tex tests/verse-check.tex "$d/tests/"
 find "$d" -type d -exec chmod 755 {} +

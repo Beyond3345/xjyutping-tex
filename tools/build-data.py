@@ -4,12 +4,13 @@
     python3 tools/build-data.py [--sources DIR] [--py-data DIR]
 
 Run it from anywhere; paths are resolved from this file.  The sources are
-third-party data kept outside the repository, by default in the directory
-that contains this repository (tools/fetch-sources.sh fetches them):
+third-party data kept outside the repository, by default in the folder
+jyutData next to this repository (tools/fetch-sources.sh fetches them):
 
   jyutping-table-master/list.tsv               LSHK Jyutping table, CC BY 4.0
   rime-cantonese/jyut6ping3.chars.dict.yaml    rime-cantonese, CC BY 4.0
   rime-cantonese/jyut6ping3.words.dict.yaml    rime-cantonese, CC BY 4.0
+  rime-cantonese/essay-cantonese.txt           rime-cantonese, CC BY 4.0
   opencc/HKVariants.txt, opencc/TWVariants.txt OpenCC, Apache-2.0
   jyut-dict/src/dictionaries/cedict/data/
       CC-CANTO.txt   CC-Canto (Pleco Inc.), CC BY-SA 3.0
@@ -17,6 +18,10 @@ that contains this repository (tools/fetch-sources.sh fetches them):
   cantonese-books-data/<book>/*資料.json        粵音資料集叢 book data (jyut.net,
                                                by 石見田), no licence stated
   ToJyutping-main/src/ToJyutping/trie.txt      ToJyutping (CanCLID), BSD-2-Clause
+
+and, in this repository, tools/wenetspeech-yue-counts.tsv: how often each
+word and character is used in the transcripts of WenetSpeech-Yue (ASLP-lab,
+CC BY-NC 4.0), counted by eval/wenet_counts.py of the jyutData folder.
 
 rime-cantonese is authoritative.  CC-Canto, the CC-CEDICT readings and
 ToJyutping only add words that are not in its list and that the list would
@@ -48,10 +53,10 @@ import sys
 import unicodedata
 
 REPO = pathlib.Path(__file__).resolve().parent.parent     # xjyutping-tex
-ROOT = REPO.parent                                         # the sources
-PY_DATA = ROOT / 'xjyutping-py' / 'src' / 'xjyutping' / 'data'
+ROOT = REPO.parent / 'jyutData'                            # the sources
+PY_DATA = REPO.parent / 'xjyutping-py' / 'src' / 'xjyutping' / 'data'
 SYL = re.compile(r'^[a-z]+[1-6]$')
-VERSION = '2026/09/29 v1.4.0'
+VERSION = '2026/10/02 v1.5.0'
 
 # Standalone default readings.  The first block settles characters that
 # rime-cantonese leaves undecided (every reading has the same weight); the
@@ -62,7 +67,6 @@ CURATED_DEFAULTS = {
     '會': 'wui5',   # 我會去 (will/can); 開會, 社會 ... come from the word list
     '生': 'saang1', # 生仔, 生嘅; 生活/學生 come from the word list
     '行': 'haang4', # 行去 (walk); 銀行/行為 come from the word list
-    '畫': 'waa2',   # 一幅畫
     '料': 'liu2',   # 有料, 材料 via words
     '咪': 'mai6',   # 咪係囉
     '咯': 'lok3',
@@ -82,18 +86,111 @@ CURATED_DEFAULTS = {
     '爭': 'zaang1', # 爭我一百蚊; 爭取/競爭 are words
     '划': 'waa4',   # 划算, 划船 (劃 carries waak6)
     '幢': 'zong6',  # classifier; LSHK has no dung6
-    '呢': 'ni1',    # demonstrative 呢張床; see CURATED_FINALS
+    '呢': 'ne1',    # the particle; the demonstrative 呢張床 comes from CURATED_NEXT
     # 1.4.0, after ToJyutping and the Hong Kong Cantonese Corpus: the
     # particles 囖, 嚹 and 㗎 as LSHK lists them first, 嘞 as laak3, and 揾,
     # which Hong Kong writing uses for 搵 (look for; OpenCC already folds it
     # into 搵 for word lookup)
     '囖': 'lo1', '嚹': 'laa3', '㗎': 'gaa3', '嘞': 'laak3', '揾': 'wan2',
+    # 1.5.0, after HKCanCor, CantoMap and the judged Wikipedia sample: 重
+    # alone is the adverb 'still, also' (重有, 重未, 重會 ...; the corpus has
+    # zung6 248 times, cung5 8); 嘩 alone is the interjection; 嘍 alone the
+    # particle; 嗯 the backchannel, which both corpora hear as m6
+    '重': 'zung6', '嘩': 'waa3', '嘍': 'lo3', '嗯': 'm6',
+    # 1.5.0, after the judged round on SpiCE and WenetSpeech-Yue: the
+    # particles 咧 (le1) and 咯 (lo3) as present-day Hong Kong writing uses
+    # them; the colloquial nouns 聲 'sound', 名 'name' and 命 'life', 着
+    # 'wear' and the delimitative 下 (睇下, 商量下), which HKCanCor has alone
+    # 80 times to 5; 哩 alone is the particle (and the demonstrative before a
+    # classifier, see CURATED_NEXT); 晁 is the surname
+    '咧': 'le1', '咯': 'lo3', '聲': 'seng1', '名': 'meng2', '命': 'meng6',
+    '着': 'zoek3', '下': 'haa5', '哩': 'ne1', '晁': 'ciu4',
+    '粒': 'nap1',   # lap1 is the n- said as l-
+    '儲': 'cou5',   # 儲錢, 儲埋 'save up' (HKCanCor 22 of 22); 儲存/儲備 are words
+    # after the second judged round (fresh text of SpiCE, WSYue, MagicHub
+    # and WenetSpeech-Yue): the backchannel 哦 (CantoMap hears o6 most
+    # often; HKCanCor writes o5, o4 is the rarest), 斷 'break', 畫 'draw'
+    # (the noun 一幅畫 comes from words), 相 'photo', 訂 'book', the
+    # filler 欸, and 擗, 扱, 拂, 魏 and 繩 as they are said
+    '哦': 'o6', '斷': 'tyun5', '畫': 'waak6', '相': 'soeng2', '訂': 'deng6',
+    '欸': 'e6', '擗': 'pek6', '扱': 'kap1', '拂': 'fat1', '魏': 'ngai6',
+    '繩': 'sing2', '醒': 'seng2', '呣': 'm6',
 }
 
+# The reading of a character standing alone before the character(s) given:
+# the demonstrative 呢 (ni1) before a classifier or a number, except where
+# the particle 呢 (ne1) is followed by a word that starts with one (呢一定,
+# 呢點解).  Longer patterns win.  These never change how a run is split.
+DEMONSTRATIVE_BEFORE = ('個啲度處邊便陣排次種類樣件份位間條隻只片方盞道張本部架首篇段句班'
+                        '群羣批堆對雙套款場屆期年晚日餐杯碗碟盒包樽罐粒顆枝支把塊'
+                        '單封座棟幢層區副門項點課科頁輛棵匹趟番下刻頭一兩三四五六七'
+                        '八九十百千幾')
+PARTICLE_BEFORE = ['一定', '一齊', '一直', '一係', '一路', '一早', '一般', '一向',
+                   '一樣', '一起', '點解', '點樣', '點知', '本來', '本身', '下次',
+                   '下晝', '下個', '下一', '對你', '對我', '對佢', '對於', '包括',
+                   '頭先', '日日', '邊個', '只係', '只要', '只有', '只不過',
+                   '方便', '片刻']
+# 下 alone is haa5 (see CURATED_DEFAULTS) but 'next, lower' before these;
+# 咁 is gam3 'so' before an adjective, but gam2 'like this, then' at the
+# end of a run (see CURATED_FINALS), before a particle or a filler, and
+# before a pronoun or a word that starts a clause (咁我哋去啦, 係咁㗎,
+# 咁但係, 咁所以, 咁即係).
+LOWER_BEFORE = '一個半'
+MANNER_BEFORE = '㗎囉啦喎嘅呀啊咩喇嘛呢咧咋啫噃誒欸嗯我你佢又都點咪但所其如而即跟另首'
+# 哩 is also written for the demonstrative (哩個, 哩度, as in HKCanCor);
+# alone it stays lei5 'mile'.
+# Other characters, found on the tuning half of HKCanCor and checked
+# against Hong Kong usage: 零 'odd' after an amount (三千零蚊, 個零鐘),
+# the delimitative 下 before 噉 (修下噉), 正 'great' (正啊), and 來 in the
+# colloquial 係 X 來嘅 construction, as older writing spells 嚟.
+CURATED_NEXT = {**{d + c: 'ni1' for d in '呢哩' for c in DEMONSTRATIVE_BEFORE},
+                **{'呢' + w: 'ne1' for w in PARTICLE_BEFORE},
+                '零蚊': 'leng4', '零鐘': 'leng4', '下噉': 'haa5', '正啊': 'zeng3',
+                '來嘅': 'lai4', '來㗎': 'lai4', '畫一': 'waak6', '畫個': 'waak6',
+                '咁不如': 'gam2', '請嘅': 'ceng2', '請嚟': 'ceng2', '請飲': 'ceng2',
+                '請食': 'ceng2', '請我': 'ceng2', '請佢': 'ceng2', '請人': 'ceng2',
+                '為佢': 'wai6', '為你': 'wai6', '為我': 'wai6', '上得': 'soeng5',
+                '朝下': 'ciu4', '朝上': 'ciu4', '朝向': 'ciu4', '朝住': 'ciu4',
+                **{'成' + c: 'seng4' for c in '世句堆晚條棟隻架盒碟包'},
+                **{'下' + c: 'haa6' for c in LOWER_BEFORE},
+                **{'咁' + c: 'gam2' for c in MANNER_BEFORE}}
+
+# Short-vowel spellings of particles that some word lists use (la1 for 啦,
+# ga3 for 㗎) are written with aa in Jyutping; 嘞 is laak3.  At the end of
+# a word, 啊 and 㗎 take their usual tone rather than the rising one of a
+# question (你做乜啊 aa3, as HKCanCor has 啊 aa3 2 011 times and CantoMap
+# hears aa3 1 334 times against aa2 61).
+PARTICLE_SPELLING = {'la1': 'laa1', 'la3': 'laa3', 'la4': 'laa4', 'a1': 'aa1',
+                     'a3': 'aa3', 'ga3': 'gaa3', 'ga4': 'gaa4', 'ma3': 'maa3',
+                     'za3': 'zaa3'}
+FINAL_PARTICLE_TONE = {('啊', 'aa2'): 'aa3', ('㗎', 'gaa2'): 'gaa3',
+                       ('呀', 'aa4'): 'aa3', ('嘛', 'maa5'): 'maa3'}
+# 呢 le1 is the particle ne1 said with l-, 唔 ng5 or m1 inside a word is m4,
+# and 啊 before 嘛 is aa1 (啊嘛, as 吖嘛).
+PARTICLE_ANYWHERE = {('呢', 'le1'): 'ne1', ('粒', 'lap1'): 'nap1', ('呀', 'aa4'): 'aa3',
+                     ('咯', 'lok3'): 'lo3', ('唔', 'ng5'): 'm4', ('唔', 'm1'): 'm4'}
+
+
+def respell(word, syls):
+    """syls with the particle spellings above made standard."""
+    out = [PARTICLE_SPELLING.get(s, s) for s in syls]
+    out = ['laak3' if c == '嘞' and s in ('laa3', 'laak3') else s for c, s in zip(word, out)]
+    if len(out) == len(word):
+        out = [PARTICLE_ANYWHERE.get((c, s), s) for c, s in zip(word, out)]
+        if word.endswith('啊嘛'):
+            out[-2] = 'aa1'
+        if out:
+            out[-1] = FINAL_PARTICLE_TONE.get((word[-1], out[-1]), out[-1])
+    return out
+
 # A different reading when the character ends a run of Chinese characters
-# (before punctuation, Latin text or the end): the particle 呢 in 你呢？
+# (before punctuation, Latin text or the end).  Since 1.5.0 the particle
+# 呢 is the default and needs none.
 CURATED_FINALS = {
-    '呢': 'ne1',
+    '咁': 'gam2',    # 就係咁, 唔好咁
+    '重': 'cung5',   # 唔算重: 'still' never ends a clause
+    '平': 'peng4',   # 好似幾平 'cheap'; 陰平, 和平 ... are words
+    '請': 'ceng2',   # 有人請, 我請 'treat'; 'please' never ends a clause
 }
 
 # Variant shapes missing from the OpenCC tables.
@@ -187,6 +284,79 @@ CURATED_WORDS = {
     '係人都會': 'hai6 jan4 dou1 wui5', '國際都會': 'gwok3 zai3 dou1 wui6',
     '都會區': 'dou1 wui6 keoi1', '係呢': 'hai6 ne1',
     '呢就': 'ne1 zau6', '呢都': 'ne1 dou1', '呢又': 'ne1 jau6',
+    # 1.5.0: 重 'heavy' now that 重 alone is zung6; 上 in the tone names and
+    # as the verb 'put on, serve'; 判斷 'judge' is dyun3 (dyun6 is 'break');
+    # the MTR lines read 綫 sin3 (鐵綫 'wire' would take them otherwise)
+    '好重': 'hou2 cung5', '太重': 'taai3 cung5', '咁重': 'gam3 cung5',
+    '噉重': 'gam2 cung5', '幾重': 'gei2 cung5', '重咗': 'cung5 zo2',
+    '重唔重': 'cung5 m4 cung5', '有幾重': 'jau5 gei2 cung5',
+    '陰上': 'jam1 soeng5', '陽上': 'joeng4 soeng5', '陰上聲': 'jam1 soeng5 sing1',
+    '陽上聲': 'joeng4 soeng5 sing1', '平上去入': 'ping4 soeng5 heoi3 jap6',
+    '放上': 'fong3 soeng5', '上枱': 'soeng5 toi2',
+    '判斷': 'pun3 dyun3', '判斷力': 'pun3 dyun3 lik6',
+    '東鐵綫': 'dung1 tit3 sin3', '東鐵線': 'dung1 tit3 sin3',
+    '傾下偈': 'king1 haa5 gai2', '傾吓偈': 'king1 haa5 gai2', '上斜': 'soeng5 ce3',
+    # 1.5.0, after the judged round on SpiCE and WenetSpeech-Yue (each
+    # agreed by the judges and checked against the dictionaries)
+    '咁樣': 'gam2 joeng2', '咁就': 'gam2 zau6', '係咁': 'hai6 gam2',
+    '會話': 'wui5 waa6', '英語會話': 'jing1 jyu5 wui6 waa2',
+    '英文會話': 'jing1 man2 wui6 waa2', '會話班': 'wui6 waa2 baan1',
+    '會話課': 'wui6 waa2 fo3', '純粹': 'seon4 seoi6', '吩咐': 'fan1 fu3',
+    '衙門': 'ngaa4 mun4', '斷咗': 'tyun5 zo2', '斷晒': 'tyun5 saai3',
+    '寧願': 'ning4 jyun6', '一味': 'jat1 mei6', '厲害': 'lai6 hoi6',
+    '舅父': 'kau5 fu2', '舅母': 'kau5 mou5', '呵呵': 'ho1 ho1',
+    '呵呵呵': 'ho1 ho1 ho1', '熊啤啤': 'hung4 be1 be1', '處置': 'cyu2 zi3',
+    '大娘': 'daai6 noeng4', '姊妹': 'zi2 mui6', '表妹夫': 'biu2 mui6 fu1',
+    '收聽': 'sau1 ting1', '打聽': 'daa2 ting1', '回朝': 'wui4 ciu4',
+    '為咩': 'wai6 me1', '上上下下': 'soeng6 soeng6 haa6 haa6',
+    '年年有魚': 'nin4 nin4 jau5 jyu4', '擰轉頭': 'ning6 zyun3 tau4',
+    '得著': 'dak1 zoek6', '沉重': 'cam4 zung6', '重傷': 'zung6 soeng1',
+    '更重': 'gang3 cung5', '最重': 'zeoi3 cung5', '比較重': 'bei2 gaau3 cung5',
+    '唔輕': 'm4 heng1', '好輕': 'hou2 heng1', '太輕': 'taai3 heng1',
+    '咁輕': 'gam3 heng1', '請咗': 'ceng2 zo2', '請緊': 'ceng2 gan2',
+    '請埋': 'ceng2 maai4', '畫吓': 'waak6 haa5', '畫下': 'waak6 haa5',
+    '畫緊': 'waak6 gan2', '亂畫': 'lyun6 waak6', '碗湯': 'wun2 tong1',
+    '好冇': 'hou2 mou5', '大驚': 'daai6 ging1', '小將': 'siu2 zoeng3',
+    '棗核': 'zou2 wat6', '上乘': 'soeng6 sing4', '敏捷': 'man5 zit6',
+    '使到': 'si2 dou3', '當面': 'dong1 min6', '方位': 'fong1 wai6',
+    '時分': 'si4 fan1', '醒咗': 'seng2 zo2', '調息': 'tiu4 sik1',
+    '駱駝': 'lok3 to4', '嘻嘻': 'hei1 hei1', '撞邪': 'zong6 ce4',
+    '我媽咪': 'ngo5 maa1 mi4', '噔噔聲': 'dang1 dang1 seng1',
+    '著緊': 'zoek3 gan2', '著咗': 'zoek3 zo2', '著衫': 'zoek3 saam1',
+    '著鞋': 'zoek3 haai4', '唔著': 'm4 zoek3',
+    '一哩': 'jat1 lei5', '兩哩': 'loeng5 lei5', '十哩': 'sap6 lei5',
+    '百哩': 'baak3 lei5', '千哩': 'cin1 lei5', '幾哩': 'gei2 lei5',
+    '生成': 'sang1 sing4', '成個': 'seng4 go3', '成班': 'seng4 baan1',
+    '公仔麪': 'gung1 zai2 min6', '公仔麵': 'gung1 zai2 min6',
+    '鴦走': 'joeng1 zau2', '出面': 'ceot1 min6', '摩洛哥': 'mo1 lok6 go1',
+    '狹窄': 'haap6 zaak3', '修訂': 'sau1 ding3', '教堂': 'gaau3 tong4',
+    '魚珠': 'jyu4 zyu1', '趙佗': 'ziu6 to4', '海幢': 'hoi2 cong4',
+    '海幢寺': 'hoi2 cong4 zi6', '扒類': 'paa2 leoi6', '會見到': 'wui5 gin3 dou3',
+    '為求': 'wai6 kau4', '為方便': 'wai6 fong1 bin6', '為保護': 'wai6 bou2 wu6',
+    '平機票': 'peng4 gei1 piu3', '平過': 'peng4 gwo3', '幾平': 'gei2 peng4',
+    '麻雀': 'maa4 zoek2', '打麻雀': 'daa2 maa4 zoek2', '度來度去': 'dok6 loi4 dok6 heoi3',
+    '生死': 'saang1 sei2', '呢位': 'ni1 wai2', '嗰位': 'go2 wai2',
+    '上嚟講': 'soeng6 lai4 gong2', '上過': 'soeng5 gwo3', '上巴士': 'soeng5 baa1 si2',
+    '重重覆覆': 'cung4 cung4 fuk1 fuk1', '生字': 'saang1 zi6', '人物': 'jan4 mat6',
+    '處理': 'cyu5 lei5', '宿舍': 'suk1 se3', '孫悟空': 'syun1 ng6 hung1',
+    '左右': 'zo2 jau6', '小弟弟': 'siu2 dai4 dai2', '實踐': 'sat6 cin5',
+    '兩份': 'loeng5 fan6', '熱門': 'jit6 mun4', '叱吒': 'cik1 zaa3', '入城': 'jap6 sing4',
+    '藉口': 'ze6 hau2', '長相': 'zoeng2 soeng3', '心地': 'sam1 dei6',
+    '一聲': 'jat1 seng1', '講實話': 'gong2 sat6 waa6', '度住': 'dou6 zyu6',
+    '行行下': 'haang4 haang4 haa5', '行俠': 'hang4 hap6', '名醫': 'ming4 ji1',
+    '同名': 'tung4 ming4', '之名': 'zi1 ming4', '軍隊': 'gwan1 deoi6',
+    '預測': 'jyu6 cak1', '莫測': 'mok6 cak1', '變化莫測': 'bin3 faa3 mok6 cak1',
+    '上邊': 'soeng6 bin6', '下邊': 'haa6 bin6', '裏邊': 'leoi5 bin6', '入邊': 'jap6 bin6',
+    '幅畫': 'fuk1 waa2', '張畫': 'zoeng1 waa2', '一幅畫': 'jat1 fuk1 waa2',
+    '睇畫': 'tai2 waa2', '畫展': 'waa2 zin2', '乒乒乓乓': 'bing1 bing1 bam1 bam1',
+    '生死': 'sang1 sei2', '十九': 'sap6 gau2', '私立': 'si1 lap6', '獨立': 'duk6 lap6',
+    '使用': 'si2 jung6', '照樣': 'ziu3 joeng6', '聽説': 'ting1 syut3', '聽說': 'ting1 syut3',
+    '斧頭': 'fu2 tau4', '滑頭': 'waat6 tau4', '陰平': 'jam1 ping4', '陽平': 'joeng4 ping4',
+    '挨打': 'ngaai4 daa2', '挨餓': 'ngaai4 ngo6', '朝服': 'ciu4 fuk6', '面朝': 'min6 ciu4',
+    '旅行先': 'leoi5 hang4 sin1', '重做': 'cung4 zou6', '重一啲': 'cung5 jat1 di1',
+    '行上': 'haang4 soeng5', '走上': 'zau2 soeng5', '爬上': 'paa4 soeng5',
+    '跳上': 'tiu3 soeng5', '飛上': 'fei1 soeng5', '搬上': 'bun1 soeng5',
+    '擺上': 'baai2 soeng5', '啱著': 'ngaam1 zoek3',
 }
 
 # Words of CC-Canto and the CC-CEDICT Cantonese readings that are not added
@@ -321,7 +491,7 @@ def load_rime_chars():
     """char -> [(reading, weight)], weight None for the primary reading."""
     chars = collections.defaultdict(list)
     for row in rime_rows(ROOT / 'rime-cantonese/jyut6ping3.chars.dict.yaml'):
-        ch, jp = row[0], row[1]
+        ch, jp = row[0], PARTICLE_SPELLING.get(row[1], row[1])
         weight = float(row[2].rstrip('%')) if len(row) > 2 and row[2] else None
         if len(ch) == 1 and is_han(ch) and SYL.match(jp):
             chars[ch].append((jp, weight))
@@ -389,6 +559,7 @@ def load_cedict(path):
         for s in m.group(2).split('/')[0].lower().split():
             s, _, new = s.partition('*')
             syls.append(s[:-1] + new if new.isdigit() else new or s)
+        syls = respell(m.group(1), syls)
         if syls not in words[m.group(1)]:
             words[m.group(1)].append(syls)
     return words
@@ -405,12 +576,58 @@ def load_tojyutping(freq):
 
     def walk(node, key):
         if node.v and len(key) > 1 and all(freq[c] for c in key):
-            out[key] = [[str(s.jyutping) for s in node.v[0]]]
+            out[key] = [respell(key, [str(s.jyutping) for s in node.v[0]])]
         for c, child in node.items():
             walk(child, key + c)
     sys.setrecursionlimit(max(10000, sys.getrecursionlimit()))
     walk(Trie.root, '')
     return out
+
+
+def load_counts(cw):
+    """word or character -> how often it is used: its count in rime-cantonese's
+    essay-cantonese.txt (a frequency list, CC BY 4.0) plus its count in the
+    WenetSpeech-Yue transcripts (tools/wenetspeech-yue-counts.tsv, made by
+    eval/wenet_counts.py of the jyutData folder), scaled to the same total.
+    Both are keyed by spelling and by canonical spelling."""
+    essay = {}
+    for line in open(ROOT / 'rime-cantonese' / 'essay-cantonese.txt', encoding='utf8'):
+        w, _, n = line.rstrip('\n').partition('\t')
+        if n.isdigit():
+            essay[w] = int(n)
+    speech = collections.Counter()
+    for line in open(REPO / 'tools' / 'wenetspeech-yue-counts.tsv', encoding='utf8'):
+        w, _, n = line.rstrip('\n').partition('\t')
+        speech[w] += int(n)
+        if cw(w) != w:
+            speech[cw(w)] += int(n)
+    scale = sum(essay.values()) / max(1, sum(speech.values()))
+    counts = collections.Counter(essay)
+    for w, n in speech.items():
+        counts[w] += n * scale
+    return counts
+
+
+# The cost of a word or of a character standing alone, 10 ln(total / (count
+# + 1)) rounded, the count taken by spelling or canonical spelling: the
+# segmenter takes, among the splits with the fewest words and single
+# characters, the one of least total cost (the most usual words; 步行|街
+# rather than 步|行街).
+COST_SCALE = 10
+
+
+def coster(counts, cw):
+    """cost_of(key), and the cost of a word or character the list does not
+    count (the .def files leave those out and give this default)."""
+    total = sum(counts.values())
+    cache = {}
+
+    def cost_of(k):
+        if k not in cache:
+            n = counts.get(k, counts.get(cw(k), 0))
+            cache[k] = round(COST_SCALE * math.log(total / (n + 1)))
+        return cache[k]
+    return cost_of, round(COST_SCALE * math.log(total))
 
 
 def with_aliases(words, canon):
@@ -428,28 +645,36 @@ def with_aliases(words, canon):
     return {**words, **aliases}, len(aliases), clashes
 
 
-def reader(chars, canon, lex):
+def reader(chars, canon, lex, cost_of):
     """The readings of a run of text with the word list lex, segmented as
     xjyutping.sty and xjyutping-py do: the fewest words, then the fewest
-    single characters; on a tie the longer final word wins."""
+    single characters, then the least total cost; on a full tie the longer
+    final word wins.  cost_of(key) is the cost of a word or character."""
     longest = collections.defaultdict(int)
     for w in lex:
         longest[w[-1]] = max(longest[w[-1]], len(w))
 
     def read(run):
         cr = ''.join(canon.get(c, c) for c in run)
-        cost, back = [0] * (len(run) + 1), [1] * (len(run) + 1)
+        cost, back = [(0, 0)] * (len(run) + 1), [1] * (len(run) + 1)
         for i in range(1, len(run) + 1):
-            best = cost[i - 1] + 100001
+            best = (cost[i - 1][0] + 100001, cost[i - 1][1] + cost_of(run[i - 1]))
             for size in range(2, min(i, max(longest[run[i - 1]], longest[cr[i - 1]])) + 1):
-                if cost[i - size] + 100000 <= best and (run[i - size:i] in lex or
-                                                        cr[i - size:i] in lex):
-                    best, back[i] = cost[i - size] + 100000, size
+                key = run[i - size:i] if run[i - size:i] in lex else cr[i - size:i]
+                if key in lex:
+                    here = (cost[i - size][0] + 100000, cost[i - size][1] + cost_of(key))
+                    if here <= best:
+                        best, back[i] = here, size
             cost[i] = best
         out, j = [], len(run)
         while j:
             i = j - back[j]
-            out[:0] = (lex.get(run[i:j]) or lex[cr[i:j]]) if j - i > 1 else [chars[run[i]][0]]
+            if j - i > 1:
+                out[:0] = lex.get(run[i:j]) or lex[cr[i:j]]
+            else:
+                nxt = (CURATED_NEXT.get(run[i:i + 3]) or CURATED_NEXT.get(cr[i:i + 3])
+                       or CURATED_NEXT.get(run[i:i + 2]) or CURATED_NEXT.get(cr[i:i + 2]))
+                out[:0] = [nxt or chars[run[i]][0]]
             j = i
         return out
     return read
@@ -484,7 +709,7 @@ def main():
 
     lshk = load_lshk()
     rime = load_rime_chars()
-    rows = [(r[0], r[1].split()) for r in
+    rows = [(r[0], respell(r[0], r[1].split())) for r in
             rime_rows(ROOT / 'rime-cantonese/jyut6ping3.words.dict.yaml')]
     freq = collections.Counter(c for w, _ in rows for c in w)
     canon = load_variants(freq)
@@ -639,9 +864,10 @@ def main():
     # Only the words that change a reading: shortest first (only shorter
     # words can change how a word is read), add those that the list, with
     # the shorter words added, reads otherwise.
+    cost_of, unknown_cost = coster(load_counts(cw), cw)
     added = {}
     for size in sorted({len(w) for w in new}):
-        read = reader(chars, canon, with_aliases({**words, **added}, canon)[0])
+        read = reader(chars, canon, with_aliases({**words, **added}, canon)[0], cost_of)
         added.update({w: s for w, (s, _) in new.items() if len(w) == size and read(w) != s})
     rejected['read so already'] = len(new) - len(added)
     words.update(added)
@@ -678,12 +904,21 @@ def main():
                 f.write('\\xjp@V %s%s;\n' % (v, s))
         for ch, jp in CURATED_FINALS.items():
             f.write('\\xjp@F %s%s;\n' % (ch, jp))
+        for pat, jp in sorted(CURATED_NEXT.items()):
+            f.write('\\xjp@N %s=%s;\n' % (pat, jp))
+        f.write('\\xjp@D %d;\n' % unknown_cost)
+        for ch in chars:
+            if cost_of(ch) != unknown_cost:
+                f.write('\\xjp@K %s=%d;\n' % (ch, cost_of(ch)))
     with open(REPO / 'xjyutping-words.def', 'w', encoding='utf8') as f:
         f.write('\n'.join(header) + '\n%%          CC-Canto and CC-CEDICT Cantonese readings '
                 '(CC BY-SA 3.0).\n')
         f.write('\\ProvidesFile{xjyutping-words.def}[%s xjyutping word data]\n' % VERSION)
         for w in sorted(allwords):
             f.write('\\xjp@W %s=%s;\n' % (w, ' '.join(allwords[w])))
+        for w in sorted(allwords):
+            if cost_of(w) != unknown_cost:
+                f.write('\\xjp@K %s=%d;\n' % (w, cost_of(w)))
         for c in sorted(longest):
             f.write('\\xjp@E %s%d;\n' % (c, longest[c]))
 
@@ -695,11 +930,12 @@ def main():
         def tsv(name, rows):
             with open(py_data / name, 'w', encoding='utf8', newline='\n') as f:
                 f.writelines('\t'.join(row) + '\n' for row in rows)
-        tsv('chars.tsv', ((ch, d, ' '.join(o), '1' if fl else '0')
+        tsv('chars.tsv', ((ch, d, ' '.join(o), '1' if fl else '0', str(cost_of(ch)))
                           for ch, (d, o, fl) in chars.items()))
         tsv('finals.tsv', CURATED_FINALS.items())
+        tsv('next.tsv', sorted(CURATED_NEXT.items()))
         tsv('variants.tsv', ((v, s) for v, s in sorted(canon.items()) if v in chars))
-        tsv('words.tsv', ((w, ' '.join(allwords[w])) for w in sorted(allwords)))
+        tsv('words.tsv', ((w, ' '.join(allwords[w]), str(cost_of(w))) for w in sorted(allwords)))
     else:
         print('Python data skipped: %s not found' % PY_DATA.parent, file=sys.stderr)
 

@@ -4,7 +4,7 @@
 #
 #     tools/fetch-sources.sh [DIR]
 #
-# DIR defaults to the directory that contains this repository.  A source
+# DIR defaults to the folder jyutData next to this repository.  A source
 # folder that already exists there is left alone.  Needs git, curl and tar.
 #
 # The pinned commits reproduce the copies used for the build byte for byte
@@ -19,7 +19,7 @@ BOOKS=02740c7e136e2766d7931a37ed0633aa41009ae1    # jyutnet/cantonese-books-data
 JYUTDICT=26526015424de3f9c30cd9c7e42b96dadb068b6a # aaronhktan/jyut-dict, 2026-09-28
 TOJYUTPING=a692787e9af65b27310580604b1d69b96b2165be # CanCLID/ToJyutping 3.2.0, 2026-02-17
 
-dir=${1:-$(cd "$(dirname "$0")/../.." && pwd)}
+dir=${1:-$(cd "$(dirname "$0")/../.." && pwd)/jyutData}
 mkdir -p "$dir"
 cd "$dir"
 
@@ -61,11 +61,12 @@ if missing jyutping-table-master; then
     mv "jyutping-table-$LSHK" jyutping-table-master
 fi
 
-# rime-cantonese dictionaries (CC BY 4.0).  Upstream sources are at
-# CanCLID/rime-cantonese-upstream; rime/rime-cantonese publishes the files.
+# rime-cantonese dictionaries and word-frequency list (CC BY 4.0).
+# Upstream sources are at CanCLID/rime-cantonese-upstream; rime/rime-cantonese
+# publishes the files.
 if missing rime-cantonese; then
     raw rime/rime-cantonese "$RIME" rime-cantonese LICENSE-CC-BY \
-        jyut6ping3.chars.dict.yaml jyut6ping3.words.dict.yaml
+        jyut6ping3.chars.dict.yaml jyut6ping3.words.dict.yaml essay-cantonese.txt
 fi
 
 # OpenCC variant tables (Apache-2.0).

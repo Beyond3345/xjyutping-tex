@@ -31,6 +31,54 @@ written for the next maintainer, human or agent.
 There are no unreleased changes yet. Add new entries here under
 `### Added`, `### Changed`, `### Fixed` and so on.
 
+## [1.5.0] - 2026-10-02
+
+### Added
+
+- Word frequencies. Where two ways of splitting a run have as many words and
+  single characters, the one of the more common words now wins, rather than
+  the one with the longer final word (步行|街, not 步|行街; 改名|叫, not
+  改|名叫). The frequencies come from `essay-cantonese.txt` of rime-cantonese
+  and from `tools/wenetspeech-yue-counts.tsv`, which counts the words of the
+  6.8 million transcribed utterances of WenetSpeech-Yue. A word set with
+  `\setjyutping` wins such a tie.
+- A character standing alone can take its reading from the one or two
+  characters after it. 呢 and 哩 are the demonstrative *ni1* before a
+  classifier or a number (呢間, 呢兩年) and the particle *ne1* otherwise,
+  while 咁 is *gam2* "like this, then" before a particle, a pronoun or a word
+  that starts a clause (係咁㗎, 咁我哋, 咁但係).
+- About 200 words, and guards for the senses that new defaults no longer
+  cover (好重 *cung5*, 一幅畫 *waa2*).
+- `tests/regression.tex` checks the new rules.
+
+### Changed
+
+- The particles now follow present-day Hong Kong usage and the corpora heard
+  by ear. Specifically, 呢 alone is *ne1*, 咧 *le1*, 咯 *lo3*, 嘩 *waa3*, 嘍
+  *lo3*, 嗯 *m6*, 哦 *o6* and 欸 *e6*, and the particles at the end of a word
+  take their usual tone (你做乜啊 *aa3*, 係呀 *aa3*). Short-vowel spellings of
+  some word lists (*la1*, *ga3*, *a1*) are written *laa1*, *gaa3*, *aa1*.
+- Characters that are mostly read otherwise when they stand alone have new
+  defaults, such as 重 *zung6* "still", 下 *haa5*, 名 *meng2*, 聲 *seng1*, 斷
+  *tyun5*, 畫 *waak6*, 相 *soeng2*, 着 *zoek3* and 粒 *nap1*, while 咁, 重, 平
+  and 請 have their own readings at the end of a run.
+- The sources are looked for in the folder `jyutData` next to this
+  repository, where `tools/fetch-sources.sh` now puts them, together with
+  `essay-cantonese.txt` of rime-cantonese.
+- The data files are larger (5.3 MB of words), and loading the package takes
+  about 0.5 million more words of TeX's main memory (3.05 million under
+  XeLaTeX).
+- The `.def` files carry `v1.5.0`.
+
+### Fixed
+
+- Readings found wrong by judging the Cantonese of SpiCE, MagicHub,
+  WenetSpeech-Yue and Wikipedia, such as 判斷 *dyun3*, 處理 *cyu5*, 純粹
+  *seoi6*, 會話 "will say" *wui5 waa6*, 十九 *sap6 gau2* and 東鐵綫 *sin3*.
+- 為咗 and other common spoken words lost a tie to a neighbouring word (人為|咗
+  rather than 人|為咗), since the frequency list of rime-cantonese lacks them.
+  The counts of WenetSpeech-Yue fill these gaps.
+
 ## [1.4.0] - 2026-09-29
 
 ### Added
@@ -287,6 +335,7 @@ This repository holds the LaTeX package, and the table below lists its files.
 | `xjyutping.lua` | The LuaLaTeX backend: builds the cells after LuaTeX-ja (Section 7.3). |
 | `xjyutping-chars.def`, `xjyutping-words.def` | Generated data; never edit by hand. |
 | `tools/build-data.py` | Generates the data of this package and of xjyutping-py from the sources. |
+| `tools/wenetspeech-yue-counts.tsv` | Word counts of the WenetSpeech-Yue transcripts, read by the build (Section 10.4). |
 | `tools/fetch-sources.sh` | Fetches the sources at the pinned commits. |
 | `tools/make-ctan-zip.sh` | Builds the archive for CTAN (Section 7.8). |
 | `tests/` | `run-tests.sh` (readings, both engines, with and without `fancy`), `render.sh`, `regression.tex/.expected`, `layout-check.tex`, `fancy-check.tex`, `verse-check.tex`. |
@@ -295,25 +344,30 @@ This repository holds the LaTeX package, and the table below lists its files.
 | `CHANGELOG.md` | This file. |
 
 The third-party sources are not part of the repository. Instead,
-`tools/build-data.py` looks for them in the directory that contains the
-repository (the "workspace"), which in the original set-up is organised as
-follows.
+`tools/build-data.py` looks for them in the folder `jyutData` next to the
+repository, inside the directory that contains both repositories (the
+"workspace"), which is organised as follows since 1.5.0.
 
 ```
 xjyutping/                  workspace (not a repository)
   xjyutping-tex/            this repository
   xjyutping-py/             the Python package's repository
-  jyutping-table-master/    LSHK Jyutping table (CC BY 4.0)
-  rime-cantonese/           rime-cantonese dictionaries (CC BY 4.0)
-  opencc/                   OpenCC variant tables (Apache-2.0)
-  jyut-dict/                Jyut Dictionary, sparse: src/dictionaries, src/jyut-dict
-  cantonese-books-data/     粵音資料集叢 book data (no licence stated)
+  jyutData/                 sources, corpora and evaluation (Section 10)
+    jyutping-table-master/  LSHK Jyutping table (CC BY 4.0)
+    rime-cantonese/         rime-cantonese dictionaries and word frequencies (CC BY 4.0)
+    opencc/                 OpenCC variant tables (Apache-2.0)
+    jyut-dict/              Jyut Dictionary, sparse: src/dictionaries, src/jyut-dict
+    cantonese-books-data/   粵音資料集叢 book data (no licence stated)
+    ToJyutping-main/        ToJyutping 3.2.0 (BSD-2-Clause)
+    hkcancor/, cantomap/, spice/, wenetspeech-yue/, wikipedia/, ...
+                            the corpora used for tuning and evaluation
+    eval/                   the evaluation scripts and the judged rounds
   visual-jyutping-master/   Visual Jyutping (reference for fancy)
   xpinyin/, xpinyin-master/ the LaTeX and Python xpinyin (reference only)
 ```
 
-The script `tools/fetch-sources.sh [DIR]` recreates the five data folders
-there.
+The script `tools/fetch-sources.sh [DIR]` recreates the six source folders
+there, and `jyutData/README.md` says where each corpus comes from.
 
 The following invariants must be kept.
 
@@ -329,9 +383,9 @@ The following invariants must be kept.
    packages. Of the sources, rime-cantonese is authoritative, and the others
    only add what rime lacks. The one exception is ToJyutping, which may choose
    a different one of the readings that rime gives a word (Section 9). A
-   candidate entry should first be tested with
-   `\setjyutping` in a few contexts, since the longer-final-word tie-break
-   means that a new word can capture its neighbours (Section 5.2).
+   candidate entry should first be tested with `\setjyutping` in a few
+   contexts, since a new word can capture its neighbours (Section 5.2), and
+   then measured with `jyutData/eval/bench.py` (Section 10.3).
 3. Both engines must produce the same readings and nearly the same layout.
    Since the layout logic is implemented twice, in the XeLaTeX cell code of
    `xjyutping.sty` (`\__xjyutping_cell:nnn` and the pad functions) and in
@@ -369,7 +423,8 @@ tests/render.sh tests/fancy-check.tex lualatex
 
 For the open issues, Section 4 gives the state at 1.0.0 and says which of
 them 1.1.0 resolved, while Section 7.7 gives the state after 1.2.0, Section
-8.5 what 1.3.0 adds and Section 9.7 what 1.4.0 leaves.
+8.5 what 1.3.0 adds, Section 9.7 what 1.4.0 leaves and Section 10.8 what
+1.5.0 leaves.
 
 The review artefacts cited below (the repro `.tex` files and the review
 JSON) lived in the session's temporary directory and are not part of the
@@ -2521,3 +2576,298 @@ favoured the standard readings, if anything understate the gain.
    traditional text.
 5. The tie-break of Section 2.5 remains (Section 4, item 15), and 係呢 was one
    case of it.
+
+## 10. Version 1.5.0: tuning on seven corpora (2026-09-30 to 2026-10-02)
+
+### 10.1 The request
+
+After comparing xjyutping with the Typst packages auto-canto and canto-parser
+(both by Vincent Tam), the request was to fine-tune xjyutping on the results,
+with the particles first since most errors were there, and then to evaluate
+and tune it again over several rounds on three further corpora, SpiCE, the
+Guangzhou Cantonese Conversational Speech Corpus of MagicHub and
+WenetSpeech-Yue. Every corpus and every piece of training data was to be kept
+in a folder `jyutData` next to the repositories, and quality came first, so
+larger data files and slower compilation were accepted.
+
+### 10.2 The corpora and what their Jyutping is worth
+
+The `jyutData` folder now holds the six dictionary sources of the build (moved
+there from the workspace, with `tools/fetch-sources.sh` and the default of
+`--sources` changed to match) and the corpora below. Its `README.md` gives the
+source, the commit or DOI and the licence of each.
+
+| Corpus | Text | Jyutping | Size |
+| --- | --- | --- | --- |
+| HKCanCor | conversation, Hong Kong, 1990s, traditional | by hand | 161 045 scored characters |
+| CantoMap | MapTask conversation, Hong Kong, 2016, traditional | particles by ear, other words looked up in a dictionary | 129 060 scored characters |
+| SpiCE | interviews of bilinguals, Vancouver, traditional | none written by hand | 34 transcripts |
+| WSYue-ASR-eval | the human-checked test set of WenetSpeech-Yue, simplified | none | 7 058 utterances |
+| WenetSpeech-Yue | 21 800 hours of transcribed speech, simplified | none | 6.8 million utterances |
+| MagicHub | conversation, Guangzhou, simplified | none | 4 621 utterances |
+| Cantonese Wikipedia | ten articles, traditional | none | 34 949 characters |
+
+Since the Jyutping of these corpora differs in kind, each one serves a
+different purpose. HKCanCor is the only corpus whose readings were all
+written by hand, but its transcribers gave each particle character one fixed
+reading (喇 *laa1*, 呀 *aa4*, 㗎 *gaa4*, 喀 *haak6*), wrote 哩 for the
+demonstrative and 來 for 嚟, and often transcribed casual speech (*l-* for
+*n-*, as in 粒 *lap1*). Its particle score therefore also measures agreement
+with these conventions, which present-day Hong Kong writing does not follow.
+CantoMap, on the other hand, transcribed its sentence-final particles by ear
+as codes (`&le1`, `&laa1`), while the Jyutping of its other words was looked
+up automatically in a dictionary (yedict) and does not take the context into
+account (Winterstein, Tang and Lai, LREC 2020). Hence `eval/corpora.py` puts
+the particles back as the characters that write them (`&le1` as 呢, `&laak3`
+as 嘞) and scores them as gold, while its other words only show agreement with
+that dictionary. The remaining corpora have no Jyutping written by hand, so
+they were used through judged rounds (Section 10.3), and the text of the
+simplified corpora was converted to Hong Kong characters by `eval/s2hk.py`.
+
+The non-commercial corpora were first meant for evaluation only. Since
+xjyutping is an open-source, non-commercial project, they were later used for
+tuning as well. No text of any corpus is shipped; the packages only carry
+readings, words and word costs decided with their help.
+
+### 10.3 How we measured
+
+The measurement is mainly divided into two parts, the corpora with Jyutping
+and the judged rounds on the corpora without it. Both are run by the scripts
+of `jyutData/eval`, which its `README.md` describes.
+
+For the corpora with Jyutping, `eval/bench.py` converts each utterance whole
+and counts a character as right when its reading is one of the acceptable
+ones. HKCanCor is split by file as in Section 9.2 (even-numbered files tune,
+odd-numbered files test), and CantoMap by recording folder in the same way.
+The particles are scored apart from the other words, and the Wikipedia
+samples of Sections 9.2 and 10.1 (160 and 459 characters with their
+verdicts) are scored as well, although they guided some of the changes.
+
+For the corpora without Jyutping, we ran three rounds of judging, counted as
+rounds 2 to 4 since the Wikipedia samples were the first. First,
+`eval/prepare_round.py` reads every utterance with xjyutping, ToJyutping,
+auto-canto and PyCantonese, and picks three kinds of characters,
+
+- 250 random characters per corpus on which xjyutping differs from another
+  system (D),
+- two examples of each of the 120 most frequent patterns of disagreement (P)
+  and
+- 150 random characters with more than one reading on which all four agree
+  (A), to find the errors that every system shares.
+
+Then `eval/make_batches.py` writes the characters in batches of 90, each with
+its sentence and the readings proposed by any system or listed in the data,
+in random order and without saying which system proposed which. Two judges
+decide each batch independently, giving every reading that a fluent Hong
+Kong speaker would use in this sentence, and a third judge decides the
+characters on which the first two differ, where a reading then needs two of
+the three votes. The judges were instructed to accept a changed tone that is
+the normal spoken form, while rejecting the lazy pronunciations (*l-* for
+*n-*, the dropped *ng-*), readings of another sense and Mandarin-influenced
+readings. Lastly, `eval/merge_round.py` combines the answers and
+`eval/rescore.py` scores the previous release and the working copy on them.
+
+Since a round that guides the changes cannot also test them, each round takes
+new sentences only (`prepare_round.py` leaves out every sentence judged
+before). Round 2 (SpiCE and WSYue, 1 260 characters) and round 3 (all four
+corpora, 2 535 characters) guided the changes, while round 4 (all four
+corpora, 1 280 characters, with only the random kinds D and A) was judged
+after the data was frozen and gives the final score.
+
+### 10.4 Changes to the segmentation (both packages)
+
+Two changes reach the code of both packages, the frequency of a word as a
+tie-break and the reading of a character from the characters after it.
+
+First, the dynamic programming of Section 2.5 used to settle a tie between
+two splits with as many words and single characters by taking the longer
+final word. This takes the word to the right, so that 步行街 became 步 +
+行街 (*haang4 gaai1*), 改名叫 became 改 + 名叫 and 影相等 became 影 + 相等. It
+was the cause of 15 of the 27 cases in which auto-canto was right and
+xjyutping wrong on the Wikipedia articles. Since 1.5.0 every word and every
+character has a cost, `10 ln(total / (count + 1))` rounded, where the count
+is its count in `essay-cantonese.txt` of rime-cantonese plus its count in
+the transcripts of WenetSpeech-Yue scaled to the same total, and the split
+of least total cost wins among the splits with as many words and single
+characters. Only a full tie still goes to the longer final word. Specifically,
+
+- `tools/build-data.py` writes a cost after each word of `words.tsv` and
+  each character of `chars.tsv` for the Python package, and the lines
+  `\xjp@K <word or character>=<cost>;` for the LaTeX package, which only
+  carries the costs of what the counts know, while `\xjp@D <cost>;` gives
+  the cost of the rest (about 40% of the words), to save TeX memory,
+- the counts of WenetSpeech-Yue are kept in `tools/wenetspeech-yue-counts.tsv`
+  (68 944 words and characters, 59.8 million segments of the transcripts of
+  confidence 0.9 or more, segmented by the package itself), so that the data
+  can be rebuilt without the 11.25 GB corpus,
+- `xjyutping.sty` keeps a second value per position, `\xjp@lm@<i>`, beside
+  `\xjp@cost@<i>`, and compares the two in order, and
+- a word set by `\setjyutping` has cost 0, so it wins such a tie.
+
+Then a single character may take another reading from the one or two
+characters after it, without changing how the run is split. The table
+`next.tsv` (and `\xjp@N <characters>=<reading>;`, stored as `\xjp@x@`) maps
+the character and those after it to its reading, the longer pattern first,
+by spelling and then by canonical spelling, before the run-final reading and
+the default. A user's `\setjyutping` of the character still wins. It holds,
+
+- the demonstrative 呢 and 哩 (*ni1*) before a classifier or a number (呢間,
+  呢兩年, 哩個), while 呢 alone is now the particle *ne1*, with exceptions
+  where a word starting with such a character follows the particle (呢一定,
+  呢點解, 呢本來, 呢只係),
+- 咁 *gam2* "like this, then" before a particle, a filler, a pronoun or a word
+  that starts a clause (係咁㗎, 咁我哋, 咁但係), while 咁 before an adjective
+  stays *gam3*, and
+- a few other pairs found on the corpora (下 *haa6* before 一, 個 and 半, 零
+  *leng4* in 三千零蚊 and 個零鐘, 為 *wai6* before 佢, 你 and 我).
+
+Lastly, we measured the cost of these changes. In XeLaTeX, a document with
+only the package loaded uses 3.05 million words of main memory out of 5
+million (2.54 million in 1.4.0), and the two-page test document compiles in
+the same time as before (1.2 s). On a 704 484-character test of all the
+corpora, the package needs about 12% more time per character than 1.4.0.
+
+### 10.5 Changes to the data
+
+The changes to the data came in three rounds, each guided by its own
+evidence, and every change is commented in `tools/build-data.py`.
+
+First, the particles. Some word lists spell particles with a short vowel
+(*la1* for 啦, *ga3* for 㗎, *a1* for 吖, *ma3*, *za3*), which Jyutping
+writes with *aa*. Hence `respell` gives these the standard spelling in every
+source, together with 嘞 *laak3*, 呢 *ne1* for *le1* (the particle said with
+*l-*), 粒 *nap1* for *lap1* and 唔 *m4* inside words. At the end of a word,
+啊 and 㗎 take their usual tone (*aa3*, *gaa3*) rather than the rising tone
+of a question that rime gives some phrases (你做乜啊 *aa2*), since HKCanCor
+has 啊 *aa3* 2 011 times and CantoMap hears *aa3* 1 334 times against *aa2* 61;
+呀 *aa4*, 嘛 *maa5* and 咯 *lok3* inside words follow for the same reason.
+The defaults of the particles 呢 (*ne1*), 咧 (*le1*), 咯 (*lo3*), 嘩 (*waa3*),
+嘍 (*lo3*), 嗯 (*m6*), 哦 (*o6*) and 欸 (*e6*) now follow present-day Hong
+Kong writing and the corpora heard by ear. On CantoMap, whose particles were
+transcribed by ear, this raises the particles from 77% to 97%.
+
+Then the demonstrative 呢 and 哩 before a classifier, the manner 咁 and the
+other next-character readings of Section 10.4, and new defaults for
+characters that are mostly read otherwise when they stand alone, such as 重
+*zung6* "still" (HKCanCor 248 times against 19), 下 *haa5* (the delimitative,
+80 against 5), 名 *meng2*, 聲 *seng1*, 命 *meng6*, 着 *zoek3* "wear", 斷
+*tyun5* "break", 畫 *waak6* "draw", 相 *soeng2* "photo", 訂 *deng6* "book",
+儲 *cou5* "save up" and 粒 *nap1*. The other senses come from words, and
+`CURATED_WORDS` adds guards where they were missing (好重, 太重 and 咁重 with
+*cung5*, 一幅畫 and 畫展 with *waa2*), while a run that ends in 重 reads it
+*cung5*, since "still" never ends a clause.
+
+Lastly, `CURATED_WORDS` gained 196 words, mostly where the judges agreed on
+a reading that the dictionaries allow and a few where HKCanCor or the
+Wikipedia samples showed it, such as 判斷 *dyun3*, 純粹
+*seoi6*, 處理 *cyu5*, 吩咐 *fu3*, 衙門 *mun4*, 會話 *wui5 waa6* ("will say";
+英語會話 keeps *wui6 waa2*), 咁樣 *gam2 joeng2*, 東鐵綫 *sin3*, 摩洛哥 *lok6*
+and 狹窄 *haap6*.
+
+### 10.6 Results
+
+On the corpora with Jyutping, the scores of the whole of each corpus are,
+
+| | HKCanCor: all | Content | Particles | CantoMap particles (by ear) | CantoMap other words (dictionary) |
+| --- | --- | --- | --- | --- | --- |
+| ToJyutping 3.2.0 | 92.78% | 96.15% | 70.42% | 83.01% | 96.01% |
+| xjyutping 1.4.0 | 94.08% | 97.17% | 73.57% | 79.04% | 95.69% |
+| xjyutping 1.5.0 | 95.79% | 97.99% | 81.15% | 97.45% | 95.90% |
+
+Specifically, on the held-out half of HKCanCor the score rises from 93.98%
+to 95.64%, a gain of 1.66 points against 1.75 on the tuning half (94.18% to 95.93%), so the
+changes do not seem to be tuned to the corpus. On the judged Wikipedia
+samples, which guided some changes, 155 of 159 and 450 of 454 characters are
+now right (124 and 399 before).
+
+On the judged rounds, the share of characters read right is,
+
+| Round | Corpora | Kind | Characters | xjyutping 1.4.0 | xjyutping 1.5.0 | ToJyutping 3.2.0 | auto-canto 0.2.3 | PyCantonese 5.0.0 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2 (tuning) | SpiCE, WSYue | D | 489 | 80.4% | 94.3% | 69.5% | 53.2% | 43.8% |
+| 2 (tuning) | SpiCE, WSYue | A | 300 | 92.0% | 97.7% | 95.0% | 95.0% | 95.0% |
+| 3 (tuning) | all four | D | 986 | 73.1% | 95.6% | 63.1% | 54.4% | 32.3% |
+| 3 (tuning) | all four | A | 595 | 93.9% | 98.3% | 97.5% | 97.5% | 96.0% |
+| 4 (test) | all four | D | 787 | 72.2% | 91.7% | 62.4% | 54.6% | 39.4% |
+| 4 (test) | all four | A | 479 | 94.8% | 96.9% | 96.9% | 96.9% | 96.0% |
+
+Here "all four" means SpiCE, WSYue, MagicHub and WenetSpeech-Yue, and the
+characters judged as bad text or left undecided (44 of the 3 680 characters
+of these two kinds) are left out. Since the kind A
+was chosen as the characters on which all four systems agreed with the
+working copy of that round, the other systems score the same there as that
+working copy did.
+
+Looking at the last round, which no change was based on, xjyutping 1.5.0 reads 91.7% of the 787 characters on which the
+systems disagree correctly, against 72.2% for 1.4.0, 62.4% for ToJyutping,
+54.6% for auto-canto and 39.4% for PyCantonese, and 96.9% of the 479
+characters with several readings on which all four agree. By corpus, the
+characters of disagreement are right in 96.9% of the cases on SpiCE, 94.4% on
+MagicHub, 89.8% on WenetSpeech-Yue and 85.9% on WSYue, where the converted
+text of a wuxia story and its literary readings remain the hardest. The
+remaining errors of this round are mostly the cases of Section 10.8, such as
+到 after a verb (the judges preferred *dou3* to the spoken *dou2*), 為, 下,
+咁 and 請, together with a few words of literary text (難為, 掌櫃, 發辦).
+
+### 10.7 What we did not follow
+
+While HKCanCor is the largest corpus with readings written by hand, a few of
+its readings are conventions of its transcription rather than of the
+language, and the package does not follow them. These are 喇 *laa1* (880
+times on the tuning half; present-day writing uses 喇 for *laa3* and 啦 for
+*laa1*), 呀 *aa4*, 㗎 *gaa4*, 喀 *haak6*, 來 for 嚟 *lai4*, and the casual
+*l-* for *n-* (粒 *lap1*, 嗱 *laa4*) and dropped *ng-* (啱 *aam1*). The
+changed tone of 到 after a verb (見到 *dou2*), on the other hand, is kept
+where rime has it, since both HKCanCor and the judges accept it, and 考試
+keeps *si5* for the same reason. Where the judges were split on a pair of
+readings that are both in use (邊 *bin1* and *bin6*, 嚟 *lai4* and *lei4*,
+生死 *sang1* and *saang1*), the data keeps the reading of the dictionaries.
+
+### 10.8 Open issues
+
+Of the issues left by 1.4.0 (Section 9.7), items 1, 3 and 5 are resolved,
+since 出面 is now *ceot1 min6* as the judges read it, 嘩 alone is *waa3* and
+the tie-break of Section 2.5 now uses the word frequencies. Item 4 is
+unchanged and harmless, while item 2 remains, as the second point below.
+
+- Some readings depend on more than the next two characters, such as 為
+  *wai4*/*wai6*, 當 *dong1*/*dong3*, 上 *soeng5* "go up" before a place, 咁
+  *gam2* before a verb and 請 *cing2*/*ceng2* before a pronoun, and they stay
+  guesses until a user sets them.
+- The tone of a particle in a question (啊 *aa4*, 㗎 *gaa4*, 嘅 *ge2*, 啦
+  *laa4*) follows the intonation, which the text does not show.
+- 着 is read *zoek3* "wear", as Hong Kong writing uses it, while text
+  converted from simplified characters uses it for the aspect marker
+  *zoek6*.
+- The word counts of WenetSpeech-Yue were made with the segmentation of the
+  package before the counts were added, so a second pass could refine them.
+
+### 10.9 Tests
+
+- `tests/regression.tex` has a new paragraph for the 呢 patterns, the tie-break,
+  咁, 重 and the particles, and a `\setjyutping` of 行街 that wins a tie, and
+  `tests/run-tests.sh` gives `readings ok` for all four jobs.
+- `eval/texparity.py` typeset all the corpora (46 028 texts, 704 484
+  characters) with XeLaTeX, and the 405 561 segments of its debug log are
+  identical to those of the Python package, with no TeX error.
+- xjyutping-py has two new tests, `test_corpus_tuned_readings` and
+  `test_frequency_tie_break`, and its `tests/parity_expected.txt` was
+  regenerated with both engines, which agree.
+- A build from sources fetched afresh by `tools/fetch-sources.sh` gives data
+  files byte-identical to the committed ones.
+
+### 10.10 How to repeat the measurement
+
+With the corpora in `jyutData` (its `README.md` says where each comes from),
+
+1. Run `python3 eval/bench.py --tojyutping --split=all` in `jyutData` for the
+   corpora with Jyutping
+2. Run `python3 eval/texparity.py xelatex` to check the LaTeX package against
+   the Python package on all the corpora
+3. Run `python3 eval/prepare_round.py ROUND spice wsyue magichub wenet` and
+   `python3 eval/make_batches.py ROUND` for a new judged round, judge the
+   batches, then run `eval/merge_round.py` and `eval/rescore.py`
+
+Overall, version 1.5.0 reads 95.8% of HKCanCor correctly (94.1% in 1.4.0),
+97.5% of the particles that CantoMap heard (79.0%) and 91.7% of the
+characters of fresh text on which the systems disagree (72.2%).

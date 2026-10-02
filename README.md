@@ -1,6 +1,6 @@
 # xjyutping (LaTeX)
 
-Version 1.4.0 (2026-09-29). Versions follow
+Version 1.5.0 (2026-10-02). Versions follow
 [Semantic Versioning](https://semver.org), and the history of the project is
 kept in [`CHANGELOG.md`](CHANGELOG.md).
 
@@ -60,7 +60,7 @@ d="$(kpsewhich -var-value TEXMFHOME)/tex/latex/xjyutping" && mkdir -p "$d" && cp
 | `\xjyutping*[opts]{text}` | Annotate a piece of running text. |
 | `\xjyutping[opts]{字}{reading}` | Give a character or word your own reading, as in `\xjyutping{銀行}{ngan4 hong4}`. |
 | `\setjyutping{字}{reading}` | Change a character's default reading. |
-| `\setjyutping{詞}{readings}` | Add or change a word, as in `\setjyutping{重話}{zung6 waa6}`. |
+| `\setjyutping{詞}{readings}` | Add or change a word, as in `\setjyutping{當我}{dong3 ngo5}`. |
 | `\disablejyutping`, `\enablejyutping` | Turn annotation off and on inside a scope. |
 | `\xjyutpingsetup{opts}` | Set options. They also work as package options. |
 
@@ -148,12 +148,19 @@ The reading of each character is chosen in three steps.
    `\textbf` or `\color` does not, so `銀\textbf{行}` is still read as the
    word 銀行.
 2. Then each run is split into the fewest words from the word list, and each
-   word takes its reading from the list.
+   word takes its reading from the list. Where two splits have as many words
+   and single characters, the one of the more common words wins, as counted
+   in the word-frequency list of rime-cantonese and in the transcripts of
+   WenetSpeech-Yue (步行|街 rather than 步|行街).
 3. Lastly, a character left on its own takes the reading set with
-   `\setjyutping`, or otherwise its default reading.
+   `\setjyutping`, or otherwise the reading given by the one or two
+   characters after it, its reading at the end of a run or its default
+   reading. For example, 呢 is the demonstrative *ni1* before a classifier
+   (呢張床) and the particle *ne1* otherwise (你呢？, 佢呢就走).
 
-A reading given with `\xjyutping{…}{…}` always takes priority. Variant shapes
-such as 為/爲 and 裡/裏 find the same words.
+A reading given with `\xjyutping{…}{…}` always takes priority, and a word set
+with `\setjyutping` wins a tie of step 2. Variant shapes such as 為/爲 and
+裡/裏 find the same words.
 
 ## XeLaTeX and LuaLaTeX
 
@@ -217,41 +224,50 @@ data.
 ## Data
 
 The readings are stored in `xjyutping-chars.def` (30 089 characters) and
-`xjyutping-words.def` (about 104 000 words). They are built by
-`tools/build-data.py` from six sources, which `tools/fetch-sources.sh`
-downloads,
+`xjyutping-words.def` (about 104 000 words, with how often each is used). They
+are built by `tools/build-data.py` from six sources, which
+`tools/fetch-sources.sh` downloads,
 
 - the Jyutping table of the Linguistic Society of Hong Kong (LSHK), for the
   character readings,
-- rime-cantonese, for the default readings and the main word list,
+- rime-cantonese, for the default readings, the main word list and the word
+  frequencies,
 - ToJyutping, for the choice between the readings rime gives a word and for
-  494 more words,
+  512 more words,
 - CC-Canto and the Cantonese readings of CC-CEDICT from Jyut Dictionary, for
-  2 348 more words,
+  2 531 more words,
 - OpenCC, for variant shapes and
 - 粵音資料集叢, for the readings of 640 rare characters.
 
-Since rime-cantonese is treated as authoritative, the other sources only add
-what it lacks. The one exception is ToJyutping, which may choose a different
-one of the readings that rime gives a word, since its choices follow Hong
-Kong usage (for example 公園 *gung1 jyun2* and 郵局 *jau4 guk2*). To fix a
-reading,
+The build also reads `tools/wenetspeech-yue-counts.tsv`, which counts how
+often each word is used in the 6.8 million transcribed utterances of
+WenetSpeech-Yue. Since rime-cantonese is treated as authoritative, the other
+sources only add what it lacks. The exceptions are ToJyutping, which may
+choose a different one of the readings that rime gives a word, since its
+choices follow Hong Kong usage (for example 公園 *gung1 jyun2* and 郵局 *jau4
+guk2*), and the hand-checked tables at the top of `tools/build-data.py`, which
+correct readings found wrong against the corpora below. To fix a reading,
 
 1. Edit the hand-checked tables at the top of `tools/build-data.py`
 2. Run `python3 tools/build-data.py`
 
-The script looks for the sources in the folder that contains this repository
-(or in `--sources DIR`), and it also updates the data of xjyutping-py when
-that repository is next to this one.
+The script looks for the sources in the folder `jyutData` next to this
+repository (or in `--sources DIR`), and it also updates the data of
+xjyutping-py when that repository is next to this one.
 
 ### Accuracy
 
-We measured the accuracy against the Hong Kong Cantonese Corpus (HKCanCor),
-a corpus of conversation recorded in the 1990s whose 161 045 characters were
-annotated with Jyutping by hand. The package reads 94.1% of these characters
-correctly, and 97.2% of the characters outside sentence-final particles and
-interjections, while ToJyutping 3.2.0 reads 92.8% and 96.2% under the same
-test. Part II, Section 9 of `CHANGELOG.md` describes the test.
+We measured the accuracy on seven corpora. The Hong Kong Cantonese Corpus
+(HKCanCor) is a corpus of conversation recorded in the 1990s whose 161 045
+characters were annotated with Jyutping by hand. On the half of its files
+that was kept out of the tuning, the package reads 95.6% of the characters
+correctly (94.0% in 1.4.0) and 97.9% of the characters outside
+sentence-final particles and interjections, while ToJyutping 3.2.0 reads
+92.6% and 96.1%. On the particles of CantoMap, which were transcribed by ear,
+it reads 97.5% (79.0% in 1.4.0, 83.0% for ToJyutping). On fresh sentences of
+SpiCE, MagicHub and WenetSpeech-Yue, where the systems disagree, the reading
+of xjyutping was judged right in 91.7% of the cases, against 62.4%
+for ToJyutping. Part II, Section 10 of `CHANGELOG.md` describes the tests.
 
 ## Testing
 
@@ -286,7 +302,7 @@ We also thank the authors of the data sources,
   [rime-cantonese](https://github.com/rime/rime-cantonese) (粵語拼音輸入方案,
   CC BY 4.0), which gives the default readings and most of the words, and
   for [ToJyutping](https://github.com/CanCLID/ToJyutping) (BSD-2-Clause),
-  whose word list chooses between rime's readings of a word and adds 494
+  whose word list chooses between rime's readings of a word and adds 512
   words,
 - 石見田, for 粵音資料集叢 ([jyut.net](https://jyut.net/about), data at
   [jyutnet/cantonese-books-data](https://github.com/jyutnet/cantonese-books-data)),
@@ -300,13 +316,26 @@ We also thank the authors of the data sources,
   which distributes CC-Canto (© 2015–17 Pleco Inc.,
   [cantonese.org](https://cantonese.org), CC BY-SA 3.0) and the Cantonese
   readings for CC-CEDICT (© 2015 Pleco Software Inc., CC BY-SA 3.0), together
-  with MDBG and the contributors of [CC-CEDICT](https://cc-cedict.org),
+  with MDBG and the contributors of [CC-CEDICT](https://cc-cedict.org) and
 - Carbo Kuo (BYVoid) and the contributors of OpenCC, for
   [OpenCC](https://github.com/BYVoid/OpenCC) (Apache-2.0), whose variant
-  tables let variant shapes find the same words, and
+  tables let variant shapes find the same words.
+
+Lastly, we thank the authors of the corpora that we used to tune the package
+and to measure its accuracy,
+
 - Kang Kwong Luke, for the Hong Kong Cantonese Corpus (HKCanCor, CC BY 4.0),
   as distributed with [PyCantonese](https://github.com/jacksonllee/pycantonese),
-  which we used to measure the accuracy.
+- Grégoire Winterstein, Carmen Tang and Regine Lai, for
+  [CantoMap](https://github.com/gwinterstein/CantoMap) (GPL-3.0),
+- Khia A. Johnson, Molly Babel, Ivan Fong and Nancy Yiu, for SpiCE
+  ([doi:10.5683/SP2/MJOXP3](https://doi.org/10.5683/SP2/MJOXP3), CC BY 4.0),
+- the ASLP-lab, for [WenetSpeech-Yue](https://github.com/ASLP-lab/WenetSpeech-Yue)
+  (CC BY-NC 4.0), whose transcripts also give the word frequencies of
+  `tools/wenetspeech-yue-counts.tsv`,
+- Beijing Magic Data Technology, for the Guangzhou Cantonese Conversational
+  Speech Corpus of [MagicHub](https://magichub.com) and
+- the contributors of the Cantonese Wikipedia.
 
 ## Licence
 
@@ -317,5 +346,8 @@ files (`xjyutping-chars.def` and `xjyutping-words.def`) are released under
 adapt the CC BY-SA 3.0 word lists above. The word list of ToJyutping is
 used under the BSD 2-Clause License, whose notice is reproduced in
 `LICENSE`. The readings of the 640 characters from 粵音資料集叢 come from
-data published without a licence and are used with attribution. To build the data without them, empty `BOOKS` in
-`tools/build-data.py`. The full terms are given in [`LICENSE`](LICENSE).
+data published without a licence and are used with attribution. To build the
+data without them, empty `BOOKS` in `tools/build-data.py`. The word counts in
+`tools/wenetspeech-yue-counts.tsv` are counted from the transcripts of
+WenetSpeech-Yue (CC BY-NC 4.0); no text of any corpus is included. The full
+terms are given in [`LICENSE`](LICENSE).

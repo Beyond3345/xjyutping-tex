@@ -13,7 +13,7 @@
 %% readings, 粵音資料集叢 and OpenCC: see README.md.  The history is in CHANGELOG.md.
 %% Versions follow Semantic Versioning 2.0.0.
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{xjyutping}{2026-09-29}{1.4.0}
+\ProvidesExplPackage{xjyutping}{2026-10-02}{1.5.0}
   {Add Jyutping to traditional Chinese characters}
 
 \msg_new:nnn { xjyutping } { engine }
@@ -75,8 +75,11 @@
 % Data.  \xjp@c@<char>: default reading.  \xjp@m@<char>: the other readings
 % of a polyphone.  \xjp@f@<char>: reading at the end of a run.
 % \xjp@v@<char>: canonical variant.  \xjp@w@<word>: word reading.
-% \xjp@e@<char>: longest word ending in <char>.  User settings live in
-% \xjp@u@<char> and \xjp@w@<word> (then also \xjp@uw@<word>).
+% \xjp@e@<char>: longest word ending in <char>.  \xjp@k@<word or char>:
+% its cost, from how often it is used.  \xjp@x@<char><next>: the reading of
+% <char> standing alone before the one or two characters <next>.  User
+% settings live in \xjp@u@<char> and \xjp@w@<word> (then also
+% \xjp@uw@<word>).
 % ---------------------------------------------------------------------------
 % The files are read at the top level, not in a group: inside a group every
 % new control sequence name would take a slot of TeX's save stack.
@@ -90,6 +93,10 @@
 \cs_new_protected:cpn { xjp@V } #1#2; { \cs_gset_nopar:cpn { xjp@v@ #1 } {#2} }
 \cs_new_protected:cpn { xjp@W } #1 = #2; { \cs_gset_nopar:cpn { xjp@w@ #1 } {#2} }
 \cs_new_protected:cpn { xjp@E } #1#2; { \cs_gset_nopar:cpn { xjp@e@ #1 } {#2} }
+\cs_new_protected:cpn { xjp@K } #1 = #2; { \cs_gset_nopar:cpn { xjp@k@ #1 } {#2} }
+\int_new:N \g__xjyutping_unknown_int   % cost of what the data does not count
+\cs_new_protected:cpn { xjp@D } #1; { \int_gset:Nn \g__xjyutping_unknown_int {#1} }
+\cs_new_protected:cpn { xjp@N } #1 = #2; { \cs_gset_nopar:cpn { xjp@x@ #1 } {#2} }
 \int_const:Nn \c__xjyutping_endlinechar_int { \tex_endlinechar:D }
 \char_set_catcode_space:n { 32 }
 \int_set:Nn \tex_endlinechar:D { -1 }
@@ -125,6 +132,9 @@
 \int_new:N  \l__xjyutping_skip_int
 \int_new:N  \l__xjyutping_skip_depth_int
 \int_new:N  \l__xjyutping_best_int
+\int_new:N  \l__xjyutping_bestlm_int
+\int_new:N  \l__xjyutping_here_int
+\int_new:N  \l__xjyutping_herelm_int
 \int_new:N  \l__xjyutping_i_int
 \int_new:N  \l__xjyutping_j_int
 \seq_new:N  \l__xjyutping_stack_seq
@@ -997,6 +1007,7 @@
   {
     \use:c { tl_ #2 set_eq:cN } { xjp@w@ #1 } \l__xjyutping_syl_tl
     \use:c { cs_ #2 set_eq:cN } { xjp@uw@ #1 } \prg_do_nothing:
+    \use:c { tl_ #2 set:cn } { xjp@k@ #1 } { 0 }   % a user's word wins ties
     \int_compare:nNnT { \tl_count:n {#1} } >
       { \cs_if_exist_use:cF { xjp@e@ \tl_item:nn {#1} { -1 } } { 0 } }
       {
@@ -1892,9 +1903,11 @@
 % \xjp@s@<n> are global and are set to \relax after use rather than
 % undefined: that frees their contents but keeps the names, since creating a
 % name inside a group costs a slot of TeX's save stack.  The run is split
-% into the fewest words, then the fewest single characters; on a tie the
-% longer final word wins.  Costs are 100000 per segment + 1 per single
-% character.  The mark for character <n> is stored in \xjp@s@<n>.
+% into the fewest words, then the fewest single characters (the count is
+% 100000 per segment + 1 per single character, in \xjp@cost@<i>), then the
+% words of least total cost \xjp@k@ (in \xjp@lm@<i>); on a full tie the
+% longer final word wins.  The mark for character <n> is stored in
+% \xjp@s@<n>.
 % ---------------------------------------------------------------------------
 \cs_new:Npn \__xjyutping_raw:n #1
   { \use:c { xjp@r@ \int_use:N \l__xjyutping_ctx_int @ #1 } }
@@ -1915,6 +1928,28 @@
       { \cs_if_exist_use:cF { xjp@e@ \__xjyutping_raw:n {#1} } { 0 } }
       { \cs_if_exist_use:cF { xjp@e@ \__xjyutping_can:n {#1} } { 0 } }
   }
+% The cost of the word at positions #1 to #2 as the word list has it (by
+% spelling, else canonical spelling), and of the character at #1.
+\cs_new:Npn \__xjyutping_word_cost:nn #1#2
+  {
+    \cs_if_exist:cTF { xjp@w@ \__xjyutping_word:nnN {#1} {#2} \__xjyutping_raw:n }
+      {
+        \cs_if_exist_use:cF { xjp@k@ \__xjyutping_word:nnN {#1} {#2} \__xjyutping_raw:n }
+          { \int_use:N \g__xjyutping_unknown_int }
+      }
+      {
+        \cs_if_exist_use:cF { xjp@k@ \__xjyutping_word:nnN {#1} {#2} \__xjyutping_can:n }
+          { \int_use:N \g__xjyutping_unknown_int }
+      }
+  }
+\cs_new:Npn \__xjyutping_char_cost:n #1
+  {
+    \cs_if_exist_use:cF { xjp@k@ \__xjyutping_raw:n {#1} }
+      {
+        \cs_if_exist_use:cF { xjp@k@ \__xjyutping_can:n {#1} }
+          { \int_use:N \g__xjyutping_unknown_int }
+      }
+  }
 \cs_new_protected:Npn \__xjyutping_flush:
   {
     \int_set:Nn \l__xjyutping_len_int
@@ -1922,27 +1957,42 @@
     \int_compare:nNnT \l__xjyutping_len_int > \c_zero_int
       {
         \cs_set_nopar:cpn { xjp@cost@0 } { 0 }
+        \cs_set_nopar:cpn { xjp@lm@0 } { 0 }
         \int_step_inline:nn { \l__xjyutping_len_int }
           {
             \int_set:Nn \l__xjyutping_best_int
               { \use:c { xjp@cost@ \int_eval:n { ##1 - 1 } } + 100001 }
+            \int_set:Nn \l__xjyutping_bestlm_int
+              { \use:c { xjp@lm@ \int_eval:n { ##1 - 1 } } + \__xjyutping_char_cost:n {##1} }
             \cs_set_nopar:cpn { xjp@back@ ##1 } { 1 }
             \int_step_inline:nnn { 2 }
               { \int_min:nn {##1} { \__xjyutping_longest:n {##1} } }
               {
                 \__xjyutping_if_word:nnT { ##1 - ####1 + 1 } {##1}
                   {
-                    \int_compare:nNnT
+                    \int_set:Nn \l__xjyutping_here_int
                       { \use:c { xjp@cost@ \int_eval:n { ##1 - ####1 } } + 100000 }
-                      < { \l__xjyutping_best_int + 1 }
+                    \int_set:Nn \l__xjyutping_herelm_int
                       {
-                        \int_set:Nn \l__xjyutping_best_int
-                          { \use:c { xjp@cost@ \int_eval:n { ##1 - ####1 } } + 100000 }
+                        \use:c { xjp@lm@ \int_eval:n { ##1 - ####1 } }
+                        + \__xjyutping_word_cost:nn { ##1 - ####1 + 1 } {##1}
+                      }
+                    \bool_lazy_or:nnT
+                      { \int_compare_p:nNn \l__xjyutping_here_int < \l__xjyutping_best_int }
+                      {
+                        \bool_lazy_and_p:nn
+                          { \int_compare_p:nNn \l__xjyutping_here_int = \l__xjyutping_best_int }
+                          { ! \int_compare_p:nNn \l__xjyutping_herelm_int > \l__xjyutping_bestlm_int }
+                      }
+                      {
+                        \int_set_eq:NN \l__xjyutping_best_int \l__xjyutping_here_int
+                        \int_set_eq:NN \l__xjyutping_bestlm_int \l__xjyutping_herelm_int
                         \cs_set_nopar:cpn { xjp@back@ ##1 } {####1}
                       }
                   }
               }
             \cs_set_nopar:cpe { xjp@cost@ ##1 } { \int_use:N \l__xjyutping_best_int }
+            \cs_set_nopar:cpe { xjp@lm@ ##1 } { \int_use:N \l__xjyutping_bestlm_int }
           }
         \int_zero:N \l__xjyutping_k_int
         \int_set_eq:NN \l__xjyutping_j_int \l__xjyutping_len_int
@@ -1986,6 +2036,7 @@
         \tl_set:Ne \l__xjyutping_final_tl
           { \int_compare:nNnT {#2} = \l__xjyutping_len_int { f } }
         \__xjyutping_lookup:eV { \__xjyutping_raw:n {#1} } \l__xjyutping_final_tl
+        \str_if_eq:VnF \l__xjyutping_type_tl { u } { \__xjyutping_next:n {#1} }
         \__xjyutping_result:nVV {#1} \l__xjyutping_type_tl \l__xjyutping_reading_tl
       }
       {
@@ -2007,6 +2058,36 @@
     \bool_if:NT \l__xjyutping_debug_bool
       { \tl_put_right:Nn \l__xjyutping_log_tl { ~ | } }
   }
+% The reading of the character at #1 before the one or two characters that
+% follow it in the run (\xjp@x@), by spelling, then canonical spelling; the
+% longer pattern first.
+\bool_new:N \l__xjyutping_next_bool
+\cs_new_protected:Npn \__xjyutping_next:n #1
+  {
+    \bool_set_false:N \l__xjyutping_next_bool
+    \int_compare:nNnF { #1 + 2 } > \l__xjyutping_len_int
+      {
+        \__xjyutping_next_try:e { \__xjyutping_word:nnN {#1} { #1 + 2 } \__xjyutping_raw:n }
+        \__xjyutping_next_try:e { \__xjyutping_word:nnN {#1} { #1 + 2 } \__xjyutping_can:n }
+      }
+    \int_compare:nNnF { #1 + 1 } > \l__xjyutping_len_int
+      {
+        \__xjyutping_next_try:e { \__xjyutping_word:nnN {#1} { #1 + 1 } \__xjyutping_raw:n }
+        \__xjyutping_next_try:e { \__xjyutping_word:nnN {#1} { #1 + 1 } \__xjyutping_can:n }
+      }
+  }
+\cs_new_protected:Npn \__xjyutping_next_try:n #1
+  {
+    \bool_if:NF \l__xjyutping_next_bool
+      {
+        \cs_if_exist:cT { xjp@x@ #1 }
+          {
+            \tl_set_eq:Nc \l__xjyutping_reading_tl { xjp@x@ #1 }
+            \bool_set_true:N \l__xjyutping_next_bool
+          }
+      }
+  }
+\cs_generate_variant:Nn \__xjyutping_next_try:n { e }
 \cs_new_protected:Npn \__xjyutping_result:nnn #1#2#3
   {
     \__xjyutping_combo:nn {#2} {#3}
