@@ -6,7 +6,7 @@
 %%          OpenCC HK/TW variant tables (Apache-2.0),
 %%          ToJyutping word list (CanCLID, BSD-2-Clause),
 %%          CC-Canto and CC-CEDICT Cantonese readings (CC BY-SA 3.0).
-\ProvidesFile{xjyutping-words.def}[2026/10/02 v1.5.1 xjyutping word data]
+\ProvidesFile{xjyutping-words.def}[2026/10/13 v1.5.2 xjyutping word data]
 \xjp@W 㓟皮=pai1 pei4;
 \xjp@W 㓟菠蘿皮=pai1 bo1 lo4 pei4;
 \xjp@W 㓟蘋果=pai1 ping4 gwo2;

@@ -1,7 +1,9 @@
 #!/bin/sh
 # Compile tests/regression.tex twice with the package in ../, with XeLaTeX
 # and LuaLaTeX, each as it is and with the fancy option, and compare each
-# debug log with tests/regression.expected.  Exit status 0 means all is well.
+# debug log with tests/regression.expected; then compile tests/pad-check.tex
+# with both engines, which logs a FAIL for every character that loses its
+# padding at a group end.  Exit status 0 means all is well.
 cd "$(dirname "$0")" || exit 1
 status=0
 for engine in xelatex lualatex; do
@@ -23,5 +25,16 @@ for engine in xelatex lualatex; do
       status=1
     fi
   done
+  job=pad-check-$engine
+  TEXINPUTS=..: LUAINPUTS=..: max_print_line=10000 $engine \
+    -interaction=nonstopmode -jobname "$job" pad-check.tex > /dev/null 2>&1
+  if grep -q '^!' "$job.log"; then
+    echo "$job: TeX errors:"; grep -A3 '^!' "$job.log"; status=1
+  fi
+  if grep -a '^pad-check: FAIL' "$job.log"; then
+    status=1
+  else
+    echo "$job: padding ok"
+  fi
 done
 exit $status

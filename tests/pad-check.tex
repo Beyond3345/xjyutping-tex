@@ -1,0 +1,27 @@
+% Padding check: run tests/run-tests.sh (XeLaTeX and LuaLaTeX).  A character
+% at the end of a group (braces, \textbf, a colour, a manual \xjyutping)
+% must take as much room as the same character without the group; a line
+% with such groups is measured against the same line without them, and
+% every difference is written to the log as "pad-check: FAIL".
+\documentclass{article}
+\usepackage{iftex}
+\ifXeTeX\usepackage{xeCJK}\else\usepackage[fontset=none]{ctex}\fi
+\setCJKmainfont{Songti TC}
+\usepackage{xcolor}
+\usepackage{xjyutping}
+\newcommand\padcheck[2]{%
+  \setbox0\hbox{#1}\setbox2\hbox{#2}%
+  \ifdim\wd0=\wd2
+    \typeout{pad-check: ok \detokenize{#2}}%
+  \else
+    \typeout{pad-check: FAIL \detokenize{#2}: \the\wd2 \space instead of \the\wd0}%
+  \fi}
+\begin{document}
+\padcheck{\xjyutping*{我踏著單車}}{\xjyutping*{我踏{著}單車}}
+\padcheck{\xjyutping*{我踏著單車}}{\xjyutping*{我踏\textbf{著}單車}}
+\padcheck{\xjyutping*{我踏著單車}}{\xjyutping*{我踏{\color{red}著}單車}}
+\padcheck{\xjyutping*{我踏著單車}}{\xjyutping*{我踏\xjyutping{著}{zyu3}單車}}
+\padcheck{\xjyutping*{我踏著單車}}{\xjyutping*{我踏{{著}}單車}}
+\padcheck{\xjyutping*{我踏著A}}{\xjyutping*{我踏{著}A}}
+\padcheck{\xjyutping{我踏著}{ngo5 daap6 zyu3}}{\xjyutping{我}{ngo5}\xjyutping{踏}{daap6}\xjyutping{著}{zyu3}}
+\end{document}

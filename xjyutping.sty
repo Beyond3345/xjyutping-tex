@@ -13,7 +13,7 @@
 %% readings, 粵音資料集叢 and OpenCC: see README.md.  The history is in CHANGELOG.md.
 %% Versions follow Semantic Versioning 2.0.0.
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{xjyutping}{2026-10-02}{1.5.1}
+\ProvidesExplPackage{xjyutping}{2026-10-13}{1.5.2}
   {Add Jyutping to traditional Chinese characters}
 
 \msg_new:nnn { xjyutping } { engine }
@@ -518,6 +518,18 @@
   }
 \cs_new_protected:Npn \__xjyutping_CJKecglue:
   { \__xjyutping_pad: \__xjyutping_save_CJKecglue: }
+% xeCJK measures \CJKecglue and \CJKglue by typesetting them in a scratch
+% box, also right after a group-final character, before the padding deferred
+% past the group is decided.  The padding is kept out of the measurement,
+% which would otherwise take it off the line and widen the glue.
+\dim_new:N \l__xjyutping_pending_dim
+\cs_new_protected:Npn \__xjyutping_glue_to_skip:nN #1#2
+  {
+    \dim_set_eq:NN \l__xjyutping_pending_dim \g__xjyutping_pad_dim
+    \dim_gzero:N \g__xjyutping_pad_dim
+    \__xjyutping_save_glue_to_skip:nN {#1} #2
+    \dim_gset_eq:NN \g__xjyutping_pad_dim \l__xjyutping_pending_dim
+  }
 % When the character is the last thing in a group ({\color{red}長},
 % \textbf{長}, an \xjyutping), the padding is decided after the group closes,
 % by what comes next: it is dropped before punctuation other than closing
@@ -872,6 +884,8 @@
             \cs_set_eq:NN \xeCJK_CJK_and_FullRight:N \__xjyutping_fullright:N
             \cs_set_eq:NN \__xjyutping_save_punct:n \CJKpunctsymbol
             \cs_set_eq:NN \CJKpunctsymbol \__xjyutping_punct:n
+            \cs_set_eq:NN \__xjyutping_save_glue_to_skip:nN \xeCJK_glue_to_skip:nN
+            \cs_set_eq:NN \xeCJK_glue_to_skip:nN \__xjyutping_glue_to_skip:nN
             \dim_gzero:N \g__xjyutping_pad_dim
             \bool_gset_false:N \g__xjyutping_cell_bool
             \tl_gclear:N \g__xjyutping_mark_tl
@@ -888,6 +902,7 @@
             \cs_set_eq:NN \xeCJK_CJK_and_Boundary:w \__xjyutping_save_boundary:w
             \cs_set_eq:NN \xeCJK_CJK_and_FullRight:N \__xjyutping_save_fullright:N
             \cs_set_eq:NN \CJKpunctsymbol \__xjyutping_save_punct:n
+            \cs_set_eq:NN \xeCJK_glue_to_skip:nN \__xjyutping_save_glue_to_skip:nN
             \bool_set_false:N \l__xjyutping_enable_bool
           }
       }

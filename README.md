@@ -1,6 +1,6 @@
 # xjyutping (LaTeX)
 
-Version 1.5.1 (2026-10-02). Versions follow
+Version 1.5.2 (2026-10-13). Versions follow
 [Semantic Versioning](https://semver.org), and the history of the project is
 kept in [`CHANGELOG.md`](CHANGELOG.md).
 
@@ -272,8 +272,10 @@ of xjyutping was judged right in 95.3% of the cases (94.9% in 1.5.0), against
 ## Testing
 
 `tests/run-tests.sh` checks the readings under both engines, with and without
-`fancy`, while `tests/render.sh` renders a test file to PNG for a visual
-check, for example `tests/verse-check.tex` for `linebreak` and `align`.
+`fancy`, and checks with `tests/pad-check.tex` that a character at the end of
+a group keeps its spacing, while `tests/render.sh` renders a test file to PNG
+for a visual check, for example `tests/verse-check.tex` for `linebreak` and
+`align`.
 
 ## Acknowledgements and attributions
 

@@ -6,7 +6,7 @@
 %%          OpenCC HK/TW variant tables (Apache-2.0),
 %%          ToJyutping word list (CanCLID, BSD-2-Clause),
 %%          cantonese-books-data readings of characters (no licence stated).
-\ProvidesFile{xjyutping-chars.def}[2026/10/02 v1.5.1 xjyutping character data]
+\ProvidesFile{xjyutping-chars.def}[2026/10/13 v1.5.2 xjyutping character data]
 \xjp@C 〇ling4;
 \xjp@C 㐀jau1;
 \xjp@C 㐁dou6;

@@ -26,7 +26,8 @@ cp README.md LICENSE CHANGELOG.md xjyutping.sty xjyutping.lua \
 cp tools/build-data.py tools/fetch-sources.sh tools/make-ctan-zip.sh \
   tools/wenetspeech-yue-counts.tsv "$d/tools/"
 cp tests/run-tests.sh tests/render.sh tests/regression.tex tests/regression.expected \
-  tests/layout-check.tex tests/fancy-check.tex tests/verse-check.tex "$d/tests/"
+  tests/layout-check.tex tests/pad-check.tex tests/fancy-check.tex tests/verse-check.tex \
+  "$d/tests/"
 find "$d" -type d -exec chmod 755 {} +
 find "$d" -type f -exec chmod 644 {} +
 chmod 755 "$d"/tools/*.sh "$d"/tools/*.py "$d"/tests/*.sh

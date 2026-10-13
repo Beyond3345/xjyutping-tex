@@ -31,6 +31,27 @@ written for the next maintainer, human or agent.
 There are no unreleased changes yet. Add new entries here under
 `### Added`, `### Changed`, `### Fixed` and so on.
 
+## [1.5.2] - 2026-10-13
+
+### Fixed
+
+- Under XeLaTeX, a character at the end of a group, such as a manual
+  `\xjyutping{著}{zoek6}`, `{著}`, `\textbf{著}` or `{\color{red}著}`, lost
+  the right half of its spare room, so that it sat closer to the character
+  after it (13.67pt instead of 17.38pt between the centres in the test) and a
+  longer ruby could touch the next one. This is due to xeCJK 3.10 measuring
+  `\CJKecglue` in a scratch box right after the group's last character, where
+  the package's `\CJKecglue` paid the padding still pending past the group.
+  The package now keeps the padding out of xeCJK's measurement
+  (`\__xjyutping_glue_to_skip:nN`), which also restores the padding in a chain
+  of separate `\xjyutping{..}{..}` calls. LuaLaTeX was not affected.
+
+### Added
+
+- `tests/pad-check.tex`, run by `tests/run-tests.sh` under both engines,
+  measures lines with group-final characters against the same lines without
+  the groups and logs a FAIL for every difference.
+
 ## [1.5.1] - 2026-10-02
 
 ### Fixed
@@ -1404,6 +1425,8 @@ wrapping, since these behaviours regressed before,
 
 - the 18-call chain of `\xjyutping` in `layout-check.tex` must break lines
   (no overfull boxes);
+- `tests/pad-check.tex` must log no FAIL under either engine (it is part of
+  `tests/run-tests.sh`);
 - `銀\textbf{行}，`, `銀{\textbf{行}}，`, `銀行\label{x}，` and
   `銀\uline{行}，` must all be as wide as `銀行，`;
 - `$\text{面積}$`, TikZ node text and `align` with `\text` inside a scope
