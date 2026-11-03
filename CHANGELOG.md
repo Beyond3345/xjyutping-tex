@@ -31,6 +31,25 @@ written for the next maintainer, human or agent.
 There are no unreleased changes yet. Add new entries here under
 `### Added`, `### Changed`, `### Fixed` and so on.
 
+## [1.5.3] - 2026-11-03
+
+### Fixed
+
+- Readings that a teacher corrected in xjyutping-Tool (Part II, Section 12):
+  - 袋 standing alone is *doi2* "bag, pocket" (冇帶袋, 衫袋裏邊, 個袋), not *doi6*.
+    The verb (袋住, 袋埋, 袋晒, 袋咗, 袋錢, 袋起) and the measure word (一袋米 to
+    十袋, 幾袋, 半袋, 每袋, 成袋) keep *doi6*.
+  - 女 standing alone is *neoi2* "daughter" at the end of a run (我有一個三歲嘅女)
+    and before a particle, a verb, a pronoun or a number (我個女啊, 我個女三歲).
+    Before a noun it stays *neoi5* "female" (女同事). So do 小龍女, 一男一女,
+    兩男一女, 一男兩女, 有男有女, 男男女女, 男定女, 男定係女 and 妖女, now words.
+  - 購物袋 *kau3 mat6 doi2*, 越南河 *jyut6 naam4 ho2* and 涼茶舖 *loeng4 caa4
+    pou2* are words.
+
+### Changed
+
+- The `.def` files carry `v1.5.3`.
+
 ## [1.5.2] - 2026-10-13
 
 ### Fixed
@@ -3093,3 +3112,102 @@ Overall, version 1.5.1 fixes 31 of the 80 errors that round 4 left in 1.5.0
 without adding any, and on the fresh sentences of round 5 its reading is
 judged right in 95.3% of the characters on which the systems disagree,
 against 94.9% for 1.5.0 and 60.7% for ToJyutping.
+
+## 12. Version 1.5.3: corrections sent from xjyutping-Tool (2026-11-03)
+
+### 12.1 The request
+
+xjyutping-Tool lets a teacher correct a reading and export the corrections
+for the maintainer (`xjyutping-corrections-<date>.json`). The first such file
+held eight corrections made by one teacher between 26 October and
+3 November 2026, with xjyutping-py 1.3.1 and this package 1.5.2. The user
+asked whether they could improve both packages, and then to make the fixes.
+The full evaluation is kept outside the repositories, in `feedback/` of the
+workspace (`evaluation-2026-11-03.md`).
+
+### 12.2 The corrections
+
+| Line | 1.5.2 | Teacher | Verdict |
+| --- | --- | --- | --- |
+| 有冇自備購物袋? | doi6 | doi2 | error |
+| 我個女三歲 | neoi5 | neoi2 | error |
+| 我今日冇帶袋，你幫我袋住先 | doi6 | doi2 | error |
+| 女女 | neoi4 neoi1 | neoi4 neoi2 | both accepted |
+| 涼茶舖 | pou3 | pou2 | error |
+| 越南河 | ho4 | ho2 | error |
+| 我有一個三歲嘅女 | neoi5 | neoi2 | error |
+| 亡命 (紅VAN - 亡命VAN) | mong4 ming6 | mong4 meng6 | both accepted |
+
+- **袋.** words.hk gives the noun "bag, pocket" *doi2*, and the verb, the
+  measure word and the morpheme of 袋鼠 *doi6*. HKCanCor has 袋 standing alone
+  as *doi2* 27 times and *doi6* 4 times, and 1.5.2 read 25 of these 28
+  wrong. 購物袋 was not a word, because `EXCLUDED_WORDS` leaves out CC-Canto's
+  reading of it (購 *gau3*).
+- **女.** words.hk gives "daughter" (also "girlfriend", and 港女) *neoi2* and
+  "female" before a noun (女演員, 女學生) *neoi5*. HKCanCor splits 女 standing
+  alone 12 to 11 along that line (個女, 仔定女, 兩母女 against 女同事, 女歌星),
+  so the word list alone cannot separate them.
+- **涼茶舖.** rime-cantonese has 涼茶鋪 *pou2*. The 舖 spelling came from
+  CC-Canto with *pou3*, and OpenCC does not fold 舖 into 鋪.
+- **越南河.** 河 "rice noodles" is *ho2* (words.hk; 牛河 and 越南河粉 were
+  already right), but 越南河 was read as 越南 and 河 alone.
+- **女女 and 亡命.** words.hk lists both readings of each, and 亡命 in its
+  examples, such as 亡命小巴, is *ming6*. Neither was changed.
+
+### 12.3 Changes to the data
+
+All in `tools/build-data.py`:
+
+- `CURATED_DEFAULTS` makes 袋 *doi2*. `CURATED_WORDS` gives the verb and the
+  measure word as words (the 1.5.3 entry of Part I lists them) and adds
+  購物袋, 越南河 and 涼茶舖.
+- 女 *neoi2* is the run-final reading (`CURATED_FINALS`) and, through the new
+  `DAUGHTER_BEFORE`, the reading before a particle, a verb, a pronoun or a
+  number (`CURATED_NEXT`). Guard words keep *neoi5* where such a character
+  follows 女 "female" (小龍女就, 一男一女, 男定係女啊).
+- Linking 舖 to 鋪 in `CURATED_VARIANTS` was measured too and left out. It
+  fixes 2 characters of HKCanCor and breaks none, and most of the 1 500
+  readings it changes in WenetSpeech-Yue are better (當鋪, 商鋪, 鋪位). But
+  it also loses 豬肉舖 *pou2*, and the sources already disagree between the
+  two spellings of several shop words (金舖 *pou2*, 金鋪 *pou3*). It needs
+  those words reviewed together first.
+
+### 12.4 Results
+
+Against the data of 1.5.2, on the corpora with Jyutping:
+
+| Change | Fixed | Broken |
+| --- | --- | --- |
+| the three words | 0 | 0 |
+| 袋 | 25 | 3 |
+| 女 | 11 | 3 |
+| all together | 36 | 6 |
+
+`eval/bench.py --split=all` gives HKCanCor test 95.69% (95.65% in 1.5.2) and
+the other sets unchanged to two decimals. Of the six characters broken,
+three are in CantoMap, whose readings of words other than particles were
+looked up in a dictionary (one of them, 我個袋 *doi6*, is in fact the noun);
+one is the verb 袋 in 俾返我個friend袋喇; two are 女 in broken-off speech
+(因為女-佢哋). Across 106 485 transcripts of WenetSpeech-Yue that hold 女, 袋
+or 舖, the frequent changes are the noun 袋 (喺個袋度, 衫袋裏邊) and 女
+"daughter" (我個女啊, 佢個女, 兩母女). The first scan also found 小龍女, 一男一女,
+男定係女, 成袋 and 袋錢 read wrongly, which the guard words now cover.
+
+The HKCanCor errors of both splits were read while the rules were made, and
+`DAUGHTER_BEFORE` was partly drawn from them, so the gain on the test split
+is somewhat optimistic for 女. For 袋 the evidence does not depend on the
+corpus.
+
+### 12.5 Tests
+
+- `tests/run-tests.sh` gives `readings ok` for all four jobs and `padding ok`
+  for both engines, with `tests/regression.expected` unchanged.
+- The teacher's lines and the check phrases above, typeset in a debug scope,
+  give the same segments and readings under XeLaTeX and LuaLaTeX as the
+  Python package.
+- `eval/texparity.py` typeset all the corpora with XeLaTeX, and the
+  segments of its debug log are identical to those of the Python package
+  (405 479 segments of 46 028 texts and 704 484 characters), with no TeX
+  error.
+- xjyutping-py 1.3.2, which carries this data, checks the new readings in
+  `test_corpus_tuned_readings`.

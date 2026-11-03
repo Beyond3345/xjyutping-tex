@@ -1,6 +1,6 @@
 # xjyutping (LaTeX)
 
-Version 1.5.2 (2026-10-13). Versions follow
+Version 1.5.3 (2026-11-03). Versions follow
 [Semantic Versioning](https://semver.org), and the history of the project is
 kept in [`CHANGELOG.md`](CHANGELOG.md).
 

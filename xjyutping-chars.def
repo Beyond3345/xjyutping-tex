@@ -6,7 +6,7 @@
 %%          OpenCC HK/TW variant tables (Apache-2.0),
 %%          ToJyutping word list (CanCLID, BSD-2-Clause),
 %%          cantonese-books-data readings of characters (no licence stated).
-\ProvidesFile{xjyutping-chars.def}[2026/10/13 v1.5.2 xjyutping character data]
+\ProvidesFile{xjyutping-chars.def}[2026/11/03 v1.5.3 xjyutping character data]
 \xjp@C 〇ling4;
 \xjp@C 㐀jau1;
 \xjp@C 㐁dou6;
@@ -21545,7 +21545,7 @@
 \xjp@C 袈gaa1;
 \xjp@C 袉to4;
 \xjp@C 袊ling5;
-\xjp@C 袋doi6;
+\xjp@M 袋doi2 doi6;
 \xjp@M 袌paau3 pou5;
 \xjp@C 袍pou4;
 \xjp@M 袎aau3 jau3;
@@ -30175,6 +30175,7 @@
 \xjp@F 咁gam2;
 \xjp@F 重cung5;
 \xjp@F 請ceng2;
+\xjp@F 女neoi2;
 \xjp@N 上得=soeng5;
 \xjp@N 下一=haa6;
 \xjp@N 下個=haa6;
@@ -30441,6 +30442,41 @@
 \xjp@N 哩餐=ni1;
 \xjp@N 哩首=ni1;
 \xjp@N 哩點=ni1;
+\xjp@N 女㗎=neoi2;
+\xjp@N 女七=neoi2;
+\xjp@N 女三=neoi2;
+\xjp@N 女九=neoi2;
+\xjp@N 女五=neoi2;
+\xjp@N 女你=neoi2;
+\xjp@N 女佢=neoi2;
+\xjp@N 女來=neoi2;
+\xjp@N 女係=neoi2;
+\xjp@N 女做=neoi2;
+\xjp@N 女兩=neoi2;
+\xjp@N 女八=neoi2;
+\xjp@N 女六=neoi2;
+\xjp@N 女十=neoi2;
+\xjp@N 女去=neoi2;
+\xjp@N 女又=neoi2;
+\xjp@N 女吖=neoi2;
+\xjp@N 女呀=neoi2;
+\xjp@N 女呢=neoi2;
+\xjp@N 女咩=neoi2;
+\xjp@N 女啊=neoi2;
+\xjp@N 女啦=neoi2;
+\xjp@N 女喇=neoi2;
+\xjp@N 女喎=neoi2;
+\xjp@N 女喺=neoi2;
+\xjp@N 女嚟=neoi2;
+\xjp@N 女囉=neoi2;
+\xjp@N 女四=neoi2;
+\xjp@N 女就=neoi2;
+\xjp@N 女幾=neoi2;
+\xjp@N 女我=neoi2;
+\xjp@N 女會=neoi2;
+\xjp@N 女有=neoi2;
+\xjp@N 女讀=neoi2;
+\xjp@N 女都=neoi2;
 \xjp@N 平㗎=peng4;
 \xjp@N 平呀=peng4;
 \xjp@N 平咗=peng4;

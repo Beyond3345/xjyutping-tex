@@ -56,7 +56,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent     # xjyutping-tex
 ROOT = REPO.parent / 'jyutData'                            # the sources
 PY_DATA = REPO.parent / 'xjyutping-py' / 'src' / 'xjyutping' / 'data'
 SYL = re.compile(r'^[a-z]+[1-6]$')
-VERSION = '2026/10/13 v1.5.2'
+VERSION = '2026/11/03 v1.5.3'
 
 # Standalone default readings.  The first block settles characters that
 # rime-cantonese leaves undecided (every reading has the same weight); the
@@ -116,6 +116,11 @@ CURATED_DEFAULTS = {
     '欸': 'e6', '擗': 'pek6', '扱': 'kap1', '拂': 'fat1', '魏': 'ngai6',
     '繩': 'sing2', '醒': 'seng2', '呣': 'm6',
     '卡': 'kaat1',  # 'card' alone (寫卡); 卡通, 卡路里 are words
+    # after the corrections a teacher sent from xjyutping-Tool (2026-11): 袋
+    # alone is the noun 'bag, pocket' (個袋, 衫袋, 冇帶袋; HKCanCor has doi2
+    # 27 times to doi6 4); the verb (袋住, 袋錢) and the measure word (一袋米)
+    # come from words
+    '袋': 'doi2',
 }
 
 # The reading of a character standing alone before the character(s) given:
@@ -138,6 +143,10 @@ PARTICLE_BEFORE = ['一定', '一齊', '一直', '一係', '一路', '一早', '
 # 咁但係, 咁所以, 咁即係).
 LOWER_BEFORE = '一個半'
 MANNER_BEFORE = '㗎囉啦喎嘅呀啊咩喇嘛呢咧咋啫噃誒欸嗯嚟我你佢又都點咪但所其如而即跟另首'
+# 女 alone is 'female' (neoi5) before a noun (女同事, 女歌星) but 'daughter'
+# (neoi2) before a particle, a verb, a pronoun or a number (我個女啊, 個女
+# 會, 佢個女三歲) and at the end of a run (see CURATED_FINALS).
+DAUGHTER_BEFORE = '啊呀喎㗎囉啦喇咩呢吖嚟來都會係就又有喺讀做去我你佢三四五六七八九十兩幾'
 # 哩 is also written for the demonstrative (哩個, 哩度, as in HKCanCor);
 # alone it stays lei5 'mile'.
 # Other characters, found on the tuning half of HKCanCor and checked
@@ -156,7 +165,8 @@ CURATED_NEXT = {**{d + c: 'ni1' for d in '呢哩' for c in DEMONSTRATIVE_BEFORE}
                 '當佢係': 'dong3', '當我係': 'dong3', '當你係': 'dong3',
                 **{'成' + c: 'seng4' for c in '世句堆晚條棟隻架盒碟包'},
                 **{'下' + c: 'haa6' for c in LOWER_BEFORE},
-                **{'咁' + c: 'gam2' for c in MANNER_BEFORE}}
+                **{'咁' + c: 'gam2' for c in MANNER_BEFORE},
+                **{'女' + c: 'neoi2' for c in DAUGHTER_BEFORE}}
 
 # Short-vowel spellings of particles that some word lists use (la1 for 啦,
 # ga3 for 㗎) are written with aa in Jyutping; 嘞 is laak3.  At the end of
@@ -193,6 +203,7 @@ CURATED_FINALS = {
     '咁': 'gam2',    # 就係咁, 唔好咁
     '重': 'cung5',   # 唔算重: 'still' never ends a clause
     '請': 'ceng2',   # 有人請, 我請 'treat'; 'please' never ends a clause
+    '女': 'neoi2',   # 我有一個三歲嘅女 'daughter'; 'female' comes before a noun
 }
 
 # Variant shapes missing from the OpenCC tables.
@@ -382,6 +393,20 @@ CURATED_WORDS = {
     **{d + '平': r + ' peng4' for d, r in (('好', 'hou2'), ('咁', 'gam3'), ('幾', 'gei2'),
         ('超', 'ciu1'), ('最', 'zeoi3'), ('又', 'jau6'), ('越', 'jyut6'), ('唔', 'm4'))},
     '越嚟越平': 'jyut6 lai4 jyut6 peng4', '越來越平': 'jyut6 loi4 jyut6 peng4',
+    # after the corrections a teacher sent from xjyutping-Tool (2026-11): 購物袋
+    # (excluded above for CC-Canto's 購 gau3), 河 'rice noodles' and the
+    # 舖 spelling of rime's 涼茶鋪; the verb and the measure word 袋 now that
+    # 袋 alone is the noun; guards for 女 'female' before a particle, now that
+    # 女 alone there is 'daughter'
+    '購物袋': 'kau3 mat6 doi2', '越南河': 'jyut6 naam4 ho2', '涼茶舖': 'loeng4 caa4 pou2',
+    '袋住': 'doi6 zyu6', '袋埋': 'doi6 maai4', '袋晒': 'doi6 saai3', '袋咗': 'doi6 zo2',
+    '袋錢': 'doi6 cin2', '袋起': 'doi6 hei2', '每袋': 'mui5 doi6', '成袋': 'seng4 doi6',
+    **{n + '袋': r + ' doi6' for n, r in zip('一兩三四五六七八九十幾半', (
+        'jat1', 'loeng5', 'saam1', 'sei3', 'ng5', 'luk6', 'cat1', 'baat3', 'gau2', 'sap6', 'gei2', 'bun3'))},
+    '小龍女': 'siu2 lung4 neoi5', '一男一女': 'jat1 naam4 jat1 neoi5',
+    '兩男一女': 'loeng5 naam4 jat1 neoi5', '一男兩女': 'jat1 naam4 loeng5 neoi5',
+    '有男有女': 'jau5 naam4 jau5 neoi5', '男男女女': 'naam4 naam4 neoi5 neoi5',
+    '男定女': 'naam4 ding6 neoi5', '男定係女': 'naam4 ding6 hai6 neoi5', '妖女': 'jiu1 neoi5',
 }
 
 # Words of CC-Canto and the CC-CEDICT Cantonese readings that are not added
