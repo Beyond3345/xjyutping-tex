@@ -6,7 +6,7 @@
 %%          OpenCC HK/TW variant tables (Apache-2.0),
 %%          ToJyutping word list (CanCLID, BSD-2-Clause),
 %%          CC-Canto and CC-CEDICT Cantonese readings (CC BY-SA 3.0).
-\ProvidesFile{xjyutping-words.def}[2026/11/03 v1.5.3 xjyutping word data]
+\ProvidesFile{xjyutping-words.def}[2026/11/08 v1.5.4 xjyutping word data]
 \xjp@W 㓟皮=pai1 pei4;
 \xjp@W 㓟菠蘿皮=pai1 bo1 lo4 pei4;
 \xjp@W 㓟蘋果=pai1 ping4 gwo2;
@@ -17652,6 +17652,7 @@
 \xjp@W 叻𠿪=lik1 gaa2;
 \xjp@W 吁吁=heoi1 heoi1;
 \xjp@W 吃豆人=hek3 dau2 jan4;
+\xjp@W 吃飯=hek3 faan6;
 \xjp@W 各不相讓=gok3 bat1 soeng1 joeng6;
 \xjp@W 各人自掃門前雪=gok3 jan4 zi6 sou3 mun4 cin4 syut3;
 \xjp@W 各位=gok3 wai2;
@@ -119024,6 +119025,7 @@
 \xjp@K 叻過龍=185;
 \xjp@K 吁吁=140;
 \xjp@K 吃豆人=185;
+\xjp@K 吃飯=120;
 \xjp@K 各不相讓=142;
 \xjp@K 各人自掃門前雪=145;
 \xjp@K 各位=88;

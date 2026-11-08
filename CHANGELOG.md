@@ -31,6 +31,15 @@ written for the next maintainer, human or agent.
 There are no unreleased changes yet. Add new entries here under
 `### Added`, `### Changed`, `### Fixed` and so on.
 
+## [1.5.4] - 2026-11-08
+
+### Fixed
+
+- 吃飯 is *hek3 faan6* (我哋去吃飯). It was *jaak3 faan6*, since 吃 is a
+  variant of 喫 and rime reads the word 喫飯 with the colloquial *jaak3*,
+  which 喫飯 keeps. No text of the corpora with Jyutping holds 吃, so the
+  scores are unchanged.
+
 ## [1.5.3] - 2026-11-03
 
 ### Fixed

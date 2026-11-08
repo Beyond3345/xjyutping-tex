@@ -56,7 +56,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent     # xjyutping-tex
 ROOT = REPO.parent / 'jyutData'                            # the sources
 PY_DATA = REPO.parent / 'xjyutping-py' / 'src' / 'xjyutping' / 'data'
 SYL = re.compile(r'^[a-z]+[1-6]$')
-VERSION = '2026/11/03 v1.5.3'
+VERSION = '2026/11/08 v1.5.4'
 
 # Standalone default readings.  The first block settles characters that
 # rime-cantonese leaves undecided (every reading has the same weight); the
@@ -407,6 +407,9 @@ CURATED_WORDS = {
     '兩男一女': 'loeng5 naam4 jat1 neoi5', '一男兩女': 'jat1 naam4 loeng5 neoi5',
     '有男有女': 'jau5 naam4 jau5 neoi5', '男男女女': 'naam4 naam4 neoi5 neoi5',
     '男定女': 'naam4 ding6 neoi5', '男定係女': 'naam4 ding6 hai6 neoi5', '妖女': 'jiu1 neoi5',
+    # 吃 is a variant of 喫, whose word 喫飯 rime reads with the colloquial
+    # jaak3; spelt 吃飯 it is read hek3 (2026-11)
+    '吃飯': 'hek3 faan6',
 }
 
 # Words of CC-Canto and the CC-CEDICT Cantonese readings that are not added
