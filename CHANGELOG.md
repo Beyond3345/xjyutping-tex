@@ -26,10 +26,80 @@ written for the next maintainer, human or agent.
 
 # Part I: Releases
 
-## [Unreleased]
+## [2.0.0] - 2026-11-11
 
-There are no unreleased changes yet. Add new entries here under
-`### Added`, `### Changed`, `### Fixed` and so on.
+### Added
+
+- The `lazy` option for lazy sounds (懶音), in the package options,
+  `\xjyutpingsetup`, `jyutpingscope` and `\xjyutping*`. `lazy` (or
+  `lazy=true`) turns n- into l-, drops ng-, drops the w of gw- and kw- before
+  o and turns syllabic ng into m (我國五 *o5 gok3 m5*); `lazy=all` also turns
+  final -ng into -n and -k into -t (講 *gon2*). Each reading is rewritten
+  where the preprocessor (or the lookup of a character without context)
+  settles it, so the `debug` log shows the rewritten reading, as the Python
+  package's `lazy` gives it. Readings set with `\setjyutping` and
+  `\xjyutping{..}{..}` are left alone. Off by default.
+  `tests/lazy-check.tex` checks it under both engines.
+- Simplified input. Text typed in simplified characters is read, and it is
+  typeset as typed. Words and readings are looked up under the traditional
+  form of each character. A character that only exists in simplified script
+  (们, 这) is read as its traditional form in any text, and one that both
+  scripts use (后, 里, 干) in simplified text only. In simplified text the
+  lookup also knows 2 700 aliases, which are simplified spellings looked up
+  before the word list (放松 *fong3 sung1*, 干部 *gon3 bou6*), the words as
+  typed (公里, 皇后) and 71 patterns for a character standing alone, by the
+  character before it or the one or two after it (一只猫 *zek3*). The data is
+  in the new file `xjyutping-simp.def`, which `tools/build-data.py` writes.
+  The lookup is the one of the reference reader `eval/simpref.py` in the
+  `jyutData` folder, which the Python package follows as well.
+- The `script` option, which is `auto` (the default), `simplified` or
+  `traditional`, in the package options, `\xjyutpingsetup`, `jyutpingscope`
+  and `\xjyutping*`. The values also work on their own, as in
+  `[simplified]`. With `auto`, each paragraph of a block (a scope, a
+  `\xjyutping*` or a file that a scope reads with `\input`) is judged from
+  all the characters of its source. It is simplified if more of them only
+  exist in simplified script than only exist in traditional script and
+  traditional if fewer. If as many, it is read as the block is as a whole,
+  as the Python package reads a paragraph of one call, and a block with as
+  many of both is read as the last block that was decided. A document starts
+  as traditional, and a block with a set script leaves what `auto` remembers
+  alone. Text without context (from a macro) is read as its block is as a
+  whole.
+- With the package option `script=traditional` (or `traditional`), only the
+  first part of `xjyutping-simp.def` is read, up to `\xjp@SQ`, and a later
+  change of `script` gives a warning and is ignored.
+- A word set with `\setjyutping` is found in text of either script. It is
+  listed as typed, as traditional text is read, in the canonical spelling of
+  that and as an alias under the canonical spelling of what simplified text
+  is read as (回复 then also covers 回復 in simplified text).
+- `tests/simp-check.tex` checks the 36 test vectors of the format description
+  of the data and the cases above under both engines, and
+  `tests/run-tests.sh` also runs the regression test with the `traditional`
+  option. `eval/simpparity.py` in the `jyutData` folder writes the test and
+  its expected log from the reference reader, and compares the package with
+  the reference on the corpora. On the 46 028 texts of the corpora and on
+  their simplified form, the package and the reference give the same segments
+  under both engines with `traditional`, `simplified` and `auto` (405 473
+  and 406 393 segments).
+
+### Changed
+
+- The 2 581 simplified characters that had entries of their own left
+  `xjyutping-chars.def`. They are now read through their traditional forms,
+  as are 851 more simplified characters.
+- The package options are processed before the data is loaded, since the data
+  that is loaded depends on `script`.
+- While a run is segmented, each position keeps the character as it is read
+  and its canonical variant (`\xjp@rb@<i>`, `\xjp@rc@<i>`), where the variant
+  was looked up again for every candidate word. A word set with
+  `\setjyutping` is listed under the canonical spelling of the text as it is
+  read, where it was listed under that of the text as typed. Both give the
+  same readings for traditional text.
+- Under XeLaTeX the package takes 3 126 731 words of the main memory of TeX
+  after loading (3 086 679 in 1.5.4), or 3 073 205 with the `traditional`
+  option.
+- `tools/make-ctan-zip.sh` packs `xjyutping-simp.def` and the tests of `lazy`
+  and of simplified text.
 
 ## [1.5.4] - 2026-11-08
 

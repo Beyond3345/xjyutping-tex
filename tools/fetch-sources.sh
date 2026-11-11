@@ -69,11 +69,20 @@ if missing rime-cantonese; then
         jyut6ping3.chars.dict.yaml jyut6ping3.words.dict.yaml essay-cantonese.txt
 fi
 
-# OpenCC variant tables (Apache-2.0).
+# OpenCC (Apache-2.0): the variant tables, and the character and phrase
+# tables between simplified and traditional script (ST: simplified to
+# traditional, TS: the reverse).  A folder fetched before the simplified
+# tables were needed gets the files it lacks.
+opencc_files="HKVariants HKVariantsPhrases HKVariantsRevPhrases TWVariants
+    TWVariantsRevPhrases STCharacters STPhrases TSCharacters TSPhrases"
 if missing opencc; then
     raw BYVoid/OpenCC "$OPENCC" opencc LICENSE \
-        data/dictionary/HKVariants.txt data/dictionary/HKVariantsRevPhrases.txt \
-        data/dictionary/TWVariants.txt data/dictionary/TWVariantsRevPhrases.txt
+        $(for f in $opencc_files; do echo "data/dictionary/$f.txt"; done)
+else
+    for f in $opencc_files; do
+        [ -e "opencc/$f.txt" ] || { echo "opencc/$f.txt: fetching"; curl -fsSL -o "opencc/$f.txt" \
+            "https://raw.githubusercontent.com/BYVoid/OpenCC/$OPENCC/data/dictionary/$f.txt"; }
+    done
 fi
 
 # 粵音資料集叢 book data (jyut.net; no licence stated), about 110 MB.

@@ -1,21 +1,23 @@
 # xjyutping (LaTeX)
 
-Version 1.5.4 (2026-11-08). Versions follow
+Version 2.0.0 (2026-11-11). Versions follow
 [Semantic Versioning](https://semver.org), and the history of the project is
 kept in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Overview
 
 This project is a LaTeX package that adds Cantonese Jyutping (粵拼) above
-Traditional Chinese characters. It is aimed at anyone preparing Cantonese
+Chinese characters, traditional or simplified. It is aimed at anyone preparing Cantonese
 material in LaTeX, such as teaching notes, lyrics or poetry, where the
 pronunciation of each character should be shown above it.
 
 Pronunciation is determined by looking at the context and cross-referencing
 it with a list of about 104 000 words. The package supports XeLaTeX and
 LuaLaTeX, and it was inspired by xpinyin, which adds Mandarin pinyin to
-Simplified Chinese characters. A Python version that gives the same readings
-is available as [xjyutping-py](https://github.com/Beyond3345/xjyutping-py).
+Simplified Chinese characters. Text typed in Simplified Chinese characters is
+read as well (Section "Simplified characters"). A Python version that gives
+the same readings is available as
+[xjyutping-py](https://github.com/Beyond3345/xjyutping-py).
 
 A minimal document is,
 
@@ -42,8 +44,9 @@ in detail.
 
 ## Installing
 
-The package needs four files, `xjyutping.sty`, `xjyutping.lua` (used by
-LuaLaTeX), `xjyutping-chars.def` and `xjyutping-words.def`. Keep them
+The package needs five files, `xjyutping.sty`, `xjyutping.lua` (used by
+LuaLaTeX), `xjyutping-chars.def`, `xjyutping-words.def` and
+`xjyutping-simp.def`. Keep them
 together, either next to your document or in your personal tree
 (`~/Library/texmf` on macOS, `~/texmf` on Linux). To copy them into the
 personal tree, run,
@@ -83,6 +86,8 @@ conditional settings should be kept outside the scope.
 | `format` | empty | Extra formatting, such as `\color{gray}`. |
 | `multiple` | empty | Formatting for guessed readings of characters with several readings, such as `\color{red}` for proofreading. |
 | `fancy` | `false` | Show tones in the style of Visual Jyutping (Section "Fancy tones"). |
+| `lazy` | `false` | Lazy sounds (懶音). `lazy` (or `lazy=true`) turns n- into l- (你 *lei5*), drops ng- (我 *o5*), drops the w of gw- and kw- before o (國 *gok3*) and turns ng alone into m (五 *m5*); `lazy=all` also turns final -ng into -n and -k into -t (講 *gon2*, 國 *got3*). Readings set with `\setjyutping` or `\xjyutping{..}{..}` are left alone. |
+| `script` | `auto` | Script of the text, which is `auto`, `simplified` or `traditional` (Section "Simplified characters"). The values also work on their own, as in `[simplified]`. |
 | `linebreak` | `false` | Keep the lines of the source (Section "Verse and lyrics"). |
 | `align` | `justify` | Alignment of the lines of a scope, which is `justify`, `left`, `centre` (or `center`) or `right`. The values also work on their own, as in `[linebreak,centre]`. |
 | `debug` | `false` | Log how each run of text was read. |
@@ -162,6 +167,62 @@ A reading given with `\xjyutping{…}{…}` always takes priority, and a word se
 with `\setjyutping` wins a tie of step 2. Variant shapes such as 為/爲 and
 裡/裏 find the same words.
 
+## Simplified characters
+
+Text typed in simplified characters is annotated in the same way, and it is
+typeset as typed. To find words and readings, each simplified character is
+read as its traditional form, so 银行里面 finds the words 銀行 and 裏面. The
+`script` option says which script the text is in.
+
+| Value | Meaning |
+| --- | --- |
+| `auto` | Each paragraph is judged on its own. This is the default. |
+| `simplified` | All text is simplified. |
+| `traditional` | All text is traditional. |
+
+With `auto`, a paragraph is simplified if it holds more characters that only
+exist in simplified script (们, 这, 来) than characters that only exist in
+traditional script (們, 這, 來), and traditional if it holds fewer. A
+paragraph with as many of both, or with neither, is read in the same way as
+its scope as a whole, which is judged by the same count. A scope that cannot
+be judged either is read in the same way as the last scope that could, and a
+document starts as traditional. So where there is no evidence at all, `auto`
+reads the text as traditional. Here a paragraph is the text between two
+blank lines, a scope is a `jyutpingscope`, the text of a `\xjyutping*` or a
+file that a scope reads with `\input`, and every character of the source
+counts, including the arguments of commands. Text that comes from a macro is
+not counted, and it is read in the same way as its scope as a whole.
+
+A short text often holds neither kind of character (27% of the utterances of
+the test corpora, when written in simplified characters). Hence a short
+`\xjyutping*` at the start of a document can be read as traditional, and
+`simplified` is the safer choice for a document that is written in simplified
+characters throughout.
+
+The script matters for the characters that the two scripts share. For
+example, 里 is the mile in traditional text (*lei5*) and mostly 裏 "inside"
+in simplified text (*leoi5*). On the other hand, 们 and 这 only exist in
+simplified script, so they are read as 們 and 這 in any text. A document
+without such characters is read exactly as in earlier versions, unless
+`simplified` is set.
+
+Some simplified characters stand for several traditional ones, such as 只
+(只 and 隻), 干 (乾, 幹 and 干), 后 (後 and 后) and 里 (裏 and 里). The
+package settles them by the word they are in (干净 *gon1 zeng6*, 干部 *gon3
+bou6*, 公里 *gung1 lei5*, 皇后 *wong4 hau6*) and, for a few characters
+standing alone, by the characters next to them (一只猫 *zek3*, 只有 *zi2*).
+A character that neither settles takes the reading of its most usual form
+(干 *gon1*, 里 *leoi5*, 只 *zi2*), which is a guess. On the corpora of
+Section "Accuracy" written in simplified characters, 53 of 290 690 readings
+differ from those of the traditional text, and 20 of them are 只 read *zi2*
+where it is the measure word *zek3*. Set such a reading with `\setjyutping`
+or `\xjyutping`. A word set with `\setjyutping` is found in text of either
+script.
+
+With the package option `script=traditional` (or `traditional`), the data for
+simplified text is not loaded, which saves about 53 000 words of the memory
+of TeX. The script can then not be changed later in the document.
+
 ## XeLaTeX and LuaLaTeX
 
 While the readings and options are the same under both engines, LuaLaTeX
@@ -172,8 +233,8 @@ also needs `xjyutping.lua`, installed next to `xjyutping.sty`. Under LuaLaTeX,
 - a paragraph can be any length, while XeLaTeX stops at about 15 000
   characters,
 - compiling takes about 1.6 times as long and
-- text that comes from a macro takes the `\setjyutping` readings in force at
-  the end of its paragraph.
+- text that comes from a macro takes the `\setjyutping` readings and, with
+  `script=auto`, the script in force at the end of its paragraph.
 
 pdfLaTeX is not supported.
 
@@ -223,8 +284,11 @@ data.
 
 ## Data
 
-The readings are stored in `xjyutping-chars.def` (30 089 characters) and
-`xjyutping-words.def` (about 104 000 words, with how often each is used). They
+The readings are stored in `xjyutping-chars.def` (27 508 characters) and
+`xjyutping-words.def` (about 104 000 words, with how often each is used),
+while `xjyutping-simp.def` holds the traditional form of 3 544 simplified
+characters, 2 700 simplified spellings of words and 71 rules for characters
+standing alone. They
 are built by `tools/build-data.py` from six sources, which
 `tools/fetch-sources.sh` downloads,
 
@@ -236,7 +300,8 @@ are built by `tools/build-data.py` from six sources, which
   512 more words,
 - CC-Canto and the Cantonese readings of CC-CEDICT from Jyut Dictionary, for
   2 531 more words,
-- OpenCC, for variant shapes and
+- OpenCC, for variant shapes and for the simplified characters and phrases
+  and
 - 粵音資料集叢, for the readings of 640 rare characters.
 
 The build also reads `tools/wenetspeech-yue-counts.tsv`, which counts how
@@ -273,7 +338,8 @@ of xjyutping was judged right in 95.3% of the cases (94.9% in 1.5.0), against
 
 `tests/run-tests.sh` checks the readings under both engines, with and without
 `fancy`, and checks with `tests/pad-check.tex` that a character at the end of
-a group keeps its spacing, while `tests/render.sh` renders a test file to PNG
+a group keeps its spacing, with `tests/lazy-check.tex` the `lazy` option and
+with `tests/simp-check.tex` the readings of simplified text, while `tests/render.sh` renders a test file to PNG
 for a visual check, for example `tests/verse-check.tex` for `linebreak` and
 `align`.
 
@@ -321,7 +387,8 @@ We also thank the authors of the data sources,
   with MDBG and the contributors of [CC-CEDICT](https://cc-cedict.org) and
 - Carbo Kuo (BYVoid) and the contributors of OpenCC, for
   [OpenCC](https://github.com/BYVoid/OpenCC) (Apache-2.0), whose variant
-  tables let variant shapes find the same words.
+  tables let variant shapes find the same words and whose character and
+  phrase tables relate simplified characters to traditional ones.
 
 Lastly, we thank the authors of the corpora that we used to tune the package
 and to measure its accuracy,
@@ -343,7 +410,8 @@ and to measure its accuracy,
 
 The code (`xjyutping.sty`, `xjyutping.lua`, `tools/` and `tests/`) is
 released under the LaTeX Project Public License (LPPL) 1.3c, while the data
-files (`xjyutping-chars.def` and `xjyutping-words.def`) are released under
+files (`xjyutping-chars.def`, `xjyutping-words.def` and
+`xjyutping-simp.def`) are released under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), since they
 adapt the CC BY-SA 3.0 word lists above. The word list of ToJyutping is
 used under the BSD 2-Clause License, whose notice is reproduced in

@@ -1,4 +1,4 @@
-xjyutping -- Jyutping above traditional Chinese characters
+xjyutping -- Jyutping above Chinese characters, traditional or simplified
 Copyright (C) 2026 by the xjyutping authors
 https://github.com/Beyond3345/xjyutping-tex
 
@@ -23,8 +23,8 @@ The Current Maintainer of this work is Longkai Li
 Data
 ----
 
-The generated data files xjyutping-chars.def and xjyutping-words.def are
-distributed under the Creative Commons Attribution-ShareAlike 4.0
+The generated data files xjyutping-chars.def, xjyutping-words.def and
+xjyutping-simp.def are distributed under the Creative Commons Attribution-ShareAlike 4.0
 International licence (CC BY-SA 4.0):
 
     https://creativecommons.org/licenses/by-sa/4.0/
@@ -49,8 +49,10 @@ They are adapted from:
     Infrastructure Development Workgroup (CanCLID) and its contributors,
     https://github.com/CanCLID/ToJyutping, BSD 2-Clause License (the notice
     is reproduced below);
-  * the Hong Kong and Taiwan variant tables of OpenCC by Carbo Kuo (BYVoid)
-    and its contributors, https://github.com/BYVoid/OpenCC,
+  * the Hong Kong and Taiwan variant tables and the simplified and
+    traditional character and phrase tables (STCharacters, STPhrases,
+    TSCharacters, TSPhrases) of OpenCC by Carbo Kuo (BYVoid) and its
+    contributors, https://github.com/BYVoid/OpenCC,
     Apache License 2.0;
   * the readings of 640 characters from the book data of 粵音資料集叢 by
     石見田, https://github.com/jyutnet/cantonese-books-data, which is

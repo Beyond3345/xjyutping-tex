@@ -12,6 +12,8 @@ jyutData next to this repository (tools/fetch-sources.sh fetches them):
   rime-cantonese/jyut6ping3.words.dict.yaml    rime-cantonese, CC BY 4.0
   rime-cantonese/essay-cantonese.txt           rime-cantonese, CC BY 4.0
   opencc/HKVariants.txt, opencc/TWVariants.txt OpenCC, Apache-2.0
+  opencc/STCharacters.txt, STPhrases.txt,      OpenCC, Apache-2.0 (for
+      TSCharacters.txt, TSPhrases.txt          simplified input)
   jyut-dict/src/dictionaries/cedict/data/
       CC-CANTO.txt   CC-Canto (Pleco Inc.), CC BY-SA 3.0
       READINGS.txt   Cantonese readings of CC-CEDICT words (Pleco), CC BY-SA 3.0
@@ -35,6 +37,14 @@ Outputs:
                         character map, run-final readings
   xjyutping-words.def   (this repository) word readings, max word length
                         per final character
+  xjyutping-simp.def    (this repository) the data for simplified input:
+                        which traditional character a simplified one is read
+                        as, the traditional-only characters, and the aliases
+                        and rules of simplified mode (see "Simplified input"
+                        below; the format and the lookup are described in
+                        plans/simplified-data-format.md of the workspace)
+  tools/simplified-clashes.tsv  (this repository) for review: the simplified
+                        spellings shared by words with different readings
   --py-data DIR         the same tables as UTF-8 TSV for the Python package
                         xjyutping-py (default: ../xjyutping-py/src/xjyutping/
                         data next to this repository, if it exists):
@@ -43,6 +53,11 @@ Outputs:
       finals.tsv    char, reading at the end of a run
       variants.tsv  variant, canonical character
       words.tsv     word (and canonical-spelling alias), readings
+      simp.tsv      simplified character, the character it is read as,
+                    class (a: in every script mode, s: in simplified mode)
+      trad.tsv      traditional-only characters
+      simp_words.tsv  alias of simplified mode, readings, cost
+      simp_prev.tsv, simp_next.tsv  rules of simplified mode
 """
 import collections
 import json
@@ -56,7 +71,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent     # xjyutping-tex
 ROOT = REPO.parent / 'jyutData'                            # the sources
 PY_DATA = REPO.parent / 'xjyutping-py' / 'src' / 'xjyutping' / 'data'
 SYL = re.compile(r'^[a-z]+[1-6]$')
-VERSION = '2026/11/08 v1.5.4'
+VERSION = '2026/11/11 v2.0.0'
 
 # Standalone default readings.  The first block settles characters that
 # rime-cantonese leaves undecided (every reading has the same weight); the
@@ -408,8 +423,10 @@ CURATED_WORDS = {
     '有男有女': 'jau5 naam4 jau5 neoi5', '男男女女': 'naam4 naam4 neoi5 neoi5',
     '男定女': 'naam4 ding6 neoi5', '男定係女': 'naam4 ding6 hai6 neoi5', '妖女': 'jiu1 neoi5',
     # 吃 is a variant of 喫, whose word 喫飯 rime reads with the colloquial
-    # jaak3; spelt 吃飯 it is read hek3 (2026-11)
-    '吃飯': 'hek3 faan6',
+    # jaak3; spelt 吃飯 it is read hek3 (2026-11).  So are 吃屎 and 堂吃,
+    # which only written Chinese spells so (喫蕉, 喫茄 and 喫𡲢 are Cantonese
+    # however they are spelt, and keep jaak3); 口吃 'stutter' is gat1
+    '吃飯': 'hek3 faan6', '吃屎': 'hek3 si2', '堂吃': 'tong4 hek3', '口吃': 'hau2 gat1',
 }
 
 # Words of CC-Canto and the CC-CEDICT Cantonese readings that are not added
@@ -509,6 +526,99 @@ BOOKS = [
 # Labels (讀音標記) of readings that never become the default: popular but
 # incorrect, old, archaic, original, wrong, rare, proper names only.
 NOT_DEFAULT = ('俗', '舊', '古', '本', '原', '誤', '罕', '專名')
+
+
+# --- Simplified input -------------------------------------------------------
+# Simplified characters are folded (mapped) to traditional ones only to look
+# words and readings up; the text itself is never changed.  The fold table is
+# OpenCC's STCharacters with the first traditional candidate as the target.
+# A character is of class
+#   a  if it exists only in simplified script (们, 这): folded in every script
+#      mode, and a sign that the text is simplified;
+#   s  if it is also a traditional character (后, 里, 干), or if the word list
+#      itself spells a word with it (脚, 响, 么): folded in simplified mode only.
+# Left out: the Hong Kong and Taiwan shapes that the variant table already
+# folds (群, 床, 揾), characters whose target has no reading, and those that
+# fold to themselves (只, 松, and the ones kept by SIMP_TARGETS).
+#
+# SIMP_TARGETS corrects the first candidate for Cantonese: simplified
+# character -> the character it is read as (itself: not folded).  Each was
+# found on HKCanCor, CantoMap, SpiCE and the Wikipedia articles turned into
+# simplified characters (eval/simp.py of the jyutData folder); the counts are
+# the characters standing alone that the correction puts right and wrong.
+SIMP_TARGETS = {
+    '哗': '嘩',     # the interjection waa3, not 譁 waa1 (294 to 0)
+    '系': '係',     # the copula: 唔系, 即系, 系咪 (140 to 4; 系統, 關系 are words)
+    '吓': '吓',     # the particle haa5 (睇吓); 嚇 comes from words and SIMP_NEXT
+    '郁': '郁',     # juk1 'move' (14 to 0); 抑鬱, 鬱悶 are words
+    '晒': '晒',     # the list spells 357 words with 晒 and 49 with 曬; both saai3
+    '霉': '霉',     # mui4, as the 27 words the list spells with it (黴 is mei4)
+    '铺': '舖',     # pou3 'shop' (15 to 4); 鋪 'spread' comes from words
+    '挨': '捱',     # ngaai4 'endure' (7 to 1)
+    '干': '乾',     # gon1 'dry' (5 to 0); 幹 comes from words (幹部, 幹嘛)
+    '仆': '仆',     # puk1 'fall' (2 to 0); 僕 comes from words (僕人)
+    '钟': '鐘',     # 粒鐘, 鐘頭, 零鐘 (6 to 1); 鍾意 becomes an alias
+}
+# Spellings of simplified-script Cantonese that OpenCC does not know, as
+# rows of class s: character -> the character it is read as in simplified
+# mode.  噶 is written for the particle 㗎 (3,154 times in 20,000 lines of
+# the simplified transcripts of WenetSpeech-Yue, and never anything else).
+# The words that really have 噶 keep their reading through aliases: those of
+# the word list, of OpenCC's phrases and of the dictionaries, and
+# SIMP_SPELLINGS (traditional spellings read as traditional mode reads
+# them).
+SIMP_EXTRA = {'噶': '㗎'}
+SIMP_SPELLINGS = '噶瑪 噶舉 薩噶達娃'.split()
+
+# Readings of a character standing alone in simplified mode, by the folded
+# characters around it.  SIMP_PREV: the character before it + the character.
+# SIMP_NEXT: the character + the one or two after it, as CURATED_NEXT (which
+# is still used, and whose patterns are also added in their simplified
+# spelling; see simplified).  Like CURATED_NEXT they never change how a run
+# is split.  The next rules come first.
+#
+# 只 alone stays 只 zi2 'only'; it is the classifier 隻 zek3 after a number, a
+# demonstrative or a verb with 咗, 住 or 到 (60 to 2 on the texts above), and
+# before a noun or adjective that the simplified transcripts of
+# WenetSpeech-Yue have after it (40 to 1), but not in 只不過 and 只可以.  檯
+# toi2 'table' after its classifiers (3 to 0), 摺 zip3 in 套摺 (5 to 0), and
+# 嚇 haak3 in 嚇到 and 嚇死 (4 to 0).
+SIMP_PREV = {
+    **{c + '只': 'zek3' for c in '一二兩三四五六七八九十百千萬幾半呢嗰哩邊每成整咗細多住到將'},
+    '張臺': 'toi2', '圍臺': 'toi2', '套折': 'zip3',
+}
+SIMP_NEXT = {
+    **{'只' + c: 'zek3' for c in '腳熊兔狗龜碟船鞋鷹豬牙叉馬歌貓鬼戒蛋狐妖雞牛羊手耳大老女小白母'},
+    '只不過': 'zi2', '只可': 'zi2',
+    '吓到': 'haak3', '吓死': 'haak3',
+}
+
+# Simplified spellings shared by listed words with different readings (回复
+# is 回覆 and 回復): the more usual word wins.  These are decided by hand
+# instead: simplified spelling -> the traditional word it is read as.
+# tools/simplified-clashes.tsv lists every clash.
+SIMP_WORDS = {
+    '着紧': '着緊',             # 'to care', as in the simplified transcripts; 著緊 is 'wearing'
+    '搜集': '搜集',             # 蒐集 is only frequent where OpenCC converted the text
+    '反反复复': '反反複複', '重重复复': '重重複複',     # fuk1, as 反覆 and 重複
+    '了如指掌': '了如指掌',     # liu5
+    '一哄而散': '一哄而散',     # saan3 'disperse'
+    '依郁': '依郁',             # ji1 juk1 'to stir'
+}
+
+# Simplified spellings that get no alias, although a listed word or a phrase
+# of OpenCC is written so: in Cantonese text the same characters are more
+# often something else (睇吓点 is 睇吓 + 點, 系上 is 係 + 上, 干到 is 乾到
+# 'so dry that', 家里人 is 家裏 + 人, 噶喇 and 噶噶 are 㗎喇 and 㗎㗎).  Each one read text wrongly on the
+# corpora or the simplified transcripts, and none rightly.
+SIMP_EXCLUDED = set('''
+睇吓点 吓乜 系上 个啲 下面条 几面上 里人 万一只 只日 州里 噶喇 噶噶
+干到 干好 干完 干头 干得 干炒 干你 干我 干了 会干 去干 不干 又干 条干
+'''.split())
+# No phrase of two characters is taken (from OpenCC or the dictionaries) for
+# these traditional characters: 几 the small table is rare beside 幾 (高几 is
+# 高幾 far more often; 茶几 is a listed word and stays).
+SIMP_NO_PHRASES = '几'
 
 
 def is_han(c):
@@ -698,24 +808,41 @@ def with_aliases(words, canon):
     return {**words, **aliases}, len(aliases), clashes
 
 
-def reader(chars, canon, lex, cost_of):
+def reader(chars, canon, lex, cost_of, fold=None, alias=None, snext=None):
     """The readings of a run of text with the word list lex, segmented as
     xjyutping.sty and xjyutping-py do: the fewest words, then the fewest
     single characters, then the least total cost; on a full tie the longer
-    final word wins.  cost_of(key) is the cost of a word or character."""
+    final word wins.  cost_of(key) is the cost of a word or character.
+
+    With fold (simplified character -> the character it is read as) the run
+    is read as its folded spelling.  With alias (simplified mode: canonical
+    folded spelling -> (readings, cost)) an alias comes before the word
+    list, and the rules snext (see simplified) and SIMP_PREV are used."""
+    fold, simp, alias, snext = fold or {}, alias is not None, alias or {}, snext or {}
     longest = collections.defaultdict(int)
-    for w in lex:
+    for w in list(lex) + list(alias):
         longest[w[-1]] = max(longest[w[-1]], len(w))
 
     def read(run):
-        cr = ''.join(canon.get(c, c) for c in run)
+        base = ''.join(fold.get(c, c) for c in run)
+        cr = ''.join(canon.get(c, c) for c in base)
+
+        def find(i, j):
+            """The table and key the word run[i:j] is listed under: an alias,
+            the folded spelling, its canonical spelling, or as typed."""
+            for table, key in ((alias, cr[i:j]), (lex, base[i:j]), (lex, cr[i:j]), (lex, run[i:j])):
+                if key in table:
+                    return table, key
+
         cost, back = [(0, 0)] * (len(run) + 1), [1] * (len(run) + 1)
         for i in range(1, len(run) + 1):
-            best = (cost[i - 1][0] + 100001, cost[i - 1][1] + cost_of(run[i - 1]))
-            for size in range(2, min(i, max(longest[run[i - 1]], longest[cr[i - 1]])) + 1):
-                key = run[i - size:i] if run[i - size:i] in lex else cr[i - size:i]
-                if key in lex:
-                    here = (cost[i - size][0] + 100000, cost[i - size][1] + cost_of(key))
+            best = (cost[i - 1][0] + 100001, cost[i - 1][1] + cost_of(base[i - 1]))
+            for size in range(2, min(i, max(longest[c] for c in (run[i - 1], base[i - 1], cr[i - 1]))) + 1):
+                found = find(i - size, i)
+                if found:
+                    table, key = found
+                    here = (cost[i - size][0] + 100000,
+                            cost[i - size][1] + (table[key][1] if table is alias else cost_of(key)))
                     if here <= best:
                         best, back[i] = here, size
             cost[i] = best
@@ -723,14 +850,145 @@ def reader(chars, canon, lex, cost_of):
         while j:
             i = j - back[j]
             if j - i > 1:
-                out[:0] = lex.get(run[i:j]) or lex[cr[i:j]]
+                table, key = find(i, j)
+                out[:0] = table[key][0] if table is alias else table[key]
             else:
-                nxt = (CURATED_NEXT.get(run[i:i + 3]) or CURATED_NEXT.get(cr[i:i + 3])
-                       or CURATED_NEXT.get(run[i:i + 2]) or CURATED_NEXT.get(cr[i:i + 2]))
-                out[:0] = [nxt or chars[run[i]][0]]
+                nxt = (simp and snext.get(cr[i:i + 3])
+                       or CURATED_NEXT.get(base[i:i + 3]) or CURATED_NEXT.get(cr[i:i + 3])
+                       or simp and snext.get(cr[i:i + 2])
+                       or CURATED_NEXT.get(base[i:i + 2]) or CURATED_NEXT.get(cr[i:i + 2])
+                       or simp and i and SIMP_PREV.get(cr[i - 1:i + 1]))
+                out[:0] = [nxt or chars[base[i]][0]]
             j = i
         return out
     return read
+
+
+def opencc(name):
+    """key -> [values] of an OpenCC dictionary."""
+    table = {}
+    for line in open(ROOT / 'opencc' / name, encoding='utf8'):
+        if line.strip() and not line.startswith('#'):
+            key, values = line.rstrip('\n').split('\t')
+            table[key] = values.split()
+    return table
+
+
+def t2s():
+    """OpenCC's conversion of traditional to simplified characters (t2s):
+    the longest phrase of TSPhrases, else the character by TSCharacters, the
+    first candidate of each."""
+    phrases, single = opencc('TSPhrases.txt'), opencc('TSCharacters.txt')
+    top = max(map(len, phrases))
+
+    def convert(text):
+        out, i = '', 0
+        while i < len(text):
+            n = next((n for n in range(min(top, len(text) - i), 1, -1)
+                      if text[i:i + n] in phrases), 1)
+            out += (phrases if n > 1 else single).get(text[i:i + n], [text[i]])[0]
+            i += n
+        return out
+    return convert
+
+
+def spellings(conv):
+    """(simplified, traditional, source) of the phrases of OpenCC's STPhrases
+    (its phrases for the characters with several traditional forms) and of
+    the words of CC-Canto and CC-CEDICT and SIMP_SPELLINGS, simplified by conv
+    (the simplified column of CC-Canto has spellings of its own, 啖 for 噉 and
+    渠 for 佢)."""
+    for s, ts in opencc('STPhrases.txt').items():
+        yield s, ts[0], 'OpenCC phrase'
+    for name in ('CC-CANTO.txt', 'READINGS.txt'):
+        for line in open(ROOT / 'jyut-dict/src/dictionaries/cedict/data' / name, encoding='utf8'):
+            t = line.split(' ')[0]
+            if not line.startswith('#'):
+                yield conv(t), t, 'dictionary word'
+    for t in SIMP_SPELLINGS:
+        yield conv(t), t, 'hand'
+
+
+def simplified(chars, canon, words, cost_of):
+    """The data for simplified input: the fold table (simplified character
+    -> (the character it is read as, class)), the traditional-only
+    characters, the aliases of simplified mode (folded spelling -> (readings,
+    cost, source)) and the clashes (see SIMP_TARGETS and SIMP_WORDS)."""
+    st = opencc('STCharacters.txt')
+    in_words = set(''.join(words))
+    fold = {}
+    for s, cands in st.items():
+        t = SIMP_TARGETS.get(s, cands[0])
+        if s not in canon and t != s and t in chars:
+            fold[s] = (t, 's' if s in cands or s in in_words else 'a')
+    for s in {t for t, _ in fold.values()} & set(fold):     # 苎 folds to 苧, itself a
+        fold[s] = (fold[s][0], 's')                         # simplified form (of 薴)
+    assert all(s in st for s in SIMP_TARGETS), 'SIMP_TARGETS: not a simplified character'
+    assert all(s in chars and s not in st and s not in canon for s in SIMP_EXTRA), 'SIMP_EXTRA'
+    fold.update({s: (t, 's') for s, t in SIMP_EXTRA.items()})
+    # Traditional-only: OpenCC's t2s always writes another character for it.
+    trad = sorted(t for t, ss in opencc('TSCharacters.txt').items()
+                  if t not in ss and t in chars and t not in st)
+
+    # Every listed word under the folded form of its simplified spelling.
+    target = {s: t for s, (t, _) in fold.items()}
+    key = lambda s: ''.join(canon.get(c, c) for c in (target.get(c, c) for c in s))
+    conv = t2s()
+    groups = collections.defaultdict(dict)      # folded spelling -> {word: simplified spelling}
+    for w in words:
+        s = conv(w)
+        if len(s) == len(w):
+            groups[key(s)][w] = s
+    # Of the words written so, the most usual one is read; of the shapes of
+    # one word (喫飯 and 吃飯), the one of CURATED_WORDS.
+    cw = lambda w: ''.join(canon.get(c, c) for c in w)
+    win = {k: min(ws, key=lambda w: (len({cw(v) for v in ws}) == 1 and w not in CURATED_WORDS,
+                                     cost_of(w), w not in CURATED_WORDS, w != k, w))
+           for k, ws in groups.items()}
+    for s, w in SIMP_WORDS.items():
+        assert w in groups[key(s)], 'SIMP_WORDS: %s is not a spelling of %s' % (s, w)
+        win[key(s)] = w
+    clashes = sorted(((k, sorted(ws, key=lambda w: (w != win[k], cost_of(w), w)))
+                      for k, ws in groups.items() if len({tuple(words[w]) for w in ws}) > 1),
+                     key=lambda c: (cost_of(c[1][1]), c[0]))
+
+    # CURATED_NEXT under the folded simplified spelling of its patterns,
+    # where that is another one (成隻 is written 成只, and 只 stays 只).
+    snext = {key(conv(pat)): jp for pat, jp in CURATED_NEXT.items()
+             if key(conv(pat)) not in CURATED_NEXT}
+    snext.update(SIMP_NEXT)
+
+    # An alias where simplified mode would read the spelling otherwise;
+    # shortest first, as only shorter aliases change how a spelling is read.
+    alias = {}
+    trad_read = reader(chars, canon, words, cost_of)
+    extra = {}      # folded spelling -> the most usual (simplified, traditional, source)
+    for s, t, src in spellings(conv):
+        k = key(s)
+        if (len(t) == len(s) > 1 and s not in SIMP_EXCLUDED and k not in groups
+                and not (len(t) == 2 and set(t) & set(SIMP_NO_PHRASES))
+                and all(c in chars for c in t) and all(target.get(c, c) in chars for c in s)
+                and (k not in extra or (cost_of(t), t) < (cost_of(extra[k][1]), extra[k][1]))):
+            extra[k] = (s, t, src)
+    for size in sorted(set(map(len, groups)) | set(map(len, extra))):
+        read = reader(chars, canon, words, cost_of, target, dict(alias), snext)
+        for k, ws in groups.items():
+            if (len(k) == size and not SIMP_EXCLUDED & set(ws.values())
+                    and any(read(s) != words[win[k]] for s in ws.values())):
+                alias[k] = (words[win[k]], cost_of(win[k]), 'listed word')
+        # the spellings that are not listed words: read as the data reads
+        # their traditional form
+        for k, (s, t, src) in extra.items():
+            if len(k) == size and read(s) != trad_read(t):
+                alias[k] = (trad_read(t), cost_of(t), src)
+    # what the lookup relies on (plans/simplified-data-format.md, section 4)
+    gone = {s for s, (_, cls) in fold.items() if cls == 'a'}
+    assert all(t in chars and t not in gone for t, _ in fold.values())
+    assert all(s in chars for s in set(fold) - gone) and not gone & in_words
+    assert not set(trad) & set(fold)
+    assert all(key(k) == k and len(k) == len(a[0]) > 1 for k, a in alias.items())
+    assert all(key(pat) == pat for pat in list(SIMP_PREV) + list(snext))
+    return fold, trad, alias, snext, clashes, groups
 
 
 def pick_default(ch, rime, lshk):
@@ -933,6 +1191,16 @@ def main():
     for w in allwords:
         longest[w[-1]] = max(longest[w[-1]], len(w))
 
+    # --- simplified input ------------------------------------------------
+    fold, trad_only, simp_alias, simp_next, simp_clashes, spelt = simplified(chars, canon, allwords, cost_of)
+    # A class-a character is read as the one it folds to in every mode, so
+    # its own entry leaves the character table.
+    gone = {s for s, (_, cls) in fold.items() if cls == 'a'}
+    simp_longest = collections.defaultdict(int)     # only where an alias is longer
+    for k in simp_alias:
+        if len(k) > longest.get(k[-1], 0):
+            simp_longest[k[-1]] = max(simp_longest[k[-1]], len(k))
+
     # --- output ----------------------------------------------------------
     header = [
         '%% Generated by tools/build-data.py -- do not edit.',
@@ -948,6 +1216,8 @@ def main():
                 'characters (no licence stated).\n')
         f.write('\\ProvidesFile{xjyutping-chars.def}[%s xjyutping character data]\n' % VERSION)
         for ch, (default, others, flag) in chars.items():
+            if ch in gone:
+                continue
             if flag:        # polyphone: default, then the other readings
                 f.write('\\xjp@M %s%s %s;\n' % (ch, default, ' '.join(others)))
             else:
@@ -961,7 +1231,7 @@ def main():
             f.write('\\xjp@N %s=%s;\n' % (pat, jp))
         f.write('\\xjp@D %d;\n' % unknown_cost)
         for ch in chars:
-            if cost_of(ch) != unknown_cost:
+            if cost_of(ch) != unknown_cost and ch not in gone:
                 f.write('\\xjp@K %s=%d;\n' % (ch, cost_of(ch)))
     with open(REPO / 'xjyutping-words.def', 'w', encoding='utf8') as f:
         f.write('\n'.join(header) + '\n%%          CC-Canto and CC-CEDICT Cantonese readings '
@@ -975,6 +1245,39 @@ def main():
         for c in sorted(longest):
             f.write('\\xjp@E %s%d;\n' % (c, longest[c]))
 
+    # The data for simplified input, in a file of its own: the first part
+    # (up to \xjp@SQ) is needed in every script mode, the rest only when a
+    # text may be simplified.
+    folds = sorted(fold.items())
+    with open(REPO / 'xjyutping-simp.def', 'w', encoding='utf8') as f:
+        f.write('\n'.join(header[:3]) + '\n%% Sources: OpenCC character and phrase tables '
+                '(Apache-2.0), and the\n%%          sources of xjyutping-words.def.\n')
+        f.write('\\ProvidesFile{xjyutping-simp.def}[%s xjyutping simplified-input data]\n' % VERSION)
+        for s, (t, cls) in folds:
+            if cls == 'a':
+                f.write('\\xjp@SA %s%s;\n' % (s, t))
+        f.write('\\xjp@SQ;\n')
+        for s, (t, cls) in folds:
+            if cls == 's':
+                f.write('\\xjp@SS %s%s;\n' % (s, t))
+        for i in range(0, len(trad_only), 40):
+            f.write('\\xjp@ST %s;\n' % ''.join(trad_only[i:i + 40]))
+        for k, (syls, cost, _) in sorted(simp_alias.items()):
+            f.write('\\xjp@SW %s=%d,%s;\n' % (k, cost, ' '.join(syls)))
+        for pat, jp in sorted(SIMP_PREV.items()):
+            f.write('\\xjp@SP %s=%s;\n' % (pat, jp))
+        for pat, jp in sorted(simp_next.items()):
+            f.write('\\xjp@SN %s=%s;\n' % (pat, jp))
+        for c in sorted(simp_longest):
+            f.write('\\xjp@SE %s%d;\n' % (c, simp_longest[c]))
+    # The simplified spellings shared by words with different readings, for
+    # review: the folded spelling, then each word (the one taken first) with
+    # its simplified spelling, reading and cost; the most usual losers first.
+    with open(REPO / 'tools' / 'simplified-clashes.tsv', 'w', encoding='utf8') as f:
+        for k, ws in simp_clashes:
+            f.write('\t'.join([k] + ['%s %s %s %d' % (w, spelt[k][w], ' '.join(allwords[w]), cost_of(w))
+                                     for w in ws]) + '\n')
+
     # The same tables for the Python package (it derives the longest-word
     # bound from words.tsv itself).
     if py_data:
@@ -984,11 +1287,17 @@ def main():
             with open(py_data / name, 'w', encoding='utf8', newline='\n') as f:
                 f.writelines('\t'.join(row) + '\n' for row in rows)
         tsv('chars.tsv', ((ch, d, ' '.join(o), '1' if fl else '0', str(cost_of(ch)))
-                          for ch, (d, o, fl) in chars.items()))
+                          for ch, (d, o, fl) in chars.items() if ch not in gone))
         tsv('finals.tsv', CURATED_FINALS.items())
         tsv('next.tsv', sorted(CURATED_NEXT.items()))
         tsv('variants.tsv', ((v, s) for v, s in sorted(canon.items()) if v in chars))
         tsv('words.tsv', ((w, ' '.join(allwords[w]), str(cost_of(w))) for w in sorted(allwords)))
+        tsv('simp.tsv', ((s, t, cls) for s, (t, cls) in folds))
+        tsv('trad.tsv', ((t,) for t in trad_only))
+        tsv('simp_words.tsv', ((k, ' '.join(syls), str(cost))
+                               for k, (syls, cost, _) in sorted(simp_alias.items())))
+        tsv('simp_prev.tsv', sorted(SIMP_PREV.items()))
+        tsv('simp_next.tsv', sorted(simp_next.items()))
     else:
         print('Python data skipped: %s not found' % PY_DATA.parent, file=sys.stderr)
 
@@ -1003,6 +1312,14 @@ def main():
     print('words added from jyut-dict and ToJyutping: %d (%s); not added: %s' % (
         len(added), ', '.join('%s %d' % kv for kv in sorted(from_cedict.items())),
         ', '.join('%d %s' % (n, why) for why, n in rejected.most_common())), file=sys.stderr)
+    kinds = collections.Counter(src for _, _, src in simp_alias.values())
+    print('simplified: fold table %d (always %d, simplified mode only %d), traditional-only '
+          'characters %d, aliases %d (%s), rules %d by the character before and %d by those '
+          'after, clashes %d; character entries removed %d' % (
+              len(fold), sum(cls == 'a' for _, cls in fold.values()),
+              sum(cls == 's' for _, cls in fold.values()), len(trad_only), len(simp_alias),
+              ', '.join('%s %d' % kv for kv in sorted(kinds.items())), len(SIMP_PREV),
+              len(simp_next), len(simp_clashes), len(gone & set(chars))), file=sys.stderr)
 
 
 if __name__ == '__main__':

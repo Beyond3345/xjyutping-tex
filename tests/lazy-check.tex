@@ -1,0 +1,39 @@
+% Lazy sounds check: run tests/run-tests.sh (XeLaTeX and LuaLaTeX).  The
+% debug log is compared with tests/lazy-check.expected; a manual
+% \xjyutping{..}{..} must keep its reading (the ruby is made wide with a
+% large ratio, so a changed reading changes the width), else the log has
+% "lazy-check: FAIL".
+\documentclass{article}
+\usepackage{iftex}
+\ifXeTeX\usepackage{xeCJK}\else\usepackage[fontset=none]{ctex}\fi
+\setCJKmainfont{Songti TC}
+\usepackage[debug,lazy]{xjyutping}
+\newcommand\lazycheck[2]{%
+  \setbox0\hbox{#1}\setbox2\hbox{#2}%
+  \ifdim\wd0=\wd2
+    \typeout{lazy-check: ok \detokenize{#2}}%
+  \else
+    \typeout{lazy-check: FAIL \detokenize{#2}: \the\wd2 \space instead of \the\wd0}%
+  \fi}
+\newcommand\tab{\begin{tabular}{c}我國\end{tabular}}
+\begin{document}
+\begin{jyutpingscope}
+你。我牛。國廣狂瓜。五唔。講角。
+\setjyutping{你}{nei5}你好。
+\end{jyutpingscope}
+
+\begin{jyutpingscope}[lazy=all]
+講角。國廣。五。香港。\tab
+\end{jyutpingscope}
+
+\begin{jyutpingscope}[lazy=false]
+你我國五講。
+\end{jyutpingscope}
+
+\xjyutpingsetup{lazy=false}
+\xjyutping*[lazy=all]{我國}
+\xjyutping*{我國}
+
+\lazycheck{\xjyutping*[lazy=false,ratio=3,width=natural]{我國}}
+  {\xjyutping[lazy=all,ratio=3,width=natural]{我國}{ngo5 gwok3}}
+\end{document}

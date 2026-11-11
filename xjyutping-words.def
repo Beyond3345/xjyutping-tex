@@ -6,7 +6,7 @@
 %%          OpenCC HK/TW variant tables (Apache-2.0),
 %%          ToJyutping word list (CanCLID, BSD-2-Clause),
 %%          CC-Canto and CC-CEDICT Cantonese readings (CC BY-SA 3.0).
-\ProvidesFile{xjyutping-words.def}[2026/11/08 v1.5.4 xjyutping word data]
+\ProvidesFile{xjyutping-words.def}[2026/11/11 v2.0.0 xjyutping word data]
 \xjp@W 㓟皮=pai1 pei4;
 \xjp@W 㓟菠蘿皮=pai1 bo1 lo4 pei4;
 \xjp@W 㓟蘋果=pai1 ping4 gwo2;
@@ -16938,6 +16938,7 @@
 \xjp@W 口出穢言=hau2 ceot1 wai3 jin4;
 \xjp@W 口印=hau2 jan3;
 \xjp@W 口口聲聲=hau2 hau2 seng1 seng1;
+\xjp@W 口吃=hau2 gat1;
 \xjp@W 口同鼻拗=hau2 tung4 bei6 aau3;
 \xjp@W 口同鼻詏=hau2 tung4 bei6 aau3;
 \xjp@W 口吐人言=hau2 tou3 jan4 jin4;
@@ -16949,6 +16950,7 @@
 \xjp@W 口哨=hau2 saau3;
 \xjp@W 口唔對心=hau2 m4 deoi3 sam1;
 \xjp@W 口啞啞=hau2 aa2 aa2;
+\xjp@W 口喫=hau2 gat1;
 \xjp@W 口嗰句=hau2 go2 geoi3;
 \xjp@W 口噏噏=hau2 ngap1 ngap1;
 \xjp@W 口嚡脷素=hau2 haai4 lei6 sou3;
@@ -17651,6 +17653,7 @@
 \xjp@W 叻鬼咩=lek1 gwai2 me1;
 \xjp@W 叻𠿪=lik1 gaa2;
 \xjp@W 吁吁=heoi1 heoi1;
+\xjp@W 吃屎=hek3 si2;
 \xjp@W 吃豆人=hek3 dau2 jan4;
 \xjp@W 吃飯=hek3 faan6;
 \xjp@W 各不相讓=gok3 bat1 soeng1 joeng6;
@@ -24394,6 +24397,7 @@
 \xjp@W 堂兄弟=tong4 hing1 dai6;
 \xjp@W 堂區=tong4 keoi1;
 \xjp@W 堂口=tong4 hau2;
+\xjp@W 堂吃=tong4 hek3;
 \xjp@W 堂吉訶德=tong4 gat1 ho1 dak1;
 \xjp@W 堂喫=tong4 jaak3;
 \xjp@W 堂堂=tong4 tong4;
@@ -118437,6 +118441,7 @@
 \xjp@K 口出穢言=147;
 \xjp@K 口印=149;
 \xjp@K 口口聲聲=124;
+\xjp@K 口吃=138;
 \xjp@K 口同鼻拗=170;
 \xjp@K 口吐人言=185;
 \xjp@K 口吐毒焰=163;
@@ -119024,6 +119029,7 @@
 \xjp@K 叻過頭=178;
 \xjp@K 叻過龍=185;
 \xjp@K 吁吁=140;
+\xjp@K 吃屎=166;
 \xjp@K 吃豆人=185;
 \xjp@K 吃飯=120;
 \xjp@K 各不相讓=142;
@@ -187562,6 +187568,7 @@
 \xjp@E 司13;
 \xjp@E 叻4;
 \xjp@E 吁4;
+\xjp@E 吃2;
 \xjp@E 各4;
 \xjp@E 合5;
 \xjp@E 吉4;

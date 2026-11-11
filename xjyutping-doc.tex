@@ -20,8 +20,8 @@
   {\par\smallskip\VerbatimEnvironment\begin{Verbatim}[frame=single,fontsize=\small]}
   {\end{Verbatim}\par\noindent\ignorespacesafterend}
 
-\title{\pkg{xjyutping}: Jyutping above Traditional Chinese characters}
-\author{Version 1.5.4}
+\title{\pkg{xjyutping}: Jyutping above Chinese characters}
+\author{Version 2.0.0}
 \date{29 September 2026}
 
 \begin{document}
@@ -30,12 +30,13 @@
 \begin{abstract}
 \noindent
 This package adds Cantonese Jyutping (粵拼), the romanisation of Cantonese
-devised by the Linguistic Society of Hong Kong (LSHK), above Traditional
-Chinese characters. It is aimed at anyone preparing Cantonese material in
+devised by the Linguistic Society of Hong Kong (LSHK), above Chinese
+characters, traditional or simplified. It is aimed at anyone preparing Cantonese material in
 \LaTeX{}, such as teaching notes, lyrics or poetry, where the pronunciation of
 each character should be shown above it. The reading of each character is
 chosen from the surrounding words, so 行 is read \emph{hong4} in 銀行 but
-\emph{haang4} in 行路. Every character sits in a cell of the same width, which
+\emph{haang4} in 行路. Text typed in simplified characters is read as well
+(Section~\ref{sec:script}). Every character sits in a cell of the same width, which
 is wide enough for its Jyutping, so the text stays evenly spaced and no
 Jyutping touches its neighbours or the line above. The package works with
 Xe\LaTeX{} through \pkg{xeCJK} and with Lua\LaTeX{} through \pkg{LuaTeX-ja},
@@ -196,7 +197,9 @@ The reading of each character is chosen in five steps,
 \noindent
 Traditional characters have several accepted shapes (為 and 爲, 裡 and 裏, 說
 and 説, 衛 and 衞, 線 and 綫, 溫 and 温 \dots). For word lookup these shapes
-are folded together, so a word is found whichever shape is typed.
+are folded together, so a word is found whichever shape is typed. Simplified
+characters are read as their traditional forms in a similar way
+(Section~\ref{sec:script}).
 
 \subsection{Proofreading}
 
@@ -249,6 +252,13 @@ Key & Default & Meaning \\
 \texttt{format} & & extra formatting, such as \verb|\color{gray}| \\
 \texttt{multiple} & & formatting for guessed polyphones \\
 \texttt{fancy} & \texttt{false} & tones as pitch strokes (Section~\ref{sec:fancy}) \\
+\texttt{lazy} & \texttt{false} & lazy sounds (懶音): \texttt{true} (or \texttt{lazy} alone) turns \\
+ & & n- into l-, drops ng-, drops the w of gw-, kw- before o and \\
+ & & turns ng alone into m (我國五 \emph{o5 gok3 m5}); \texttt{all} also \\
+ & & turns final -ng, -k into -n, -t (講 \emph{gon2}); readings set \\
+ & & by hand are left alone \\
+\texttt{script} & \texttt{auto} & script of the text, which is \texttt{auto}, \texttt{simplified} or \\
+ & & \texttt{traditional}, also given alone (Section~\ref{sec:script}) \\
 \texttt{linebreak} & \texttt{false} & keep the lines of the source (Section~\ref{sec:linebreak}) \\
 \texttt{align} & \texttt{justify} & alignment of the lines of a scope, which is \\
  & & \texttt{justify}, \texttt{left}, \texttt{centre} (or \texttt{center}) or \texttt{right}, \\
@@ -361,6 +371,82 @@ another scope without the option, since their text has already been read.
 Inside an environment such as \texttt{minipage}, on the other hand, it
 works.
 
+\section{Simplified characters}\label{sec:script}
+
+Text typed in simplified characters is annotated in the same way, and it is
+typeset as typed. To find words and readings, each simplified character is
+read as its traditional form, so 银行里面 finds the words 銀行 and 裏面. Any
+font that has the simplified characters can be used. For example,
+\begin{example}
+\begin{jyutpingscope}
+我哋喺银行里面等紧佢哋，佢只有一只猫。
+\end{jyutpingscope}
+\end{example}
+\begin{jyutpingscope}
+我哋喺银行里面等紧佢哋，佢只有一只猫。
+\end{jyutpingscope}
+
+\medskip\noindent
+The \texttt{script} option says which script the text is in. It takes three
+values, which also work on their own, as in
+\verb|\begin{jyutpingscope}[simplified]|,
+\begin{description}
+\item[\texttt{auto}] judges each paragraph on its own. This is the default.
+\item[\texttt{simplified}] reads all text as simplified.
+\item[\texttt{traditional}] reads all text as traditional.
+\end{description}
+
+\noindent
+With \texttt{auto}, a paragraph is simplified if it holds more characters
+that only exist in simplified script (们, 这, 来) than characters that only
+exist in traditional script (們, 這, 來), and traditional if it holds fewer.
+A paragraph with as many of both, or with neither, is read in the same way as
+its scope as a whole, which is judged by the same count. A scope that cannot
+be judged either is read in the same way as the last scope that could, and a
+document starts as traditional. So where there is no evidence at all,
+\texttt{auto} reads the text as traditional. Here a paragraph is the text between two
+blank lines, a scope is a \texttt{jyutpingscope}, the text of a
+\cs{xjyutping*} or a file that a scope reads with \cs{input}, and every
+character of the source counts, including the arguments of commands. Text
+that comes from a macro is not counted, and it is read in the same way as its
+scope as a whole.
+
+A short text often holds neither kind of character (27\% of the utterances
+of the test corpora, when written in simplified characters). Hence a short
+\cs{xjyutping*} at the start of a document can be read as traditional, and
+\texttt{simplified} is the safer choice for a document that is written in
+simplified characters throughout.
+
+The script matters for the characters that the two scripts share. For
+example, 里 is the mile in traditional text (\emph{lei5}) and mostly 裏
+`inside' in simplified text (\emph{leoi5}). On the other hand, 们 and 这 only
+exist in simplified script, so they are read as 們 and 這 in any text. A
+document without such characters is read exactly as in earlier versions,
+unless \texttt{simplified} is set.
+
+\subsection{Characters with several traditional forms}
+
+Some simplified characters stand for several traditional ones, such as 只
+(只 and 隻), 干 (乾, 幹 and 干), 后 (後 and 后) and 里 (裏 and 里). The
+package settles them in two ways. First, a word decides, so 干 is
+\emph{gon1} in 干净 but \emph{gon3} in 干部, and 里 is \emph{lei5} in 公里.
+Then, for a few characters standing alone, the characters next to them
+decide, so 只 is the measure word \emph{zek3} in 一只猫 but \emph{zi2} in
+只有. A character that neither settles takes the reading of its most usual
+form (干 \emph{gon1}, 里 \emph{leoi5}, 只 \emph{zi2}), which is only a guess.
+On the test corpora written in simplified characters, 53 of 290\,690
+readings differ from those of the traditional text, and 20 of them are 只
+read \emph{zi2} where it is the measure word. Such a reading can be set with
+\cs{setjyutping} or \cs{xjyutping} (Section~\ref{sec:choose}), and a word set
+with \cs{setjyutping} is found in text of either script.
+
+\subsection{Leaving the data out}
+
+With the package option \texttt{script=traditional} (or
+\texttt{traditional}), the data for simplified text is not loaded, which
+saves about 53\,000 words of the memory of \TeX{}. The script can then not
+be changed later in the document.
+
 \section{Xe\LaTeX{} and Lua\LaTeX{}}\label{sec:engines}
 
 The readings, the options and the layout are the same under both engines,
@@ -379,7 +465,8 @@ laid out the line. This gives four differences under Lua\LaTeX{},
 \item compiling takes about 1.6 times as long as with Xe\LaTeX{} and
 \item text that comes from a macro is annotated with the options and the
   size of the place where it stands, but with the \cs{setjyutping} readings
-  in force when its paragraph ends.
+  and, under \texttt{script=auto}, the script in force when its paragraph
+  ends.
 \end{itemize}
 
 \section{Troubleshooting}\label{sec:limits}
@@ -472,15 +559,17 @@ The readings come from five groups of sources, which
   only where it changes a reading and passes checks against rime-cantonese,
 \item the book data of 粵音資料集叢, which gives the readings of 640 rare
   characters that the others lack and
-\item the variant tables of OpenCC (Apache-2.0).
+\item the variant tables of OpenCC (Apache-2.0), together with its tables
+  of simplified characters and phrases.
 \end{itemize}
 The word frequencies come from the list of rime-cantonese and from a count of
 how often each word is used in the 6.8 million transcribed utterances of
 WenetSpeech-Yue, which is kept in \texttt{tools/wenetspeech-yue-counts.tsv}.
 The
 tables at the top of \texttt{tools/build-data.py} hold the hand-checked
-corrections, and the script regenerates \texttt{xjyutping-chars.def} and
-\texttt{xjyutping-words.def} from these sources.
+corrections, and the script regenerates \texttt{xjyutping-chars.def},
+\texttt{xjyutping-words.def} and \texttt{xjyutping-simp.def} (the data for
+simplified text) from these sources.
 
 We measured the accuracy on seven corpora. On the Hong Kong Cantonese Corpus
 (HKCanCor), whose 161\,045 characters of conversation were annotated with

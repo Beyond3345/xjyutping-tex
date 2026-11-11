@@ -11,7 +11,8 @@ case $out in /*) ;; *) out=$(pwd)/$out ;; esac
 
 # the version must be the same everywhere (see CHANGELOG.md)
 v=$(sed -n 's/^\\ProvidesExplPackage{xjyutping}{[^}]*}{\([^}]*\)}.*/\1/p' xjyutping.sty)
-for f in xjyutping-chars.def xjyutping-words.def README.md xjyutping-doc.tex tools/build-data.py; do
+for f in xjyutping-chars.def xjyutping-words.def xjyutping-simp.def README.md xjyutping-doc.tex \
+  tools/build-data.py; do
   grep -q "$v" "$f" || { echo "$f does not mention version $v" >&2; exit 1; }
 done
 [ xjyutping-doc.pdf -nt xjyutping-doc.tex ] ||
@@ -22,11 +23,13 @@ trap 'rm -rf "$tmp"' EXIT
 d=$tmp/xjyutping
 mkdir -p "$d/tools" "$d/tests"
 cp README.md LICENSE CHANGELOG.md xjyutping.sty xjyutping.lua \
-  xjyutping-chars.def xjyutping-words.def xjyutping-doc.tex xjyutping-doc.pdf "$d/"
+  xjyutping-chars.def xjyutping-words.def xjyutping-simp.def \
+  xjyutping-doc.tex xjyutping-doc.pdf "$d/"
 cp tools/build-data.py tools/fetch-sources.sh tools/make-ctan-zip.sh \
   tools/wenetspeech-yue-counts.tsv "$d/tools/"
 cp tests/run-tests.sh tests/render.sh tests/regression.tex tests/regression.expected \
   tests/layout-check.tex tests/pad-check.tex tests/fancy-check.tex tests/verse-check.tex \
+  tests/lazy-check.tex tests/lazy-check.expected tests/simp-check.tex tests/simp-check.expected \
   "$d/tests/"
 find "$d" -type d -exec chmod 755 {} +
 find "$d" -type f -exec chmod 644 {} +
