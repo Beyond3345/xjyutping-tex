@@ -1083,7 +1083,7 @@
 \xjp@SA 筝箏;
 \xjp@SA 筹籌;
 \xjp@SA 筼篔;
-\xjp@SA 签籤;
+\xjp@SA 签簽;
 \xjp@SA 筿篠;
 \xjp@SA 简簡;
 \xjp@SA 箓籙;
@@ -3656,7 +3656,6 @@
 \xjp@SW 一壇死水=149,jat1 taan4 sei2 seoi2;
 \xjp@SW 一夥頭=154,jat1 fo2 tau4;
 \xjp@SW 一松=141,jat1 sung1;
-\xjp@SW 一舖清袋=156,jat1 pou1 cing1 doi2;
 \xjp@SW 一裏=141,jat1 lei5;
 \xjp@SW 一裏一外=205,jat1 leoi5 jat1 ngoi6;
 \xjp@SW 一起乾=205,jat1 hei2 gon3;
@@ -3673,6 +3672,7 @@
 \xjp@SW 三元裏=141,saam1 jyun4 lei5;
 \xjp@SW 三裏=205,saam1 lei5;
 \xjp@SW 上合屋=156,soeng6 gap3 uk1;
+\xjp@SW 上周=116,soeng6 zau1;
 \xjp@SW 上復=143,soeng6 fuk1;
 \xjp@SW 上杆=205,soeng6 gon3;
 \xjp@SW 上梁不正下梁歪=143,soeng6 loeng4 bat1 zing3 haa6 loeng4 waai1;
@@ -3681,6 +3681,7 @@
 \xjp@SW 下手乾=205,haa6 sau2 gon3;
 \xjp@SW 下注解=148,haa5 zyu3 gaai2;
 \xjp@SW 下裏=141,haa5 lei5;
+\xjp@SW 下遊河=205,haa6 jau4 ho4;
 \xjp@SW 不上臺盤=205,bat1 soeng5 toi2 pun4;
 \xjp@SW 不並=143,bat1 ping3;
 \xjp@SW 不乾了=198,bat1 gon3 liu5;
@@ -3693,6 +3694,7 @@
 \xjp@SW 不用乾=205,bat1 jung6 gon3;
 \xjp@SW 不肯乾休=148,bat1 hang2 gon1 jau1;
 \xjp@SW 不舍=134,bat1 se2;
+\xjp@SW 世界杯=113,sai3 gaai3 bui1;
 \xjp@SW 丙到只嘢咁=205,bing2 dou3 zek3 je5 gam2;
 \xjp@SW 丙到只狗咁=205,bing2 dou3 zek3 gau2 gam2;
 \xjp@SW 並一不二=205,ping3 jat1 bat1 ji6;
@@ -3867,6 +3869,7 @@
 \xjp@SW 事好乾=148,si6 hou2 gon3;
 \xjp@SW 事情可乾=146,si6 cing4 ho2 gon3;
 \xjp@SW 事情好乾=150,si6 cing4 hou2 gon3;
+\xjp@SW 二十二史札記=205,ji6 sap6 ji6 si2 zaap3 gei3;
 \xjp@SW 二弦=145,ji6 jin4;
 \xjp@SW 二裏=141,ji6 lei5;
 \xjp@SW 二裏頭=143,ji6 lei5 tau4;
@@ -3949,12 +3952,14 @@
 \xjp@SW 佳裏=145,gaai1 lei5;
 \xjp@SW 來復線=147,loi4 fuk6 sin3;
 \xjp@SW 侍仆=147,si6 buk6;
+\xjp@SW 依依不舍=124,ji1 ji1 bat1 se2;
 \xjp@SW 依牙松䚗=205,ji1 ngaa4 sung1 gong3;
 \xjp@SW 依牙松弶=205,ji1 ngaa4 sung1 gong3;
 \xjp@SW 依牙松槓=205,ji1 ngaa4 sung1 gong3;
 \xjp@SW 依牙松鋼=205,ji1 ngaa4 sung1 gong3;
 \xjp@SW 侵並=149,cam1 ping3;
 \xjp@SW 係泊=143,hai6 bok6;
+\xjp@SW 係統=106,hai6 tung2;
 \xjp@SW 係運會=205,hai6 wan6 wui2;
 \xjp@SW 保險杆=144,bou2 him2 gon3;
 \xjp@SW 修浚=205,sau1 seon3;
@@ -3977,7 +3982,9 @@
 \xjp@SW 傭仆=147,jung4 buk6;
 \xjp@SW 傭鈿=205,jung6 tin4;
 \xjp@SW 傭錢=148,jung2 cin2;
+\xjp@SW 僥幸=124,hiu1 hang6;
 \xjp@SW 僮仆=145,tung4 buk6;
+\xjp@SW 僵屍=109,goeng1 si1;
 \xjp@SW 億只=143,jik1 zek3;
 \xjp@SW 儉仆=149,gim6 buk6;
 \xjp@SW 兇喪=205,hung1 song3;
@@ -3998,6 +4005,7 @@
 \xjp@SW 八鬥=142,baat3 dau2;
 \xjp@SW 公乾=136,gung1 gon3;
 \xjp@SW 公仆=151,gung1 buk6;
+\xjp@SW 公布=113,gung1 bou3;
 \xjp@SW 公衆號=109,gung1 zung3 hou6;
 \xjp@SW 公鬥=148,gung1 dau2;
 \xjp@SW 六弦=144,luk6 jin4;
@@ -4020,6 +4028,7 @@
 \xjp@SW 凸折線=205,dat6 zip3 sin3;
 \xjp@SW 函復=145,haam4 fuk1;
 \xjp@SW 刁鬥=144,diu1 dau2;
+\xjp@SW 分布=121,fan1 bou3;
 \xjp@SW 別別扭扭=144,bit3 bit3 nau2 nau2;
 \xjp@SW 別口氣=154,bit3 hau2 hei3;
 \xjp@SW 別只=143,bit6 zek3;
@@ -4032,10 +4041,14 @@
 \xjp@SW 利默裏克=148,lei6 mak6 lei5 hak1;
 \xjp@SW 刮須=146,gwaat3 sou1;
 \xjp@SW 制件=143,zai3 gin2;
+\xjp@SW 制作=103,zai3 zok3;
+\xjp@SW 制造=104,zai3 zou6;
+\xjp@SW 制造業=120,zai3 zou6 jip6;
 \xjp@SW 刺參=142,ci3 sam1;
 \xjp@SW 剃發舖=205,tai3 faat3 pou1;
 \xjp@SW 剃須=137,tai3 sou1;
 \xjp@SW 前松後緊=205,cin4 sung1 hau6 gan2;
+\xjp@SW 剛才=102,gong1 coi4;
 \xjp@SW 割舍=137,got3 se2;
 \xjp@SW 劃一槳=154,waa4 jat1 zoeng2;
 \xjp@SW 劃不來=140,waa4 bat1 loi4;
@@ -4083,6 +4096,7 @@
 \xjp@SW 勾乾=156,ngau1 gon3;
 \xjp@SW 勿裏洞島=149,mat6 lei5 dung6 dou2;
 \xjp@SW 包佔=148,baau1 zim1;
+\xjp@SW 包扎=122,baau1 zaat3;
 \xjp@SW 包臺=205,baau1 toi2;
 \xjp@SW 北裏=140,bak1 lei5;
 \xjp@SW 匪乾=152,fei2 gon3;
@@ -4108,6 +4122,7 @@
 \xjp@SW 卡耶裏=205,kaat1 je4 lei5;
 \xjp@SW 卡裏=137,kaat1 lei5;
 \xjp@SW 卯上乾=165,maau5 soeng6 gon3;
+\xjp@SW 卷入=124,gyun2 jap6;
 \xjp@SW 卷帶=143,gyun2 daai2;
 \xjp@SW 卷須=144,gyun2 sou1;
 \xjp@SW 厄立特裏亞=143,aak1 laap6 dak6 lei4 aa3;
@@ -4128,6 +4143,7 @@
 \xjp@SW 只嘢=205,zek3 je5;
 \xjp@SW 只字=141,zek3 zi6;
 \xjp@SW 只影=143,zek3 jing2;
+\xjp@SW 只手=98,zek3 sau2;
 \xjp@SW 只手只腳=205,zek3 sau2 zi2 goek3;
 \xjp@SW 只抽=172,zek3 cau1;
 \xjp@SW 只抽只=205,zek3 cau1 zek3;
@@ -4150,7 +4166,7 @@
 \xjp@SW 只鴨=144,zek3 aap2;
 \xjp@SW 只鵝=153,zek3 ngo2;
 \xjp@SW 叮呤當啷=205,ding1 ling1 dong1 long1;
-\xjp@SW 叮當作響=144,ding1 dong1 zok3 hoeng2;
+\xjp@SW 叮當=123,ding1 dong1;
 \xjp@SW 叮當馬頭=205,ding1 dong1 maa5 tau4;
 \xjp@SW 可緊可松=151,ho2 gan2 ho2 sung1;
 \xjp@SW 各乾各=144,gok3 gon3 gok3;
@@ -4170,6 +4186,7 @@
 \xjp@SW 同舍生=148,tung4 se3 saang1;
 \xjp@SW 同裏=205,tung4 lei5;
 \xjp@SW 名復金甌=205,meng2 fuk1 gam1 au1;
+\xjp@SW 名簽=145,ming4 cim1;
 \xjp@SW 名表=141,meng2 biu1;
 \xjp@SW 向往=126,hoeng2 wong5;
 \xjp@SW 吓一跳=132,haak3 jat1 tiu3;
@@ -4205,9 +4222,8 @@
 \xjp@SW 吳裏克=154,ng4 lei5 hak1;
 \xjp@SW 吹須睩眼=205,ceoi1 sou1 luk1 ngaan5;
 \xjp@SW 呆着=136,doi6 zoek3;
-\xjp@SW 呢一舖=143,ni1 jat1 pou1;
 \xjp@SW 呢出嘢=205,ni1 ceot1 je5;
-\xjp@SW 呢只=140,nei1 zek3;
+\xjp@SW 呢只嘢=205,nei1 zek3 je5;
 \xjp@SW 呢獲=205,nei1 wok6;
 \xjp@SW 呢舖=205,ne1 pou1;
 \xjp@SW 呢鑊傑=205,li1 wok6 git6;
@@ -4216,6 +4232,8 @@
 \xjp@SW 周率=205,zau1 leot6;
 \xjp@SW 呷舖=185,haap3 pou3;
 \xjp@SW 咀咽=154,zeoi2 jin3;
+\xjp@SW 咁近城隍廟都唔求支好簽=205,gam3 kan5 sing4 wong4 miu2 dou1 m4 kau4 zi1 hou2 cim1;
+\xjp@SW 咁近城隍廟都唔求返支好簽=205,gam3 kan5 sing4 wong4 miu2 dou1 m4 kau4 faan1 zi1 hou2 cim1;
 \xjp@SW 和平裏=140,wo4 ping4 lei5;
 \xjp@SW 咪表=205,mai1 biu1;
 \xjp@SW 咽下=137,jin3 haa6;
@@ -4240,6 +4258,7 @@
 \xjp@SW 哲裏木=205,zit3 lei5 muk6;
 \xjp@SW 唔上得大臺=205,m4 soeng5 dak1 daai6 toi2;
 \xjp@SW 唔復=185,m4 fuk1;
+\xjp@SW 唔舍得=106,m4 se2 dak1;
 \xjp@SW 唔食人間煙火=205,ng4 sik6 jan4 gaan1 jin1 fo2;
 \xjp@SW 唾沫直咽=205,toe5 mut6 zik6 jin3;
 \xjp@SW 啼飢號寒=205,tai4 gei1 hou4 hon4;
@@ -4287,6 +4306,7 @@
 \xjp@SW 回腸九回=165,wui4 coeng4 gau2 wui4;
 \xjp@SW 回腸蕩氣=205,wui4 coeng4 dong6 hei3;
 \xjp@SW 回裏=205,wui4 lei5;
+\xjp@SW 回避=118,wui4 bei6;
 \xjp@SW 困戾頸=205,fan3 lai2 geng2;
 \xjp@SW 國戚裏=205,gwok3 cik1 leoi5;
 \xjp@SW 國民身份認同=205,gwok3 man4 san1 fan2 jing2 dung6;
@@ -4346,6 +4366,7 @@
 \xjp@SW 大乾=139,daai6 gon3;
 \xjp@SW 大乾特乾=148,daai6 gon3 dak6 gon3;
 \xjp@SW 大只=107,daai6 zek3;
+\xjp@SW 大只佬=116,daai6 zek3 lou2;
 \xjp@SW 大只累累=166,daai6 zek3 leoi4 leoi4;
 \xjp@SW 大嘩=144,daai6 waa1;
 \xjp@SW 大折兒=205,daai6 zip3 ji4;
@@ -4406,6 +4427,8 @@
 \xjp@SW 存折=132,cyun4 zip3;
 \xjp@SW 孻仔拉心肝孻女拉五髒=205,laai1 zai2 laai1 sam1 gon1 laai1 neoi2 laai1 m4 zong6;
 \xjp@SW 安樂裏=205,on1 lok6 lei5;
+\xjp@SW 定制=122,ding6 zai3;
+\xjp@SW 宣布=108,syun1 bou3;
 \xjp@SW 宮裏藍=148,gung1 lei5 laam4;
 \xjp@SW 家仆=143,gaa1 buk6;
 \xjp@SW 家私舖=205,gaa1 si1 pou2;
@@ -4415,6 +4438,7 @@
 \xjp@SW 富裏=144,fu3 lei5;
 \xjp@SW 實乾=139,sat6 gon3;
 \xjp@SW 審乾=146,sam2 gon3;
+\xjp@SW 審核=119,sam2 hat6;
 \xjp@SW 寫字臺=136,se2 zi6 toi2;
 \xjp@SW 寬寬松松=147,fun1 fun1 sung1 sung1;
 \xjp@SW 寬松=124,fun1 sung1;
@@ -4452,6 +4476,7 @@
 \xjp@SW 巴爾乾=142,baa1 ji5 gon3;
 \xjp@SW 巴裏=139,baa1 lei5;
 \xjp@SW 巴鬥=146,baa1 dau2;
+\xjp@SW 布局=123,bou3 guk6;
 \xjp@SW 布復=149,bou3 fuk1;
 \xjp@SW 布裏=141,bou3 lei5;
 \xjp@SW 布魯姆斯伯裏=205,bou3 lou5 mou5 si1 baak3 lei5;
@@ -4479,6 +4504,7 @@
 \xjp@SW 廣舍=152,gwong2 se2;
 \xjp@SW 廣部=147,am1 bou6;
 \xjp@SW 延捱=148,jin4 aai1;
+\xjp@SW 廿二史札記=205,jaa6 ji6 si2 zaap3 gei3;
 \xjp@SW 廿裏=205,jaa6 lei5;
 \xjp@SW 弄松=146,lung6 sung1;
 \xjp@SW 弗羅裏達=145,fat1 lo4 lei5 daat6;
@@ -4498,6 +4524,7 @@
 \xjp@SW 張鬥輝=205,zoeng1 dau2 fai1;
 \xjp@SW 強乾=142,koeng4 gon3;
 \xjp@SW 強咽=145,koeng4 jin3;
+\xjp@SW 強奸=108,koeng4 gaan1;
 \xjp@SW 彈子臺=151,daan6 zi2 toi2;
 \xjp@SW 彈珠臺=143,daan6 zyu1 toi4;
 \xjp@SW 彊乾弱枝=205,goeng1 gon3 joek6 zi1;
@@ -4536,7 +4563,7 @@
 \xjp@SW 復印件=128,fuk1 jan3 gin2;
 \xjp@SW 復句=143,fuk1 geoi3;
 \xjp@SW 復合=122,fuk1 hap6;
-\xjp@SW 復名=144,fuk1 meng2;
+\xjp@SW 復名數=148,fuk1 meng2 sou3;
 \xjp@SW 復名詞=173,fuk1 ming4 ci4;
 \xjp@SW 復呈=150,fuk1 cing4;
 \xjp@SW 復品牌=150,fuk1 ban2 paai4;
@@ -4632,6 +4659,7 @@
 \xjp@SW 怎麼乾=142,zam2 mo1 gon3;
 \xjp@SW 怒發上衝冠=205,nou6 faat3 soeng6 cung1 gun1;
 \xjp@SW 怒發衝冠=140,nou6 faat3 cung1 gun1;
+\xjp@SW 性欲=122,sing3 juk6;
 \xjp@SW 怪裏怪氣=144,gwaai3 lei5 gwaai3 hei3;
 \xjp@SW 怫郁=147,bui6 wat1;
 \xjp@SW 恐吓=128,hung2 haak3;
@@ -4686,7 +4714,6 @@
 \xjp@SW 打乾=146,daa2 gon3;
 \xjp@SW 打乾噦=162,daa2 gon1 jyut3;
 \xjp@SW 打槳杆=198,daa2 zoeng2 gon3;
-\xjp@SW 打番幾舖=205,daa2 faan1 gei2 pou1;
 \xjp@SW 打簧表=151,daa2 wong4 biu1;
 \xjp@SW 打表=205,daa2 biu1;
 \xjp@SW 托行大腳=178,tok3 hang4 daai6 goek3;
@@ -4710,12 +4737,7 @@
 \xjp@SW 折椅=142,zip3 ji2;
 \xjp@SW 折櫈=205,zip3 dang3;
 \xjp@SW 折牀=205,zip3 cong4;
-\xjp@SW 折疊凳=185,zip3 dip6 dang3;
-\xjp@SW 折疊扇=147,zip3 dip6 sin3;
-\xjp@SW 折疊爲=148,zip3 dip6 wai4;
-\xjp@SW 折疊牀=141,zip3 dip6 cong4;
-\xjp@SW 折疊起來=143,zip3 dip6 hei2 loi4;
-\xjp@SW 折疊車=205,zip3 dip6 ce1;
+\xjp@SW 折疊=131,zip3 dip6;
 \xjp@SW 折痕=141,zip3 han2;
 \xjp@SW 折皺=205,zip3 zau3;
 \xjp@SW 折篷=151,zip3 pung4;
@@ -4732,7 +4754,10 @@
 \xjp@SW 折高褲腳=205,zip3 gou1 fu3 goek3;
 \xjp@SW 披掛綽槍=205,pei1 gwaa3 coek3 caang1;
 \xjp@SW 披頭散發=128,pei1 tau4 saan2 faat3;
+\xjp@SW 抬起=123,toi4 hei2;
 \xjp@SW 抬轎佬=205,toi4 kiu2 lou2;
+\xjp@SW 抬頭=108,toi4 tau4;
+\xjp@SW 抬高=123,toi4 gou1;
 \xjp@SW 抱大足杆=205,pou5 daai6 zuk1 gon3;
 \xjp@SW 抽油煙機=205,cau1 jau4 jin1 gei1;
 \xjp@SW 拂須=148,fat1 sou1;
@@ -4741,6 +4766,7 @@
 \xjp@SW 拉祖裏=198,laai1 zou2 lei5;
 \xjp@SW 拉纖=144,laai1 hin1;
 \xjp@SW 拉裏=141,laai1 lei5;
+\xjp@SW 拉面=124,laai1 min6;
 \xjp@SW 拍臺拍凳=148,paak3 toi2 paak3 dang3;
 \xjp@SW 拔須=148,bat6 sou1;
 \xjp@SW 拖鬥=145,to1 dau2;
@@ -4751,6 +4777,7 @@
 \xjp@SW 拚舍=153,pun3 se2;
 \xjp@SW 拜佔庭=142,baai3 zim1 ting4;
 \xjp@SW 拜復=153,baai3 fuk1;
+\xjp@SW 拜托=114,baai3 tok3;
 \xjp@SW 拜臺=205,baai3 toi2;
 \xjp@SW 拜鬥=147,baai3 dau2;
 \xjp@SW 拼佊嚟=205,pun3 pe5 lei4;
@@ -4765,6 +4792,7 @@
 \xjp@SW 拼除=159,pun3 ceoi4;
 \xjp@SW 拿下表=165,naa4 haa5 biu1;
 \xjp@SW 拿坡裏=146,naa4 bo1 lei5;
+\xjp@SW 拿破侖=118,naa4 po3 leon4;
 \xjp@SW 指吓=205,zi2 haak3;
 \xjp@SW 挎鬥=205,kwaa3 dau2;
 \xjp@SW 挑了只=149,tiu1 liu5 zek3;
@@ -4826,7 +4854,6 @@
 \xjp@SW 換檔杆=145,wun6 dong3 gon3;
 \xjp@SW 揩臺抹凳=173,haai1 toi2 maat3 dang3;
 \xjp@SW 揪須=158,zau1 sou1;
-\xjp@SW 搏一舖=157,bok3 jat1 pou1;
 \xjp@SW 搜藏=139,sau1 cong4;
 \xjp@SW 搜購=142,sau1 kau3;
 \xjp@SW 搜錄=205,sau1 luk6;
@@ -4866,6 +4893,7 @@
 \xjp@SW 攧攧仆仆=205,din1 din1 puk1 puk1;
 \xjp@SW 支乾=145,zi1 gon3;
 \xjp@SW 支杆=144,zi1 gon3;
+\xjp@SW 收獲=116,sau1 wok6;
 \xjp@SW 收臺=178,sau1 toi2;
 \xjp@SW 收費咪表=205,sau1 fai3 mi1 biu1;
 \xjp@SW 放松=104,fong3 sung1;
@@ -4977,7 +5005,6 @@
 \xjp@SW 木裏圖=205,muk6 lei5 tou4;
 \xjp@SW 木裏藏族自治縣=143,muk6 lei5 zong6 zuk6 zi6 zi6 jyun6;
 \xjp@SW 本裏=142,bun2 lei5;
-\xjp@SW 札記=205,zaap3 gei3;
 \xjp@SW 札貨=205,zaap3 fo3;
 \xjp@SW 札馬步=205,zaap3 maa5 bou6;
 \xjp@SW 朱裏=205,zyu1 lei5;
@@ -5126,10 +5153,12 @@
 \xjp@SW 槓六=205,gong1 luk6;
 \xjp@SW 槓四=205,gong1 sei3;
 \xjp@SW 槓增一=205,gong1 zang1 jat1;
+\xjp@SW 槓杆=121,gung3 gon1;
 \xjp@SW 槓杆收購=144,gong3 gon1 sau1 kau3;
 \xjp@SW 槓牀=205,gong3 cong4;
 \xjp@SW 樂裏=205,lok6 lei5;
 \xjp@SW 標佔=149,biu1 zim1;
+\xjp@SW 標志=117,biu1 zi3;
 \xjp@SW 標志位=205,biu1 zi3 wai2;
 \xjp@SW 標裏鎮=205,biu1 lei5 zan3;
 \xjp@SW 樠溪=205,mun4 hai4;
@@ -5173,6 +5202,7 @@
 \xjp@SW 水裏鄉=150,seoi2 lei5 hoeng1;
 \xjp@SW 汗騰格裏峯=148,hon4 tang4 gaak3 lei5 fung1;
 \xjp@SW 決心乾=147,kyut3 sam1 gon3;
+\xjp@SW 沈陽=121,sam2 joeng4;
 \xjp@SW 沉郁=142,cam4 wat1;
 \xjp@SW 沒乾=139,mut6 gon3;
 \xjp@SW 沒乾沒淨=155,mut6 gon1 mut6 zing6;
@@ -5193,6 +5223,7 @@
 \xjp@SW 波臺=205,bo1 toi2;
 \xjp@SW 波裏=137,bo1 lei5;
 \xjp@SW 泥湧=205,nai4 cung1;
+\xjp@SW 注冊=120,zyu3 caak3;
 \xjp@SW 泱郁=162,joeng1 wat1;
 \xjp@SW 洄暗=158,wui4 am1;
 \xjp@SW 洗手不乾=144,sai2 sau2 bat1 gon3;
@@ -5202,7 +5233,6 @@
 \xjp@SW 浚縣=142,seon3 jyun6;
 \xjp@SW 浪琴表=143,long6 kam4 biu1;
 \xjp@SW 浮松=150,fau4 sung1;
-\xjp@SW 海上臺風警報=151,hoi2 soeng6 toi4 fung1 ging2 bou3;
 \xjp@SW 海裏海外=198,hoi2 leoi5 hoi2 ngoi6;
 \xjp@SW 液晶表=146,jik6 zing1 biu1;
 \xjp@SW 淚眼蒙矓=149,leoi6 ngaan5 mung4 lung4;
@@ -5227,6 +5257,7 @@
 \xjp@SW 漚郁=152,au1 wat1;
 \xjp@SW 漿水面=205,zoeng1 seoi2 min6;
 \xjp@SW 潕溪=205,mou5 hai4;
+\xjp@SW 潛丘札記=205,cim4 jau1 zaap3 gei3;
 \xjp@SW 潛水表=144,cim4 seoi2 biu1;
 \xjp@SW 潭祉葉吉=205,taam4 zi2 hip3 gat1;
 \xjp@SW 澤裏可=205,zaak6 lei5 ho2;
@@ -5333,11 +5364,12 @@
 \xjp@SW 疊碼=205,daap6 maa5;
 \xjp@SW 疏松=138,so1 sung1;
 \xjp@SW 症結=136,zing1 git3;
+\xjp@SW 發型=119,faat3 jing4;
 \xjp@SW 發夾=133,faat3 gip2;
+\xjp@SW 發布=106,faat3 bou3;
 \xjp@SW 發帶=140,faat3 daai2;
 \xjp@SW 發指眥裂=149,faat3 zi2 zaai6 lit6;
 \xjp@SW 發松=146,faat3 sung1;
-\xjp@SW 發水面包=175,faat3 seoi2 min6 baau1;
 \xjp@SW 發釵=144,faat3 caa1;
 \xjp@SW 發須=205,faat3 sou1;
 \xjp@SW 白喉杆菌=145,baak6 hau4 gon1 kwan2;
@@ -5371,6 +5403,7 @@
 \xjp@SW 盡自=145,zeon2 zi6;
 \xjp@SW 盡落尾=205,zeon2 lok6 mei5;
 \xjp@SW 盡讓=145,zeon2 joeng6;
+\xjp@SW 監制=113,gaam1 zai3;
 \xjp@SW 盤槓子=205,pun4 gong1 zi2;
 \xjp@SW 盧布裏雅納=165,lou4 bou3 lei5 ngaa5 naap6;
 \xjp@SW 盲乾=147,maang4 gon3;
@@ -5380,6 +5413,8 @@
 \xjp@SW 眉毛胡子一把抓=145,mei4 mou4 wu4 zi2 jat1 baa2 zaa1;
 \xjp@SW 看下表=145,hon3 haa5 biu1;
 \xjp@SW 看表=142,hon3 biu1;
+\xjp@SW 真係好=89,zan1 hai6 hou2;
+\xjp@SW 真係有=97,zan1 hai6 jau5;
 \xjp@SW 真係甩須=205,zan1 hai6 lat1 sou1;
 \xjp@SW 眼困=205,ngaan5 fan3;
 \xjp@SW 眼核=205,ngaan5 wat6;
@@ -5396,6 +5431,7 @@
 \xjp@SW 短須=145,dyun2 sou1;
 \xjp@SW 矮腳佔=205,ai2 goek3 zim1;
 \xjp@SW 石英表=143,sek6 jing1 biu1;
+\xjp@SW 研制=123,jin4 zai3;
 \xjp@SW 砣表=205,to4 biu1;
 \xjp@SW 破表=145,po3 biu1;
 \xjp@SW 硝煙彌漫=205,siu1 jin1 nei4 maan6;
@@ -5421,6 +5457,7 @@
 \xjp@SW 種師中=146,cung4 si1 zung1;
 \xjp@SW 種師道=145,cung4 si1 dou6;
 \xjp@SW 種放=144,cung4 fong3;
+\xjp@SW 稱贊=117,cing1 zaan3;
 \xjp@SW 積郁=143,zik1 wat1;
 \xjp@SW 積金至鬥=155,zik1 gam1 zi3 dau2;
 \xjp@SW 穗帳=157,seoi3 zoeng3;
@@ -5444,12 +5481,6 @@
 \xjp@SW 簡並=144,gaan2 ping3;
 \xjp@SW 簡單明了=141,gaan2 daan1 ming4 liu5;
 \xjp@SW 簸谷=151,bo3 guk1;
-\xjp@SW 籤名會=142,cim1 meng2 wui2;
-\xjp@SW 籤唱會=142,cim1 coeng3 wui2;
-\xjp@SW 籤好名=185,cim1 hou3 meng2;
-\xjp@SW 籤帳額=205,cim1 zoeng3 ngaak2;
-\xjp@SW 籤訂=127,cim1 ding3;
-\xjp@SW 籤賬額=205,cim1 zoeng3 ngaak2;
 \xjp@SW 籲了=142,jyu1 liu5;
 \xjp@SW 籲俞=155,jyu1 jyu4;
 \xjp@SW 籲咈=153,jyu1 fat6;
@@ -5464,8 +5495,10 @@
 \xjp@SW 精乾=135,zing1 gon3;
 \xjp@SW 精奇裏江=148,zing1 kei4 lei5 gong1;
 \xjp@SW 精松=205,zing1 sung1;
+\xjp@SW 精致=117,zing1 zi3;
 \xjp@SW 糖水舖=157,tong4 seoi2 pou3;
 \xjp@SW 紀裏谷=147,gei2 lei5 guk1;
+\xjp@SW 紅蘿卜=118,hung4 lo4 baak6;
 \xjp@SW 紅霉素=141,hung4 mei4 sou3;
 \xjp@SW 紅須綠眼=150,hung4 sou1 luk6 ngaan5;
 \xjp@SW 紅須軍師=205,hung4 sou1 gwan1 si1;
@@ -5517,8 +5550,10 @@
 \xjp@SW 老虎頭上叮蝨乸=205,lou5 fu2 tau4 soeng6 deng1 sat1 naa2;
 \xjp@SW 老鬥=146,lou5 dau2;
 \xjp@SW 老麼=205,lou5 jiu1;
+\xjp@SW 考核=120,haau2 hat6;
 \xjp@SW 聖修伯裏=148,sing3 sau1 baak3 lei5;
 \xjp@SW 聖餐臺=153,sing3 caan1 toi4;
+\xjp@SW 聯係=97,lyun4 hai6;
 \xjp@SW 聽價唔聽鬥=205,teng1 gaa3 m4 teng1 dau2;
 \xjp@SW 聽弦=146,teng1 jin4;
 \xjp@SW 肉松=138,juk6 sung1;
@@ -5532,6 +5567,7 @@
 \xjp@SW 肺髒=142,fai3 zong6;
 \xjp@SW 胃髒=146,wai6 zong6;
 \xjp@SW 胚胎乾=142,bui1 toi1 gon3;
+\xjp@SW 胡子=124,wu4 zi2;
 \xjp@SW 胡舖搭=205,wu4 pou1 daap3;
 \xjp@SW 胡須=112,wu4 sou1;
 \xjp@SW 胡須勒特=205,wu4 sou1 lak6 dak6;
@@ -5578,6 +5614,7 @@
 \xjp@SW 臺面=117,toi2 min6;
 \xjp@SW 臺面前=147,toi2 min6 cin4;
 \xjp@SW 臺頭=205,toi2 tau4;
+\xjp@SW 臺風=123,toi4 fung1;
 \xjp@SW 與他一鬥=155,jyu5 taa1 jat1 dau3;
 \xjp@SW 與她一鬥=168,jyu5 taa1 jat1 dau3;
 \xjp@SW 興衝衝=135,hing3 cung1 cung1;
@@ -5751,6 +5788,7 @@
 \xjp@SW 行萬裏路勝讀萬卷書=205,hang4 maan6 lei5 lou6 sing3 duk6 maan6 gyun2 syu1;
 \xjp@SW 衍聲復詞=205,jin5 sing1 fuk1 ci4;
 \xjp@SW 街裏街坊=148,gaai1 lei5 gaai1 fong1;
+\xjp@SW 衝涼=101,cung1 loeng4;
 \xjp@SW 衝涼房=137,cung1 loeng4 fong2;
 \xjp@SW 衝涼舖=205,cung1 loeng4 pou2;
 \xjp@SW 衝澡=143,cung1 cou3;
@@ -5925,6 +5963,8 @@
 \xjp@SW 賭臺=144,dou2 toi2;
 \xjp@SW 購並=140,kau3 ping3;
 \xjp@SW 賽裏木湖=143,coi3 lei5 muk6 wu4;
+\xjp@SW 贊美=124,zaan3 mei5;
+\xjp@SW 贊賞=121,zaan3 soeng2;
 \xjp@SW 赫弗裏希=198,hak1 fat1 lei5 hei1;
 \xjp@SW 起表=205,hei2 biu1;
 \xjp@SW 趲乾=168,zaan2 gon3;
@@ -5948,6 +5988,7 @@
 \xjp@SW 軋制=141,zaat3 zai3;
 \xjp@SW 輕松=101,hing1 sung1;
 \xjp@SW 輩子乾=145,bui3 zi2 gon3;
+\xjp@SW 輪回=119,leon4 wui4;
 \xjp@SW 輪流乾=149,leon4 lau2 gon3;
 \xjp@SW 轉乾=145,zyun3 gon3;
 \xjp@SW 轉向往=150,zyun2 hoeng3 wong5;
@@ -5956,6 +5997,7 @@
 \xjp@SW 轉速表=141,zyun3 cuk1 biu1;
 \xjp@SW 辛裏希=198,san1 lei5 hei1;
 \xjp@SW 辦公臺=134,baan6 gung1 toi2;
+\xjp@SW 農歷=123,nung4 lik6;
 \xjp@SW 返傭=205,faan1 jung6;
 \xjp@SW 返裏=146,faan1 lei5;
 \xjp@SW 這只=127,ze2 zek3;
@@ -6065,14 +6107,17 @@
 \xjp@SW 銀須=145,ngan4 sou1;
 \xjp@SW 銅鬥兒=156,tung4 dau2 ji4;
 \xjp@SW 鋼煉=205,gong3 lin2;
+\xjp@SW 錄制=122,luk6 zai3;
 \xjp@SW 錦裏=205,gam2 lei5;
 \xjp@SW 鍋煙子=151,wo1 jin1 zi2;
 \xjp@SW 鎮榮裏=168,zan3 wing4 lei5;
 \xjp@SW 鏈墜=144,lin6 zeoi6;
 \xjp@SW 鏈形=146,lin6 jing4;
 \xjp@SW 鏈甲=144,lin6 gaap3;
+\xjp@SW 鏟除=123,caan2 ceoi4;
 \xjp@SW 鏟鬥=205,caan2 dau2;
 \xjp@SW 鏡臺=205,geng3 toi2;
+\xjp@SW 鐘意=77,zung1 ji3;
 \xjp@SW 鐘表=133,zung1 biu1;
 \xjp@SW 鑽杆=142,zyun3 gon3;
 \xjp@SW 長乾裏=205,coeng4 gon1 lei5;
@@ -6092,6 +6137,7 @@
 \xjp@SW 關鬥=131,gwaan1 dau2;
 \xjp@SW 闢雍硯=150,pik1 jung1 jin6;
 \xjp@SW 闢魚腥=205,pik1 jyu4 seng1;
+\xjp@SW 防御=116,fong4 jyu6;
 \xjp@SW 防水表=146,fong4 seoi2 biu1;
 \xjp@SW 阻吓=160,zo2 haak3;
 \xjp@SW 阿卡提裏=205,aa3 kaa1 tai4 lei5;
@@ -6114,6 +6160,7 @@
 \xjp@SW 雙折=145,soeng1 zip3;
 \xjp@SW 雙眼檐=205,soeng1 ngaan5 sim4;
 \xjp@SW 雙臺子=142,soeng1 toi4 zi2;
+\xjp@SW 雜志=115,zaap6 zi3;
 \xjp@SW 雞只=141,gai1 zek3;
 \xjp@SW 雞翼臺=205,gai1 jik6 toi2;
 \xjp@SW 難咽=144,naan4 jin3;
@@ -6135,6 +6182,7 @@
 \xjp@SW 電表=142,din6 biu1;
 \xjp@SW 電須刀=145,din6 sou1 dou1;
 \xjp@SW 電須刨=205,din6 sou1 paau2;
+\xjp@SW 震蕩=122,zan3 dong6;
 \xjp@SW 霉乾菜=144,mei4 gon1 coi3;
 \xjp@SW 霉毒=146,mei4 duk6;
 \xjp@SW 霉氣衝天=205,mei4 hei3 cung1 tin1;
@@ -6150,11 +6198,13 @@
 \xjp@SW 非槓杆化=156,fei1 gong3 gon1 faa3;
 \xjp@SW 靠吓=166,kaau3 haak3;
 \xjp@SW 靠舖牛力=205,kaau3 pou1 ngau4 lik6;
+\xjp@SW 面包=110,min6 baau1;
 \xjp@SW 面包片=142,min6 baau1 pin2;
 \xjp@SW 面房裏=205,min6 fong4 lei5;
 \xjp@SW 面條=125,min6 tiu2;
 \xjp@SW 面條兒=146,min6 tiu4 ji4;
 \xjp@SW 面白無須=147,min6 baak6 mou4 sou1;
+\xjp@SW 面粉=120,min6 fan2;
 \xjp@SW 面糊=138,min6 wu2;
 \xjp@SW 面豉醬=205,min6 si6 zoeng3;
 \xjp@SW 韓乾=145,hon4 gon3;
@@ -6180,6 +6230,7 @@
 \xjp@SW 領巖鷚=205,ling5 ngaam4 lau6;
 \xjp@SW 領扣=145,leng5 kau3;
 \xjp@SW 領臺=148,ling5 toi2;
+\xjp@SW 頭發=90,tau4 faat3;
 \xjp@SW 頰須=153,gaap3 sou1;
 \xjp@SW 願意乾=143,jyun6 ji3 gon3;
 \xjp@SW 顛顛仆仆=156,din1 din1 puk1 puk1;
@@ -6209,6 +6260,7 @@
 \xjp@SW 馬只=178,maa5 zek3;
 \xjp@SW 馬表=145,maa5 biu1;
 \xjp@SW 馬裏=138,maa5 lei5;
+\xjp@SW 駐扎=121,zyu3 zaat3;
 \xjp@SW 驚吓=122,ging1 haak3;
 \xjp@SW 骨乾=127,gwat1 gon3;
 \xjp@SW 骨壇=150,gwat1 taam4;
@@ -6217,6 +6269,7 @@
 \xjp@SW 髒腑=139,zong6 fu2;
 \xjp@SW 髒躁=205,zong6 cou3;
 \xjp@SW 體乾班=158,tai2 gon3 baan1;
+\xjp@SW 體係=120,tai2 hai6;
 \xjp@SW 高乾=133,gou1 gon3;
 \xjp@SW 高乾擾=151,gou1 gon1 jiu2;
 \xjp@SW 高乾預=157,gou1 gon1 jyu6;
@@ -6329,6 +6382,7 @@
 \xjp@SW 龍須糖=175,lung4 sou1 tong2;
 \xjp@SW 𡁻完松=205,ziu6 jyun4 sung1;
 \xjp@SP 一只=zek3;
+\xjp@SP 一舖=pou1;
 \xjp@SP 七只=zek3;
 \xjp@SP 三只=zek3;
 \xjp@SP 九只=zek3;
@@ -6336,6 +6390,7 @@
 \xjp@SP 五只=zek3;
 \xjp@SP 住只=zek3;
 \xjp@SP 兩只=zek3;
+\xjp@SP 兩舖=pou1;
 \xjp@SP 八只=zek3;
 \xjp@SP 六只=zek3;
 \xjp@SP 到只=zek3;
@@ -6352,6 +6407,7 @@
 \xjp@SP 套折=zip3;
 \xjp@SP 將只=zek3;
 \xjp@SP 幾只=zek3;
+\xjp@SP 幾舖=pou1;
 \xjp@SP 張臺=toi2;
 \xjp@SP 成只=zek3;
 \xjp@SP 整只=zek3;
@@ -6362,14 +6418,17 @@
 \xjp@SP 邊只=zek3;
 \xjp@SN 只不過=zi2;
 \xjp@SN 只兔=zek3;
+\xjp@SN 只剩=zi2;
 \xjp@SN 只叉=zek3;
 \xjp@SN 只可=zi2;
 \xjp@SN 只大=zek3;
 \xjp@SN 只女=zek3;
 \xjp@SN 只妖=zek3;
 \xjp@SN 只小=zek3;
+\xjp@SN 只想=zi2;
 \xjp@SN 只戒=zek3;
 \xjp@SN 只手=zek3;
+\xjp@SN 只會=zi2;
 \xjp@SN 只歌=zek3;
 \xjp@SN 只母=zek3;
 \xjp@SN 只熊=zek3;
@@ -6378,32 +6437,58 @@
 \xjp@SN 只狐=zek3;
 \xjp@SN 只狗=zek3;
 \xjp@SN 只白=zek3;
+\xjp@SN 只知=zi2;
 \xjp@SN 只碟=zek3;
 \xjp@SN 只羊=zek3;
 \xjp@SN 只老=zek3;
 \xjp@SN 只耳=zek3;
+\xjp@SN 只聽=zi2;
 \xjp@SN 只腳=zek3;
 \xjp@SN 只船=zek3;
 \xjp@SN 只蛋=zek3;
+\xjp@SN 只見=zi2;
+\xjp@SN 只覺=zi2;
 \xjp@SN 只豬=zek3;
 \xjp@SN 只貓=zek3;
 \xjp@SN 只雞=zek3;
+\xjp@SN 只需=zi2;
 \xjp@SN 只鞋=zek3;
 \xjp@SN 只馬=zek3;
 \xjp@SN 只鬼=zek3;
 \xjp@SN 只鷹=zek3;
 \xjp@SN 只龜=zek3;
 \xjp@SN 吓到=haak3;
+\xjp@SN 吓到底=haa5;
+\xjp@SN 吓到時=haa5;
 \xjp@SN 吓死=haak3;
+\xjp@SN 呢只不=ne1;
+\xjp@SN 呢只剩=ne1;
+\xjp@SN 呢只可=ne1;
+\xjp@SN 呢只想=ne1;
+\xjp@SN 呢只會=ne1;
+\xjp@SN 呢只知=ne1;
+\xjp@SN 呢只聽=ne1;
+\xjp@SN 呢只見=ne1;
+\xjp@SN 呢只覺=ne1;
+\xjp@SN 呢只需=ne1;
 \xjp@SN 成只=seng4;
 \xjp@SN 爲你=wai6;
 \xjp@SN 爲佢=wai6;
 \xjp@SN 爲我=wai6;
+\xjp@SN 舖厚=pou1;
+\xjp@SN 舖咗=pou1;
+\xjp@SN 舖成=pou1;
+\xjp@SN 舖晒=pou1;
+\xjp@SN 舖滿=pou1;
+\xjp@SN 舖起=pou1;
+\xjp@SN 舖造=pou1;
+\xjp@SN 舖過=pou1;
 \xjp@SE 䐶2;
 \xjp@SE 並4;
 \xjp@SE 乾6;
 \xjp@SE 仆4;
 \xjp@SE 佔5;
+\xjp@SE 侖3;
 \xjp@SE 俞2;
 \xjp@SE 努5;
 \xjp@SE 卜5;
@@ -6440,6 +6525,7 @@
 \xjp@SE 甌4;
 \xjp@SE 皿4;
 \xjp@SE 矓4;
+\xjp@SE 簽12;
 \xjp@SE 紆2;
 \xjp@SE 繡4;
 \xjp@SE 腥4;

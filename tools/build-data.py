@@ -427,6 +427,10 @@ CURATED_WORDS = {
     # which only written Chinese spells so (喫蕉, 喫茄 and 喫𡲢 are Cantonese
     # however they are spelt, and keep jaak3); 口吃 'stutter' is gat1
     '吃飯': 'hek3 faan6', '吃屎': 'hek3 si2', '堂吃': 'tong4 hek3', '口吃': 'hau2 gat1',
+    # after the judged round on simplified text (r6, 2026-11): rime reads 會戰
+    # wui2 and 腌肉 jim1 (its 醃豬肉 and 醃製 are jip3), and 締 is dai3 in 締結
+    # as in its 締約 and 締盟
+    '會戰': 'wui6 zin3', '締結': 'dai3 git3', '腌肉': 'jip3 juk6',
 }
 
 # Words of CC-Canto and the CC-CEDICT Cantonese readings that are not added
@@ -558,6 +562,7 @@ SIMP_TARGETS = {
     '干': '乾',     # gon1 'dry' (5 to 0); 幹 comes from words (幹部, 幹嘛)
     '仆': '仆',     # puk1 'fall' (2 to 0); 僕 comes from words (僕人)
     '钟': '鐘',     # 粒鐘, 鐘頭, 零鐘 (6 to 1); 鍾意 becomes an alias
+    '签': '簽',     # both cim1; the list has 58 words with 簽 (簽名) and 22 with 籤
 }
 # Spellings of simplified-script Cantonese that OpenCC does not know, as
 # rows of class s: character -> the character it is read as in simplified
@@ -565,10 +570,8 @@ SIMP_TARGETS = {
 # the simplified transcripts of WenetSpeech-Yue, and never anything else).
 # The words that really have 噶 keep their reading through aliases: those of
 # the word list, of OpenCC's phrases and of the dictionaries, and
-# SIMP_SPELLINGS (traditional spellings read as traditional mode reads
-# them).
+# SIMP_SPELLINGS.
 SIMP_EXTRA = {'噶': '㗎'}
-SIMP_SPELLINGS = '噶瑪 噶舉 薩噶達娃'.split()
 
 # Readings of a character standing alone in simplified mode, by the folded
 # characters around it.  SIMP_PREV: the character before it + the character.
@@ -583,15 +586,42 @@ SIMP_SPELLINGS = '噶瑪 噶舉 薩噶達娃'.split()
 # WenetSpeech-Yue have after it (40 to 1), but not in 只不過 and 只可以.  檯
 # toi2 'table' after its classifiers (3 to 0), 摺 zip3 in 套摺 (5 to 0), and
 # 嚇 haak3 in 嚇到 and 嚇死 (4 to 0).
+#
+# After the judged round on simplified text (r6), counted on the simplified
+# transcripts by reading the examples:
+#  - 只 stays zi2 before 見, 聽, 覺, 想, 剩, 需, 會 and 知 although a rule
+#    above would make it 隻 (记住只听: 3 to 0), and 呢 before such a 只 is
+#    the particle ne1 (呢只不过, 呢只可以: 6 to 0);
+#  - 吓到時 and 吓到底 are the particle 吓 and 到時, 到底 (3 to 0);
+#  - 铺 alone is the shop 舖 pou3 (SIMP_TARGETS), but the verb 鋪 pou1 before
+#    咗, 晒, 過, 成, 滿, 厚, 起 and 造, and the classifier of games and turns
+#    after 一, 兩 and 幾 (一铺牌).  Of 54 铺 labelled by hand this puts 17
+#    more right and none wrong.  The other way round (鋪 by default, 舖 after
+#    間, 個, 啲, 吉, 封 and before 度, 仔) gets 10 more verbs than this and
+#    loses 12 shops there and 9 on the corpora.
 SIMP_PREV = {
     **{c + '只': 'zek3' for c in '一二兩三四五六七八九十百千萬幾半呢嗰哩邊每成整咗細多住到將'},
     '張臺': 'toi2', '圍臺': 'toi2', '套折': 'zip3',
+    '一舖': 'pou1', '兩舖': 'pou1', '幾舖': 'pou1',
 }
 SIMP_NEXT = {
     **{'只' + c: 'zek3' for c in '腳熊兔狗龜碟船鞋鷹豬牙叉馬歌貓鬼戒蛋狐妖雞牛羊手耳大老女小白母'},
     '只不過': 'zi2', '只可': 'zi2',
-    '吓到': 'haak3', '吓死': 'haak3',
+    **{'只' + c: 'zi2' for c in '見聽覺想剩需會知'},
+    **{'呢只' + c: 'ne1' for c in '不可見聽覺想剩需會知'},
+    '吓到': 'haak3', '吓死': 'haak3', '吓到時': 'haa5', '吓到底': 'haa5',
+    **{'舖' + c: 'pou1' for c in '咗晒過成滿厚起造'},
 }
+
+# A listed word that simplified mode would not find at all gets an alias
+# although its reading would come out the same, if it is usual enough (its
+# cost is below this; 精緻, 體系, 宣佈 and 鍾意 are).  Its simplified spelling
+# folds to another one (精致, as 致 stays 致; 体系, as 系 is 係), and without
+# the alias a neighbour takes its characters (好精 + 致, 行 + 政体 + 系).
+# About 60 words; on the judged round they put 4 characters right and none
+# wrong, on the simplified transcripts 14 and 1.  Without the limit there are
+# 1,260, for 4 more right and 1 more wrong on the transcripts.
+SIMP_USUAL = 125
 
 # Simplified spellings shared by listed words with different readings (回复
 # is 回覆 and 回復): the more usual word wins.  These are decided by hand
@@ -605,14 +635,27 @@ SIMP_WORDS = {
     '一哄而散': '一哄而散',     # saan3 'disperse'
     '依郁': '依郁',             # ji1 juk1 'to stir'
 }
+# Simplified spellings read as a traditional spelling that is not a listed
+# word: as traditional mode reads that spelling, and before any listed word
+# written so.
+#  - The words that really have 噶 and are in no source on their own.
+#  - 折叠 is 摺疊 zip3 dip6 (the list only has 折疊 zit3 dip6), and 札记 is
+#    札記 zaat3 gei3 (the list only has the rare 劄記 zaap3 gei3).
+#  - 下游河 is 下游 + 河 (黄河下游河段).  下 + 遊河 costs less, because 下
+#    alone is so usual in spoken Cantonese.
+SIMP_SPELLINGS = '噶瑪 噶舉 薩噶達娃 摺疊 札記 下游河'.split()
 
 # Simplified spellings that get no alias, although a listed word or a phrase
 # of OpenCC is written so: in Cantonese text the same characters are more
 # often something else (睇吓点 is 睇吓 + 點, 系上 is 係 + 上, 干到 is 乾到
-# 'so dry that', 家里人 is 家裏 + 人, 噶喇 and 噶噶 are 㗎喇 and 㗎㗎).  Each one read text wrongly on the
-# corpora or the simplified transcripts, and none rightly.
+# 'so dry that', 家里人 is 家裏 + 人, 噶喇 and 噶噶 are 㗎喇 and 㗎㗎, 复名
+# is 復 + 名 rather than OpenCC's 複名, 个中 is 個 + 中間 rather than 箇中).
+# Each one read text wrongly on the corpora, the simplified transcripts or
+# the judged round r6, and none rightly.  呢只 (the listed 呢隻) is left to
+# the rules: as a word it also took the particle 呢 and 只 'only' (呢只不过,
+# 呢只可以: 6 wrong in the transcripts; without it 2 others are).
 SIMP_EXCLUDED = set('''
-睇吓点 吓乜 系上 个啲 下面条 几面上 里人 万一只 只日 州里 噶喇 噶噶
+睇吓点 吓乜 系上 个啲 下面条 几面上 里人 万一只 只日 州里 噶喇 噶噶 复名 个中 呢只
 干到 干好 干完 干头 干得 干炒 干你 干我 干了 会干 去干 不干 又干 条干
 '''.split())
 # No phrase of two characters is taken (from OpenCC or the dictionaries) for
@@ -895,9 +938,8 @@ def t2s():
 def spellings(conv):
     """(simplified, traditional, source) of the phrases of OpenCC's STPhrases
     (its phrases for the characters with several traditional forms) and of
-    the words of CC-Canto and CC-CEDICT and SIMP_SPELLINGS, simplified by conv
-    (the simplified column of CC-Canto has spellings of its own, 啖 for 噉 and
-    渠 for 佢)."""
+    the words of CC-Canto and CC-CEDICT, simplified by conv (the simplified
+    column of CC-Canto has spellings of its own, 啖 for 噉 and 渠 for 佢)."""
     for s, ts in opencc('STPhrases.txt').items():
         yield s, ts[0], 'OpenCC phrase'
     for name in ('CC-CANTO.txt', 'READINGS.txt'):
@@ -905,8 +947,6 @@ def spellings(conv):
             t = line.split(' ')[0]
             if not line.startswith('#'):
                 yield conv(t), t, 'dictionary word'
-    for t in SIMP_SPELLINGS:
-        yield conv(t), t, 'hand'
 
 
 def simplified(chars, canon, words, cost_of):
@@ -958,23 +998,28 @@ def simplified(chars, canon, words, cost_of):
              if key(conv(pat)) not in CURATED_NEXT}
     snext.update(SIMP_NEXT)
 
-    # An alias where simplified mode would read the spelling otherwise;
-    # shortest first, as only shorter aliases change how a spelling is read.
+    # An alias where simplified mode would read the spelling otherwise, or
+    # would not find a usual word (SIMP_USUAL); shortest first, as only
+    # shorter aliases change how a spelling is read.
     alias = {}
     trad_read = reader(chars, canon, words, cost_of)
+    hand = {key(conv(t)): (conv(t), t, 'hand') for t in SIMP_SPELLINGS}
     extra = {}      # folded spelling -> the most usual (simplified, traditional, source)
     for s, t, src in spellings(conv):
         k = key(s)
-        if (len(t) == len(s) > 1 and s not in SIMP_EXCLUDED and k not in groups
+        if (len(t) == len(s) > 1 and s not in SIMP_EXCLUDED and k not in groups and k not in hand
                 and not (len(t) == 2 and set(t) & set(SIMP_NO_PHRASES))
                 and all(c in chars for c in t) and all(target.get(c, c) in chars for c in s)
                 and (k not in extra or (cost_of(t), t) < (cost_of(extra[k][1]), extra[k][1]))):
             extra[k] = (s, t, src)
+    extra.update(hand)      # SIMP_SPELLINGS come before a listed word written so
+    found = lambda k, s: k in words or s in words or ''.join(target.get(c, c) for c in s) in words
     for size in sorted(set(map(len, groups)) | set(map(len, extra))):
         read = reader(chars, canon, words, cost_of, target, dict(alias), snext)
         for k, ws in groups.items():
-            if (len(k) == size and not SIMP_EXCLUDED & set(ws.values())
-                    and any(read(s) != words[win[k]] for s in ws.values())):
+            if (len(k) == size and k not in hand and not SIMP_EXCLUDED & set(ws.values())
+                    and (any(read(s) != words[win[k]] for s in ws.values())
+                         or cost_of(win[k]) < SIMP_USUAL and not all(found(k, s) for s in ws.values()))):
                 alias[k] = (words[win[k]], cost_of(win[k]), 'listed word')
         # the spellings that are not listed words: read as the data reads
         # their traditional form

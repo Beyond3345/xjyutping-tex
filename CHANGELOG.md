@@ -101,6 +101,19 @@ written for the next maintainer, human or agent.
 - `tools/make-ctan-zip.sh` packs `xjyutping-simp.def` and the tests of `lazy`
   and of simplified text.
 
+### Fixed
+
+- 口吃 reads *hau2 gat1*; 吃屎 and 堂吃 read *hek3*. 會戰 reads *wui6 zin3*,
+  締結 *dai3 git3* and 腌肉 *jip3 juk6*.
+- Simplified input was checked in a judged round on real simplified text
+  (r6: 375 characters of WenetSpeech-Yue transcripts and Chinese Wikipedia,
+  two judges and a third where they differed). Where simplified mode and the
+  old route (convert to traditional, then read) differ, simplified mode is
+  right on 89% of the spoken and 96% of the written items, the old route on
+  18% and 38%. The round's findings are in the data: aliases for usual words
+  that a fold would lose (精致, 宣布, 体系), 折叠 as 摺疊, 札记 as 札記, rules
+  for 铺 as a verb, for 呢只 and for 只 before verbs.
+
 ## [1.5.4] - 2026-11-08
 
 ### Fixed
